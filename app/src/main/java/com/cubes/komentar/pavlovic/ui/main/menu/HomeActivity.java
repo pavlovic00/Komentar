@@ -2,6 +2,7 @@ package com.cubes.komentar.pavlovic.ui.main.menu;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -14,12 +15,10 @@ import android.widget.Toast;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
-import com.cubes.komentar.pavlovic.data.DataContainer;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.ViewPagerAdapter;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
@@ -84,6 +83,9 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+        //Lock drawer slide.
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         //Click menu.
         binding.imageRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +126,6 @@ public class HomeActivity extends AppCompatActivity {
                 WeatherActivity.start(HomeActivity.this);
             }
         });
-
         //Kursna lista
         binding.kursnaLista.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,8 +197,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
+
 
         DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override

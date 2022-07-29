@@ -7,44 +7,36 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.cubes.komentar.databinding.ActivityCategoryBinding;
+import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.response.Response;
+import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+
+import java.util.ArrayList;
 
 public class CategoryActivity extends AppCompatActivity {
 
     private ActivityCategoryBinding binding;
     private String category;
+    private ResponseCategoriesData categoryData;
+    public ArrayList<News> newsList;
+    private LatestAdapter adapter;
     private int id;
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-
         category = getIntent().getExtras().getString("category");
-
         id = getIntent().getExtras().getInt("id");
-
-        DataRepository.getInstance().loadCategoryData(id, new DataRepository.CategoryResponseListener() {
-            @Override
-            public void onResponse(Response response) {
-
-                binding.recyclerViewCategory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerViewCategory.setAdapter(new LatestAdapter(getApplicationContext(), response.data.news));
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
+        loadCategoryData();
 
         binding.textViewTag.setText(category);
 
@@ -53,6 +45,71 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+    }
+
+    public void loadCategoryData() {
+
+        DataRepository.getInstance().loadCategoryData(id, page, new DataRepository.CategoryResponseListener() {
+            @Override
+            public void onResponse(Response response) {
+                if (response != null) {
+                    newsList = response.data.news;
+                }
+                updateUI();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+    }
+
+
+    public void updateUI() {
+
+        binding.recyclerViewCategory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        adapter = new LatestAdapter(getApplicationContext(), newsList);
+
+        adapter.setNewsListener(new NewsListener() {
+            @Override
+            public void onNewsCLicked(News news) {
+                DataRepository.getInstance().getNewsDetails(getApplicationContext(), news);
+            }
+        });
+
+        loadMoreNews();
+
+        binding.recyclerViewCategory.setAdapter(adapter);
+
+    }
+
+
+    public void loadMoreNews() {
+
+        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+            @Override
+            public void loadMoreNews(int page) {
+                DataRepository.getInstance().loadCategoryData(id, page, new DataRepository.CategoryResponseListener() {
+                    @Override
+                    public void onResponse(Response response) {
+                        adapter.addNewsList(response.data.news);
+
+                        if (response.data.news.size() < 20) {
+                            adapter.setFinished(true);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        adapter.setFinished(true);
+                    }
+
+                });
             }
         });
 

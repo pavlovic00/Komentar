@@ -22,6 +22,7 @@ public class ResponseDetailData {
     public String created_at;
     public String url;
     public String click_type;
+
     public ArrayList<Tags> tags;
     public ArrayList<News> related_news;
     public ArrayList<News> category_news;

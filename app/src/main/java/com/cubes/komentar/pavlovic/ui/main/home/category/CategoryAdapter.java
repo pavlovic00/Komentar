@@ -9,11 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
 import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -76,10 +81,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.binding.textViewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                DrawerLayout drawer = ((HomeActivity) context).findViewById(R.id.drawerLayout);
+                ViewPager viewPager = ((HomeActivity) context).findViewById(R.id.viewPagerHome);
+                drawer.closeDrawer(((HomeActivity) context).findViewById(R.id.navigationView));
+                viewPager.setCurrentItem(position+1);
+
                     Intent categoryIntent = new Intent(context, CategoryActivity.class);
                     categoryIntent.putExtra("id", list.get(position).id);
                     categoryIntent.putExtra("category", list.get(position).name);
-                    context.startActivity(categoryIntent);
+//                    context.startActivity(categoryIntent);
+
             }
         });
 

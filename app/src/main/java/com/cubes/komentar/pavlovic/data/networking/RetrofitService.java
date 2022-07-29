@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.data.networking;
 
+import com.cubes.komentar.pavlovic.data.response.ResponseForPaging;
 import com.cubes.komentar.pavlovic.data.response.response.Response;
 import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.response.responsecomment.ResponseComment;
@@ -19,16 +20,19 @@ import retrofit2.http.Query;
 public interface RetrofitService {
 
     @GET("api/latest")
-    Call<Response>getLatestNews();
+    Call<Response>getLatestNews(@Query("page")int page);
 
     @GET("api/videos")
-    Call<Response>getVideo();
+    Call<Response>getVideo(@Query("page")int page);
 
     @GET("api/search")
     Call<Response>getSearch(@Query("search_parameter")String search_parameter);
 
     @GET("api/newsdetails")
     Call<ResponseDetail>getNewsDetail(@Query("id")int id);
+
+    @GET("api/newsdetails")
+    Call<ResponseForPaging> getNewsDetailPaging(@Query("id")int id);
 
     @GET("api/comments")
     Call<ResponseComment>getComment(@Query("id")int id);
@@ -37,7 +41,7 @@ public interface RetrofitService {
     Call<ResponseCategories> getCategoryNews();
 
     @GET("api/category/{id}")
-    Call<Response> getAllNews(@Path("id") int id);
+    Call<Response> getAllNews(@Path("id") int id, @Query("page") int page);
 
     @GET("api/homepage")
     Call<ResponseHomepage> getHomepage();

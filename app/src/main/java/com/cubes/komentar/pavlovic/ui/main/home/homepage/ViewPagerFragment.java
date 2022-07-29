@@ -12,31 +12,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cubes.komentar.databinding.FragmentViewPagerBinding;
+import com.cubes.komentar.pavlovic.data.model.Category;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
+import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.response.Response;
+import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ViewPagerFragment extends Fragment {
 
     private FragmentViewPagerBinding binding;
     public ArrayList<News> newsList;
-    public int id;
+    //public int id;
+    private ResponseCategoriesData category;
+    private LatestAdapter adapter;
+    private int page = 1;
+
 
     public ViewPagerFragment() {
         // Required empty public constructor
     }
 
-    public static ViewPagerFragment newInstance(int id) {
+    public static ViewPagerFragment newInstance(ResponseCategoriesData category) {
         ViewPagerFragment fragment = new ViewPagerFragment();
-        fragment.id = id;
+        fragment.category = category;
         fragment.newsList = new ArrayList<News>();
         return fragment;
     }
@@ -58,30 +62,70 @@ public class ViewPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://komentar.rs/wp-json/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        loadHomeData();
+    }
 
-        RetrofitService service = retrofit.create(RetrofitService.class);
+    public void loadHomeData(){
 
-        service.getAllNews(id).enqueue(new Callback<Response>() {
+        DataRepository.getInstance().loadCategoriesNewsData(category.id, page, new DataRepository.NewsResponseListener() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                newsList = response.body().data.news;
-
-                binding.recyclerViewPager.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.recyclerViewPager.setAdapter(new LatestAdapter(getContext(), newsList));
+            public void onResponse(Response response) {
+                if (response != null){
+                    newsList = response.data.news;
+                }
+                updateUI();
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Throwable t) {
 
             }
         });
 
+    }
+
+    public void updateUI(){
+
         binding.recyclerViewPager.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerViewPager.setAdapter(new LatestAdapter(getContext(), newsList));
+        adapter = new LatestAdapter(getContext(), newsList);
+
+        adapter.setNewsListener(new NewsListener() {
+            @Override
+            public void onNewsCLicked(News news) {
+                DataRepository.getInstance().getNewsDetails(getContext(), news);
+            }
+        });
+
+        loadMoreNews();
+
+        binding.recyclerViewPager.setAdapter(adapter);
 
     }
+
+    public void loadMoreNews(){
+
+        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+            @Override
+            public void loadMoreNews(int page) {
+                DataRepository.getInstance().loadCategoriesNewsData(category.id, page, new DataRepository.NewsResponseListener() {
+                    @Override
+                    public void onResponse(Response response) {
+                        adapter.addNewsList(response.data.news);
+
+                        if (response.data.news.size() < 20){
+                            adapter.setFinished(true);
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+    }
+
 }

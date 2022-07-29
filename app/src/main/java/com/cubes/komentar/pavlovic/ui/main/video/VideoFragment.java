@@ -12,12 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cubes.komentar.databinding.FragmentVideoBinding;
+import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.response.Response;
+import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+
+import java.util.ArrayList;
 
 public class VideoFragment extends Fragment {
 
     private FragmentVideoBinding binding;
+    private ArrayList<News> newsList;
+    private VideoAdapter adapter;
+    private int page = 1;
 
 
     public VideoFragment() {
@@ -37,23 +46,6 @@ public class VideoFragment extends Fragment {
 
     }
 
-    public void loadDataVideo(){
-
-        DataRepository.getInstance().loadVideoData(new DataRepository.VideoResponseListener() {
-            @Override
-            public void onResponse(Response response) {
-                //ovo je jako bitno!
-                binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.recyclerViewVideo.setAdapter(new VideoAdapter(getContext(), response.data.news));
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,5 +60,66 @@ public class VideoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loadDataVideo();
+    }
+
+    public void loadDataVideo(){
+
+        DataRepository.getInstance().loadVideoData(page, new DataRepository.VideoResponseListener() {
+            @Override
+            public void onResponse(Response response) {
+               newsList = response.data.news;
+               updateUI();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    public void updateUI(){
+        binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new VideoAdapter(getContext(), newsList);
+
+        adapter.setNewsListener(new NewsListener() {
+            @Override
+            public void onNewsCLicked(News news) {
+                DataRepository.getInstance().getNewsDetails(getContext(), news);
+            }
+        });
+
+        loadMoreNews();
+
+        binding.recyclerViewVideo.setAdapter(adapter);
+    }
+
+    public void loadMoreNews(){
+
+        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+            @Override
+            public void loadMoreNews(int page) {
+                DataRepository.getInstance().loadVideoData(page, new DataRepository.VideoResponseListener() {
+                    @Override
+                    public void onResponse(Response response) {
+                        adapter.addNewsList(response.data.news);
+
+                        if (response.data.news.size() < 20){
+                            adapter.setFinished(true);
+
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
+            }
+        });
+
     }
 }

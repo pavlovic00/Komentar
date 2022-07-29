@@ -64,7 +64,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
             if (comment.children.size() > 0) {
 
-
                 holder.binding.textViewOdgovori.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
