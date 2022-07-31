@@ -1,20 +1,11 @@
 package com.cubes.komentar.pavlovic.data.repository;
 
-import android.content.Context;
-import android.content.Intent;
-
-import com.cubes.komentar.pavlovic.data.DataContainer;
-import com.cubes.komentar.pavlovic.data.response.ResponseForPaging;
-import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
 import com.cubes.komentar.pavlovic.data.response.response.Response;
 import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.response.responsecomment.ResponseComment;
 import com.cubes.komentar.pavlovic.data.response.responsedetail.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.response.responsehomepage.ResponseHomepage;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,9 +17,6 @@ public class DataRepository {
     private static DataRepository instance;
     private Retrofit retrofit;
     private RetrofitService service;
-    private Context context;
-    private News news;
-    private ArrayList<News> newsArrayList;
 
     private DataRepository() {
         callRetrofit();
@@ -114,18 +102,12 @@ public class DataRepository {
         void onFailure(Throwable t);
     }
 
-    public interface NewsResponseListener {
-
-        void onResponse(Response response);
-
-        void onFailure(Throwable t);
-    }
 
 
     //za video.
-    public void loadVideoData(int page, VideoResponseListener listener){
+    public void loadVideoData(VideoResponseListener listener){
 
-        service.getVideo(page).enqueue(new Callback<Response>() {
+        service.getVideo().enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 
@@ -145,14 +127,15 @@ public class DataRepository {
     }
 
     //za latest.
-    public void loadLatestData(int page, LatestResponseListener listener){
+    public void loadLatestData(LatestResponseListener listener){
 
-        service.getLatestNews(page).enqueue(new Callback<Response>() {
+        service.getLatestNews().enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null){
+                        && response.body().data != null
+                        && !response.body().data.news.isEmpty()){
                     listener.onResponse(response.body());
                 }
             }
@@ -188,9 +171,9 @@ public class DataRepository {
     }
 
     //za category.
-    public void loadCategoryData(int id,int page, CategoryResponseListener listener){
+    public void loadCategoryData(int id, CategoryResponseListener listener){
 
-        service.getAllNews(id, page).enqueue(new Callback<Response>() {
+        service.getAllNews(id).enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.body() != null
@@ -310,61 +293,6 @@ public class DataRepository {
             @Override
             public void onFailure(Call<ResponseDetail> call, Throwable t) {
                 listener.onFailure(t);
-            }
-        });
-
-    }
-
-    //loading...
-    public void getNewsDetails(Context context, News news){
-
-        service.getNewsDetailPaging(news.id).enqueue(new Callback<ResponseForPaging>() {
-            @Override
-            public void onResponse(Call<ResponseForPaging> call, retrofit2.Response<ResponseForPaging> response) {
-                News newsDetails = response.body().data;
-
-                DataRepository.getInstance().loadCommentData(news.id, new CommentResponseListener() {
-                    @Override
-                    public void onResponse(ResponseComment response) {
-                        DataContainer.commentList = response.data;
-
-                        Intent i = new Intent(context, NewsDetailActivity.class);
-                        i.putExtra("news", newsDetails);
-                        context.startActivity(i);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseForPaging> call, Throwable t) {
-
-            }
-        });
-
-    }
-
-    //loading news za categories...
-    public void loadCategoriesNewsData(int id, int page, NewsResponseListener listener){
-
-        service.getAllNews(id,page).enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body().data != null){
-                    listener.onResponse(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                    listener.onFailure(t);
             }
         });
 

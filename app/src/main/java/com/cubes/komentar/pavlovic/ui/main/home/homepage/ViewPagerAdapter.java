@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.cubes.komentar.pavlovic.data.model.Category;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
 
@@ -35,7 +34,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         else {
             ResponseCategoriesData categoriesData = categoriesList.get(position-1);
 
-            ViewPagerFragment fragment = ViewPagerFragment.newInstance(categoriesData);
+            ViewPagerFragment fragment = ViewPagerFragment.newInstance(categoriesData.id);
             return fragment;
         }
     }

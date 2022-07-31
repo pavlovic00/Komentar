@@ -13,15 +13,10 @@ import android.view.ViewGroup;
 
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
 import com.cubes.komentar.pavlovic.data.DataContainer;
-import com.cubes.komentar.pavlovic.data.model.Category;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.response.Response;
 import com.cubes.komentar.pavlovic.data.response.responsehomepage.ResponseHomepage;
 import com.cubes.komentar.pavlovic.data.response.responsehomepage.ResponseHomepageData;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
-import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 
 import java.util.ArrayList;
 
@@ -30,8 +25,6 @@ public class HomepageFragment extends Fragment {
     private FragmentHomepageBinding binding;
     public ArrayList<News> newsList;
     public ResponseHomepageData data;
-    private int page = 1;
-
 
     public HomepageFragment() {
         // Required empty public constructor
@@ -88,4 +81,5 @@ public class HomepageFragment extends Fragment {
         });
 
     }
+
 }
