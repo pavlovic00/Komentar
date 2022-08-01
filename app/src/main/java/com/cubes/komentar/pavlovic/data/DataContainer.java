@@ -6,6 +6,5 @@ import java.util.ArrayList;
 
 public class DataContainer {
 
-    //poslednja static lista.
     public static ArrayList<ResponseCommentData> commentList = new ArrayList<ResponseCommentData>();
 }
