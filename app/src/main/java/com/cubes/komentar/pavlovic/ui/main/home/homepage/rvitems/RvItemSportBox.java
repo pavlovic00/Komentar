@@ -12,13 +12,13 @@ import com.cubes.komentar.pavlovic.ui.main.home.homepage.NewsForHomepageAdapter;
 
 import java.util.ArrayList;
 
-public class RvItemSportBox implements RecyclerViewItemHomepage{
+public class RvItemSportBox implements RecyclerViewItemHomepage {
 
     private String title;
     private ArrayList<News> news;
     private Context context;
 
-    public RvItemSportBox(String title, ArrayList<News> news,Context context) {
+    public RvItemSportBox(String title, ArrayList<News> news, Context context) {
         this.title = title;
         this.news = news;
         this.context = context;
@@ -34,7 +34,7 @@ public class RvItemSportBox implements RecyclerViewItemHomepage{
 
         RvItemRvBinding binding = (RvItemRvBinding) holder.binding;
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                RecyclerView.VERTICAL,false));
+                RecyclerView.VERTICAL, false));
         binding.recyclerView.setAdapter(new NewsForHomepageAdapter(context, news));
 
     }

@@ -13,7 +13,7 @@ import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 
 import java.util.ArrayList;
 
-public class RvItemButtonsNews implements RecyclerViewItemHomepage{
+public class RvItemButtonsNews implements RecyclerViewItemHomepage {
 
     private ArrayList<News> latest;
     private ArrayList<News> most_comented;
@@ -37,7 +37,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage{
 
         //Default na najnovije.
         binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                RecyclerView.VERTICAL,false));
+                RecyclerView.VERTICAL, false));
         binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(latest));
 
         binding.buttonKomentari.setTextColor(Color.parseColor("#88909D"));//Gray
@@ -49,7 +49,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage{
             @Override
             public void onClick(View view) {
                 binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                        RecyclerView.VERTICAL,false));
+                        RecyclerView.VERTICAL, false));
                 binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(latest));
 
                 binding.buttonKomentari.setTextColor(Color.parseColor("#88909D"));//Gray
@@ -67,7 +67,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage{
             @Override
             public void onClick(View view) {
                 binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                        RecyclerView.VERTICAL,false));
+                        RecyclerView.VERTICAL, false));
                 binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(most_read));
 
                 binding.buttonKomentari.setTextColor(Color.parseColor("#88909D"));//Gray
@@ -85,7 +85,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage{
             @Override
             public void onClick(View view) {
                 binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                        RecyclerView.VERTICAL,false));
+                        RecyclerView.VERTICAL, false));
                 binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(most_comented));
 
                 binding.buttonKomentari.setTextColor(Color.parseColor("#FF000000"));//Black

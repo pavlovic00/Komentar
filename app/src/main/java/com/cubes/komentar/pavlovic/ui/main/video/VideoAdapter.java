@@ -44,11 +44,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         if (viewType == 0) {
             RvItemVideoBinding binding = RvItemVideoBinding.inflate(LayoutInflater.from(context), parent, false);
-            return new VideoAdapter.VideoViewHolder(binding);
-        }
-        else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context),parent,false);
-            return new VideoAdapter.VideoViewHolder(binding);
+            return new VideoViewHolder(binding);
+        } else {
+            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new VideoViewHolder(binding);
         }
     }
 
@@ -58,17 +57,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         if (position == newsList.size()) {
 
             //pod znakom pitanja.
-            if (!isFinished){
+            if (isFinished) {
                 holder.bindingLoading.progressBar.setVisibility(View.GONE);
                 holder.bindingLoading.loading.setVisibility(View.GONE);
             }
-            if (!isLoading & !isFinished & loadingNewsListener != null){
+            if (!isLoading & !isFinished & loadingNewsListener != null & newsList.size() == 20) {
                 isLoading = true;
                 loadingNewsListener.loadMoreNews(page);
             }
 
-        }
-        else{
+        } else {
             if (newsList.size() > 0) {
                 News news = newsList.get(position);
 
@@ -76,7 +74,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 holder.binding.textViewDate.setText(news.created_at);
                 holder.binding.textViewCategory.setText(news.category.name);
                 holder.binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
-
                 Picasso.get().load(news.image).into(holder.binding.imageView);
 
                 holder.binding.imageViewPlay.setOnClickListener(new View.OnClickListener() {
@@ -97,10 +94,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public int getItemViewType(int position) {
-        if (position == newsList.size()){
+        if (position == newsList.size()) {
             return 1;
-        }
-        else {
+        } else {
             return 0;
         }
 
@@ -108,34 +104,33 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public int getItemCount() {
-        if (newsList == null){
+        if (newsList == null) {
             return 0;
         }
-
-        return newsList.size()+1;
+        return newsList.size() + 1;
     }
 
     public void setLoadingNewsListener(LoadingNewsListener loadingNewsListener) {
         this.loadingNewsListener = loadingNewsListener;
     }
 
-    public void setNewsListener(NewsListener newsListener){
+    public void setNewsListener(NewsListener newsListener) {
         this.newsListener = newsListener;
     }
 
-    public void setFinished(boolean finished){
+    public void setFinished(boolean finished) {
         isFinished = finished;
 
     }
 
-    public void addNewsList(ArrayList<News> list){
-        this.newsList.addAll(list);
+    public void addNewsList(ArrayList<News> newsList) {
+        this.newsList.addAll(newsList);
         this.isLoading = false;
-        this.page = this.page+1;
+        this.page = this.page + 1;
         notifyDataSetChanged();
     }
 
-    public class VideoViewHolder extends RecyclerView.ViewHolder{
+    public class VideoViewHolder extends RecyclerView.ViewHolder {
 
         private RvItemVideoBinding binding;
         private RvItemLoadingBinding bindingLoading;
@@ -145,7 +140,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             this.binding = binding;
         }
 
-        public VideoViewHolder(RvItemLoadingBinding bindingLoading){
+        public VideoViewHolder(RvItemLoadingBinding bindingLoading) {
             super(bindingLoading.getRoot());
             this.bindingLoading = bindingLoading;
         }

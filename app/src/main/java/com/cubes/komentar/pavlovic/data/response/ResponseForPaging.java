@@ -4,10 +4,8 @@ import com.cubes.komentar.pavlovic.data.model.News;
 
 import java.io.Serializable;
 
-public class ResponseForPaging implements Serializable {
+public class ResponseForPaging extends ParentResponse implements Serializable {
 
-    private int status;
-    private String message;
     public News data;
 
 }

@@ -1,8 +1,6 @@
 package com.cubes.komentar.pavlovic.data.model;
 
-import java.io.Serializable;
-
-public class Subcategory implements Serializable {
+public class Subcategory {
 
     public String type;
     public int id;

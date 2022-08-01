@@ -35,12 +35,11 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(context),parent,false);
-            return  new NewsViewHolder(binding);
-        }
-        else{
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context),parent,false);
-            return  new NewsViewHolder(binding);
+            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new NewsViewHolder(binding);
+        } else {
+            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new NewsViewHolder(binding);
         }
     }
 
@@ -49,15 +48,14 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
 
         News news = newsList.get(position);
 
-        if(position == 0){
+        if (position == 0) {
             holder.bindingBig.textViewTitle.setText(news.title);
             holder.bindingBig.textViewDate.setText(news.created_at);
             holder.bindingBig.textViewCategory.setText(news.category.name);
             holder.bindingBig.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
             Picasso.get().load(news.image).into(holder.bindingBig.imageView);
-        }
-        else{
+        } else {
             holder.bindingSmall.textViewTitle.setText(news.title);
             holder.bindingSmall.textViewDate.setText(news.created_at);
             holder.bindingSmall.textViewCategory.setText(news.category.name);
@@ -70,7 +68,7 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
             @Override
             public void onClick(View view) {
                 Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                startDetailIntent.putExtra("id",news.id);
+                startDetailIntent.putExtra("id", news.id);
                 view.getContext().startActivity(startDetailIntent);
             }
         });
@@ -85,19 +83,16 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
     @Override
     public int getItemCount() {
 
-        if (newsList == null){
+        if (newsList == null) {
             return 0;
-        }
-        else if (newsList.size() > limit){
+        } else if (newsList.size() > limit) {
             return limit;
-        }
-        else
-        {
+        } else {
             return newsList.size();
         }
     }
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder{
+    public class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private RvItemSmallBinding bindingSmall;
         private RvItemBigBinding bindingBig;

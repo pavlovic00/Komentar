@@ -1,14 +1,14 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import com.cubes.komentar.databinding.RvItemFirstItemDetailBinding;
-import com.cubes.komentar.pavlovic.data.response.responsedetail.ResponseDetailData;
+import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 
-public class RvItemFirstItemDetail implements RecyclerViewItemDetail{
+public class RvItemFirstItemDetail implements RecyclerViewItemDetail {
 
-    private ResponseDetailData data;
+    private ResponseDetail.ResponseDetailData data;
 
-    public RvItemFirstItemDetail(ResponseDetailData data) {
+    public RvItemFirstItemDetail(ResponseDetail.ResponseDetailData data) {
         this.data = data;
     }
 
@@ -27,7 +27,7 @@ public class RvItemFirstItemDetail implements RecyclerViewItemDetail{
         binding.textViewTitle.setText(data.title);
         binding.textViewDate.setText(data.created_at);
         binding.textViewDescription.setText(data.description);
-        binding.textViewCommentCount.setText(""+data.comments_count);
+        binding.textViewCommentCount.setText("" + data.comments_count);
 
     }
 }

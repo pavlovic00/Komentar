@@ -6,19 +6,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.cubes.komentar.pavlovic.data.model.Category;
+
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
+
 
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<ResponseCategoriesData> categoriesList;
+    private ArrayList<ResponseCategories.ResponseCategoriesData> categoriesList;
     private ArrayList<News> newsList = new ArrayList<>();
 
 
-    public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<ResponseCategoriesData> list) {
+    public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         super(fm);
         this.categoriesList = list;
     }
@@ -27,13 +28,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        if (position == 0){
+        if (position == 0) {
             HomepageFragment fragment = HomepageFragment.newInstance(newsList);
-            return  fragment;
-        }
-
-        else {
-            ResponseCategoriesData categoriesData = categoriesList.get(position-1);
+            return fragment;
+        } else {
+            ResponseCategories.ResponseCategoriesData categoriesData = categoriesList.get(position - 1);
 
             ViewPagerFragment fragment = ViewPagerFragment.newInstance(categoriesData);
             return fragment;
@@ -42,7 +41,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return categoriesList.size()+1;
+        return categoriesList.size() + 1;
     }
 
     @Nullable
@@ -51,10 +50,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         if (position == 0) {
             return "Naslovna";
-        }
-        else{
-            ResponseCategoriesData category = categoriesList.get(position-1);
+        } else {
+            ResponseCategories.ResponseCategoriesData category = categoriesList.get(position - 1);
             return category.name;
-            }
         }
+    }
 }

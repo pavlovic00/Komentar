@@ -27,7 +27,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
     @Override
     public SliderAdapter.SliderHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemForHorizontalRvBinding binding = RvItemForHorizontalRvBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        RvItemForHorizontalRvBinding binding = RvItemForHorizontalRvBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new SliderHolder(binding);
     }
@@ -46,7 +46,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
             @Override
             public void onClick(View view) {
                 Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                startDetailIntent.putExtra("id",news.id);
+                startDetailIntent.putExtra("id", news.id);
                 view.getContext().startActivity(startDetailIntent);
             }
         });

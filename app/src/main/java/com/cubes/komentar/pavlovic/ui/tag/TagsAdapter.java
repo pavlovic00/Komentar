@@ -19,7 +19,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsHolder> {
     private ArrayList<Tags> list;
     private Context context;
 
-    public TagsAdapter(ArrayList<Tags> list,Context context) {
+
+    public TagsAdapter(ArrayList<Tags> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -28,7 +29,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsHolder> {
     @Override
     public TagsAdapter.TagsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemButtonTagBinding binding = RvItemButtonTagBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        RvItemButtonTagBinding binding = RvItemButtonTagBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new TagsHolder(binding);
     }
@@ -43,8 +44,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsHolder> {
             @Override
             public void onClick(View view) {
                 Intent tagsIntent = new Intent(view.getContext(), TagsActivity.class);
-                tagsIntent.putExtra("id",tags.id);
-                tagsIntent.putExtra("title",tags.title);
+                tagsIntent.putExtra("id", tags.id);
+                tagsIntent.putExtra("title", tags.title);
                 view.getContext().startActivity(tagsIntent);
             }
         });

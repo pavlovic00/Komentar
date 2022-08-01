@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_main"
-    android:layout_marginTop="@dimen/margin_main">
+    android:layout_marginTop="@dimen/margin_main"
+    android:layout_marginBottom="@dimen/margin_main">
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -23,8 +23,8 @@
         android:id="@+id/commentCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="(0)"
         android:layout_marginLeft="5dp"
+        android:text="(0)"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_big"
@@ -45,11 +45,23 @@
         android:id="@+id/viewGray"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/gray"
         android:layout_marginRight="@dimen/margin_main"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textViewTitle"
         app:layout_constraintTop_toBottomOf="@id/viewColor" />
+
+    <TextView
+        android:id="@+id/upozorenje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nema istaknutih komentara!"
+        android:textColor="@color/black"
+        android:textSize="@dimen/margin_big"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/margin_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGray" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

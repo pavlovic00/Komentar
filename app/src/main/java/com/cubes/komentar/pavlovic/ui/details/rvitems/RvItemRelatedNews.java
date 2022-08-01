@@ -10,7 +10,7 @@ import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.squareup.picasso.Picasso;
 
-public class RvItemRelatedNews implements RecyclerViewItemDetail{
+public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
     private News news;
 
@@ -20,7 +20,7 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail{
 
     @Override
     public int getType() {
-        return 9;
+        return 8;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail{
             @Override
             public void onClick(View view) {
                 Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                startDetailIntent.putExtra("id",news.id);
+                startDetailIntent.putExtra("id", news.id);
                 view.getContext().startActivity(startDetailIntent);
             }
         });

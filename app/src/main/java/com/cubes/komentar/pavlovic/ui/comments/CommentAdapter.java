@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
-import com.cubes.komentar.pavlovic.data.response.responsecomment.ResponseComment;
-import com.cubes.komentar.pavlovic.data.response.responsecomment.ResponseCommentData;
+import com.cubes.komentar.pavlovic.data.response.ResponseComment;
 
 import java.util.ArrayList;
 
@@ -28,11 +27,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private Context context;
-    private ArrayList<ResponseCommentData> dataList;
+    private ArrayList<ResponseComment.ResponseCommentData> dataList;
     private int like;
     private int dislike;
 
-    public CommentAdapter(Context context,ArrayList<ResponseCommentData> dataList) {
+    public CommentAdapter(Context context, ArrayList<ResponseComment.ResponseCommentData> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -41,15 +40,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public CommentAdapter.CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemCommentBinding binding = RvItemCommentBinding.inflate(LayoutInflater.from(context),parent,false);
+        RvItemCommentBinding binding = RvItemCommentBinding.inflate(LayoutInflater.from(context), parent, false);
 
-        return  new CommentAdapter.CommentViewHolder(binding);
+        return new CommentAdapter.CommentViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
 
-        ResponseCommentData comment = dataList.get(position);
+        ResponseComment.ResponseCommentData comment = dataList.get(position);
 
         like = comment.positive_votes;
         dislike = comment.negative_votes;
@@ -57,8 +56,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.binding.textViewPerson.setText(comment.name);
         holder.binding.textViewDate.setText(comment.created_at);
         holder.binding.textViewContent.setText(comment.content);
-        holder.binding.textViewLike.setText(like+"");
-        holder.binding.textViewDissLike.setText(dislike+"");
+        holder.binding.textViewLike.setText(like + "");
+        holder.binding.textViewDissLike.setText(dislike + "");
 
         if (comment.children != null) {
 
@@ -134,7 +133,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
                         } else {
                             holder.binding.recyclerViewChildren.setLayoutManager(new LinearLayoutManager(context));
-                            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(context, new ArrayList<ResponseCommentData>()));
+                            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(context, new ArrayList<ResponseComment.ResponseCommentData>()));
                         }
 
                     }
@@ -151,7 +150,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         });
 
 
-        Retrofit retrofit= new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://komentar.rs/wp-json/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -163,12 +162,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             @Override
             public void onClick(View view) {
 
-                service.postLike(Integer.parseInt(comment.id),true).enqueue(new Callback<ResponseComment>() {
+                service.postLike(Integer.parseInt(comment.id), true).enqueue(new Callback<ResponseComment>() {
                     @Override
                     public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
                         like++;
-                        holder.binding.textViewLike.setText((like)+"");
-                        Toast.makeText(view.getContext().getApplicationContext(),"Bravo za LAJK!",Toast.LENGTH_SHORT).show();
+                        holder.binding.textViewLike.setText((like) + "");
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -185,12 +184,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             @Override
             public void onClick(View view) {
 
-                service.postDislike(Integer.parseInt(comment.id),true).enqueue(new Callback<ResponseComment>() {
+                service.postDislike(Integer.parseInt(comment.id), true).enqueue(new Callback<ResponseComment>() {
                     @Override
                     public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
                         dislike++;
-                        holder.binding.textViewDissLike.setText((dislike)+"");
-                        Toast.makeText(view.getContext().getApplicationContext(),"Bravo za DISLAJK!",Toast.LENGTH_SHORT).show();
+                        holder.binding.textViewDissLike.setText((dislike) + "");
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -208,13 +207,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return dataList.size();
     }
 
-    public class CommentViewHolder extends RecyclerView.ViewHolder{
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
 
         private RvItemCommentBinding binding;
 
         public CommentViewHolder(RvItemCommentBinding binding) {
             super(binding.getRoot());
-            this.binding=binding;
+            this.binding = binding;
         }
     }
 }

@@ -12,16 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 
 import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder> {
 
     private Context context;
-    private ArrayList<ResponseCategoriesData> list;
+    private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
-    public SubCategoryAdapter(Context context, ArrayList<ResponseCategoriesData> list) {
+    public SubCategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         this.context = context;
         this.list = list;
     }
@@ -30,23 +30,23 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     @Override
     public SubCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemCategoryItemBinding binding = RvItemCategoryItemBinding.inflate(LayoutInflater.from(context),parent,false);
+        RvItemCategoryItemBinding binding = RvItemCategoryItemBinding.inflate(LayoutInflater.from(context), parent, false);
 
-        return  new SubCategoryAdapter.SubCategoryViewHolder(binding);
+        return new SubCategoryAdapter.SubCategoryViewHolder(binding);
     }
 
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull SubCategoryViewHolder holder, int position) {
 
-        ResponseCategoriesData categories = list.get(position);
+        ResponseCategories.ResponseCategoriesData categories = list.get(position);
 
         holder.binding.textViewCategory.setText(categories.name);
         holder.binding.textViewCategory.setTextSize(15);
         holder.binding.textViewCategory.setTextColor(Color.parseColor("#76FFFFFF"));
         holder.binding.view.setVisibility(View.GONE);
 
-        if (list.get(position).subcategories.size() == 0){
+        if (list.get(position).subcategories.size() == 0) {
             holder.binding.submenuarrow.setVisibility(View.INVISIBLE);
         }
 
@@ -67,7 +67,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         return list.size();
     }
 
-    public class SubCategoryViewHolder extends RecyclerView.ViewHolder{
+    public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
 
         private RvItemCategoryItemBinding binding;
 

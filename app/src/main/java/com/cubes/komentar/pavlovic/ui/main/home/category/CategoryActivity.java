@@ -9,8 +9,8 @@ import android.view.View;
 import com.cubes.komentar.databinding.ActivityCategoryBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.response.Response;
-import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
@@ -21,7 +21,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     private ActivityCategoryBinding binding;
     private String category;
-    private ResponseCategoriesData categoryData;
+    private ResponseCategories.ResponseCategoriesData categoryData;
     public ArrayList<News> newsList;
     private LatestAdapter adapter;
     private int id;
@@ -36,7 +36,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         category = getIntent().getExtras().getString("category");
         id = getIntent().getExtras().getInt("id");
-        loadCategoryData();
 
         binding.textViewTag.setText(category);
 
@@ -48,15 +47,16 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+        loadCategoryData();
     }
 
     public void loadCategoryData() {
 
         DataRepository.getInstance().loadCategoryData(id, page, new DataRepository.CategoryResponseListener() {
             @Override
-            public void onResponse(Response response) {
-                if (response != null) {
-                    newsList = response.data.news;
+            public void onResponse(ResponseNewsList responseNewsList) {
+                if (responseNewsList != null) {
+                    newsList = responseNewsList.data.news;
                 }
                 updateUI();
             }
@@ -78,7 +78,7 @@ public class CategoryActivity extends AppCompatActivity {
         adapter.setNewsListener(new NewsListener() {
             @Override
             public void onNewsCLicked(News news) {
-                DataRepository.getInstance().getNewsDetails(getApplicationContext(), news);
+                DataRepository.getInstance().getNewsDetails(CategoryActivity.this, news);
             }
         });
 
@@ -96,10 +96,10 @@ public class CategoryActivity extends AppCompatActivity {
             public void loadMoreNews(int page) {
                 DataRepository.getInstance().loadCategoryData(id, page, new DataRepository.CategoryResponseListener() {
                     @Override
-                    public void onResponse(Response response) {
-                        adapter.addNewsList(response.data.news);
+                    public void onResponse(ResponseNewsList responseNewsList) {
+                        adapter.addNewsList(responseNewsList.data.news);
 
-                        if (response.data.news.size() < 20) {
+                        if (responseNewsList.data.news.size() < 20) {
                             adapter.setFinished(true);
                         }
                     }

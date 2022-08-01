@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.cubes.komentar.databinding.ActivityReplyBinding;
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
-import com.cubes.komentar.pavlovic.data.response.send.ResponseBody;
+import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,7 +21,7 @@ public class ReplyActivity extends AppCompatActivity {
     private ActivityReplyBinding binding;
     private int id;
     private String reply_id;
-    private ResponseBody responseBody;
+    private ResponseCommentSend.ResponseBody responseBody;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +42,12 @@ public class ReplyActivity extends AppCompatActivity {
         binding.commentSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(binding.textViewName.getText().toString().isEmpty() &&
+                if (binding.textViewName.getText().toString().isEmpty() &&
                         binding.textMail.getText().toString().isEmpty() &&
-                        binding.textViewContent.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(),"Popunite sva polja",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    postComment(name, email,content);
+                        binding.textViewContent.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Popunite sva polja", Toast.LENGTH_LONG).show();
+                } else {
+                    postComment(name, email, content);
                 }
             }
         });
@@ -61,33 +60,33 @@ public class ReplyActivity extends AppCompatActivity {
         });
 
     }
+
     //Jedna od najtezih stvari koje sam nasao. :(
-    private void postComment(String name,String email,String content){
-        Retrofit retrofit= new Retrofit.Builder()
+    private void postComment(String name, String email, String content) {
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://komentar.rs/wp-json/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RetrofitService service = retrofit.create(RetrofitService.class);
 
-        ResponseBody data = new ResponseBody(String.valueOf(id),name,email,content);
+        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(id), name, email, content);
 
-        service.createPost(data).enqueue(new Callback<ResponseBody>() {
+        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseCommentSend.ResponseBody> call, Response<ResponseCommentSend.ResponseBody> response) {
                 binding.textViewName.setText("");
                 binding.textMail.setText("");
                 binding.textViewContent.setText("");
-                Toast.makeText(getApplicationContext(),response.code()+"Radi",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), response.code() + "Radi", Toast.LENGTH_LONG).show();
                 finish();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ResponseCommentSend.ResponseBody> call, Throwable t) {
 
             }
         });
-
 
 
         //Nisam imao vremena da usavrsim ovo, ali ako je problem poslacu kad usavrsim :)

@@ -5,12 +5,12 @@ import android.graphics.Color;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 
-public class RvItemTitle implements RecyclerViewItemHomepage{
+public class RvItemTitle implements RecyclerViewItemHomepage {
 
     private String title;
     private String color;
 
-    public RvItemTitle(String title,String color) {
+    public RvItemTitle(String title, String color) {
         this.title = title;
         this.color = color;
     }

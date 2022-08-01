@@ -31,12 +31,11 @@ public class RvItemSlider implements RecyclerViewItemHomepage {
         RvItemHorizontalRvBinding binding = (RvItemHorizontalRvBinding) holder.binding;
 
         binding.recyclerViewHorizontal.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                RecyclerView.HORIZONTAL,false));
+                RecyclerView.HORIZONTAL, false));
         binding.recyclerViewHorizontal.setAdapter(new SliderAdapter(sliderList));
 
         pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHorizontal);
         binding.indicator.attachToRecyclerView(binding.recyclerViewHorizontal, pagerSnapHelper);
-
 
 
     }

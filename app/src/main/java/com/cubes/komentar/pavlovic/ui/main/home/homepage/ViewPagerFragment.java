@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cubes.komentar.databinding.FragmentViewPagerBinding;
-import com.cubes.komentar.pavlovic.data.model.Category;
+
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.response.Response;
-import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
@@ -29,7 +29,7 @@ public class ViewPagerFragment extends Fragment {
     private FragmentViewPagerBinding binding;
     public ArrayList<News> newsList;
     //public int id;
-    private ResponseCategoriesData category;
+    private ResponseCategories.ResponseCategoriesData category;
     private LatestAdapter adapter;
     private int page = 1;
 
@@ -38,7 +38,7 @@ public class ViewPagerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ViewPagerFragment newInstance(ResponseCategoriesData category) {
+    public static ViewPagerFragment newInstance(ResponseCategories.ResponseCategoriesData category) {
         ViewPagerFragment fragment = new ViewPagerFragment();
         fragment.category = category;
         fragment.newsList = new ArrayList<News>();
@@ -65,13 +65,13 @@ public class ViewPagerFragment extends Fragment {
         loadHomeData();
     }
 
-    public void loadHomeData(){
+    public void loadHomeData() {
 
         DataRepository.getInstance().loadCategoriesNewsData(category.id, page, new DataRepository.NewsResponseListener() {
             @Override
-            public void onResponse(Response response) {
-                if (response != null){
-                    newsList = response.data.news;
+            public void onResponse(ResponseNewsList.ResponseData response) {
+                if (response != null) {
+                    newsList = response.news;
                 }
                 updateUI();
             }
@@ -84,7 +84,7 @@ public class ViewPagerFragment extends Fragment {
 
     }
 
-    public void updateUI(){
+    public void updateUI() {
 
         binding.recyclerViewPager.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LatestAdapter(getContext(), newsList);
@@ -102,17 +102,17 @@ public class ViewPagerFragment extends Fragment {
 
     }
 
-    public void loadMoreNews(){
+    public void loadMoreNews() {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
             public void loadMoreNews(int page) {
                 DataRepository.getInstance().loadCategoriesNewsData(category.id, page, new DataRepository.NewsResponseListener() {
                     @Override
-                    public void onResponse(Response response) {
-                        adapter.addNewsList(response.data.news);
+                    public void onResponse(ResponseNewsList.ResponseData response) {
+                        adapter.addNewsList(response.news);
 
-                        if (response.data.news.size() < 20){
+                        if (response.news.size() < 20) {
                             adapter.setFinished(true);
                         }
 
@@ -120,7 +120,7 @@ public class ViewPagerFragment extends Fragment {
 
                     @Override
                     public void onFailure(Throwable t) {
-
+                        adapter.setFinished(true);
                     }
                 });
             }

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pavlovic.ui.comments.ReplyActivity"
-    android:background="@color/blue">
+    android:background="@color/blue"
+    tools:context=".pavlovic.ui.comments.ReplyActivity">
 
     <ImageView
         android:id="@+id/imageClose"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="right"
-        android:src="@drawable/ic_back"
-        android:padding="5dp"
         android:layout_margin="@dimen/margin_main"
+        android:padding="5dp"
+        android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,11 +22,11 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView"
@@ -97,8 +96,8 @@
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="100dp"
         android:layout_marginLeft="@dimen/margin_main"
+        android:layout_marginTop="100dp"
         android:layout_marginRight="@dimen/margin_main"
         android:src="@drawable/color_corner_radius"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,10 +108,10 @@
         android:id="@+id/textViewContent"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@null"
-        android:hint="Unesi komentar: "
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:background="@null"
+        android:hint="Unesi komentar: "
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"

@@ -11,7 +11,7 @@ import com.cubes.komentar.databinding.ActivityWeatherBinding;
 
 public class WeatherActivity extends AppCompatActivity {
 
-    public static void start (Activity activity){
+    public static void start(Activity activity) {
         Intent i = new Intent(activity, WeatherActivity.class);
         activity.startActivity(i);
     }

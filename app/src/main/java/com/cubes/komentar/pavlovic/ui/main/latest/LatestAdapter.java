@@ -45,23 +45,21 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
     public LatestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(context),parent,false);
-            return  new LatestViewHolder(binding);
-        }
-        else if (viewType == 1){
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context),parent,false);
-            return  new LatestViewHolder(binding);
-        }
-        else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context),parent,false);
-            return  new LatestViewHolder(binding);
+            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new LatestViewHolder(binding);
+        } else if (viewType == 1) {
+            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new LatestViewHolder(binding);
+        } else {
+            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context), parent, false);
+            return new LatestViewHolder(binding);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull LatestViewHolder holder, int position) {
 
-        if(position == 0){
+        if (position == 0) {
 
             if (newsList.size() > 0) {
                 News news = newsList.get(position);
@@ -82,10 +80,9 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                     }
                 });
             }
-        }
-        else if (position>0 & position<newsList.size()){
+        } else if (position > 0 & position < newsList.size()) {
 
-            if (newsList.size() >0) {
+            if (newsList.size() > 0) {
                 News news = newsList.get(position);
 
                 holder.bindingSmall.textViewTitle.setText(news.title);
@@ -103,13 +100,12 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                     }
                 });
             }
-        }
-        else {
-            if (isFinished){
+        } else {
+            if (isFinished) {
                 holder.bindingLoading.progressBar.setVisibility(View.GONE);
                 holder.bindingLoading.loading.setVisibility(View.GONE);
             }
-            if (!isLoading & !isFinished & loadingNewsListener != null){
+            if (!isLoading & !isFinished & loadingNewsListener != null) {
                 isLoading = true;
                 loadingNewsListener.loadMoreNews(page);
             }
@@ -119,13 +115,11 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
     @Override
     public int getItemViewType(int position) {
 
-        if (position == 0){
+        if (position == 0) {
             return 0;
-        }
-        else if (position == newsList.size()){
+        } else if (position == newsList.size()) {
             return 2;
-        }
-        else {
+        } else {
             return 1;
         }
     }
@@ -133,38 +127,38 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
     @Override
     public int getItemCount() {
 
-        if (newsList == null){
+        if (newsList == null) {
             return 0;
         }
 
-        return newsList.size()+1;
+        return newsList.size() + 1;
     }
 
     public void setLoadingNewsListener(LoadingNewsListener loadingNewsListener) {
         this.loadingNewsListener = loadingNewsListener;
     }
 
-    public void setNewsListener(NewsListener newsListener){
+    public void setNewsListener(NewsListener newsListener) {
         this.newsListener = newsListener;
     }
 
-    public void setFinished(boolean finished){
+    public void setFinished(boolean finished) {
         isFinished = finished;
     }
 
-    public void addNewsList(ArrayList<News> list){
+    public void addNewsList(ArrayList<News> list) {
         this.newsList.addAll(list);
         this.isLoading = false;
-        this.page = this.page+1;
+        this.page = this.page + 1;
         notifyDataSetChanged();
     }
 
-    public void refreshNewsList(ArrayList<News> newsList){
+    public void refreshNewsList(ArrayList<News> newsList) {
         this.newsList = newsList;
         notifyDataSetChanged();
     }
 
-    public class LatestViewHolder extends RecyclerView.ViewHolder{
+    public class LatestViewHolder extends RecyclerView.ViewHolder {
 
         private RvItemSmallBinding bindingSmall;
         private RvItemBigBinding bindingBig;
@@ -180,7 +174,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
             this.bindingBig = bindingBig;
         }
 
-        public LatestViewHolder(RvItemLoadingBinding bindingLoading){
+        public LatestViewHolder(RvItemLoadingBinding bindingLoading) {
             super(bindingLoading.getRoot());
             this.bindingLoading = bindingLoading;
         }

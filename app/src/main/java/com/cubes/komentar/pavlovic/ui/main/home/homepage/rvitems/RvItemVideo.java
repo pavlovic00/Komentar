@@ -12,12 +12,12 @@ import com.cubes.komentar.pavlovic.ui.main.video.VideoAdapter;
 
 import java.util.ArrayList;
 
-public class RvItemVideo implements RecyclerViewItemHomepage{
+public class RvItemVideo implements RecyclerViewItemHomepage {
 
     public ArrayList<News> videoList;
     public Context context;
 
-    public RvItemVideo(ArrayList<News> videoList,Context context) {
+    public RvItemVideo(ArrayList<News> videoList, Context context) {
         this.videoList = videoList;
         this.context = context;
     }
@@ -33,8 +33,8 @@ public class RvItemVideo implements RecyclerViewItemHomepage{
         RvRecyclerviewVideoBinding binding = (RvRecyclerviewVideoBinding) holder.binding;
 
         binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                RecyclerView.VERTICAL,false));
-        binding.recyclerViewVideo.setAdapter(new VideoAdapter(context,videoList));
+                RecyclerView.VERTICAL, false));
+        binding.recyclerViewVideo.setAdapter(new VideoAdapter(context, videoList));
 
     }
 }

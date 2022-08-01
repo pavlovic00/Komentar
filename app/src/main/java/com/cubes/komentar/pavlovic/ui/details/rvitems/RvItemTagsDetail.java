@@ -12,12 +12,12 @@ import com.cubes.komentar.pavlovic.ui.tag.TagsAdapter;
 
 import java.util.ArrayList;
 
-public class RvItemTagsDetail implements RecyclerViewItemDetail{
+public class RvItemTagsDetail implements RecyclerViewItemDetail {
 
     private ArrayList<Tags> tagsList;
     private Context context;
 
-    public RvItemTagsDetail(ArrayList<Tags> tagsList,Context context) {
+    public RvItemTagsDetail(ArrayList<Tags> tagsList, Context context) {
         this.tagsList = tagsList;
         this.context = context;
     }
@@ -25,7 +25,7 @@ public class RvItemTagsDetail implements RecyclerViewItemDetail{
 
     @Override
     public int getType() {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -35,6 +35,6 @@ public class RvItemTagsDetail implements RecyclerViewItemDetail{
 
         StaggeredGridLayoutManager grid = new StaggeredGridLayoutManager(3, LinearLayoutManager.HORIZONTAL);
         binding.recyclerViewGrid.setLayoutManager(grid);
-        binding.recyclerViewGrid.setAdapter(new TagsAdapter(tagsList,context));
+        binding.recyclerViewGrid.setAdapter(new TagsAdapter(tagsList, context));
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,12 +9,12 @@
         android:id="@+id/textViewTitle"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textStyle="bold"
-        android:maxLines="4"
-        android:textSize="@dimen/text_size_biggest"
-        android:textColor="@color/black"
         android:layout_margin="@dimen/margin_main"
+        android:maxLines="4"
+        android:text="Title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_biggest"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,11 +22,11 @@
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date"
-        android:textAllCaps="true"
         android:layout_marginTop="@dimen/margin_main"
         android:layout_marginRight="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin_main"
+        android:text="Date"
+        android:textAllCaps="true"
         android:textColor="@color/gray"
         android:textSize="@dimen/text_size_medium"
         app:layout_constraintStart_toStartOf="@+id/textViewTitle"
@@ -37,22 +36,22 @@
         android:id="@+id/textViewComment"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:src="@drawable/ic_comment"
-        android:layout_marginTop="3dp"
         android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/ic_comment"
         app:layout_constraintStart_toEndOf="@+id/textViewDate"
         app:layout_constraintTop_toTopOf="@+id/textViewDate"
-        app:tint="@color/blue"/>
+        app:tint="@color/blue" />
 
     <TextView
         android:id="@+id/textViewCommentCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1"
         android:layout_marginLeft="3dp"
+        android:text="1"
         android:textColor="@color/blue"
-        android:textStyle="bold"
         android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textViewComment"
         app:layout_constraintTop_toTopOf="@+id/textViewDate" />
 

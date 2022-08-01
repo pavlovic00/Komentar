@@ -3,7 +3,7 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewLongBinding;
 import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 
-public class RvItemTitleDetail implements RecyclerViewItemDetail{
+public class RvItemTitleDetail implements RecyclerViewItemDetail {
 
     private String title;
 
@@ -13,7 +13,7 @@ public class RvItemTitleDetail implements RecyclerViewItemDetail{
 
     @Override
     public int getType() {
-        return 2;
+        return 1;
     }
 
     @Override

@@ -1,13 +1,14 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
-import com.cubes.komentar.pavlovic.data.response.responsecomment.ResponseComment;
-import com.cubes.komentar.pavlovic.data.response.responsecomment.ResponseCommentData;
+import com.cubes.komentar.pavlovic.data.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 import com.cubes.komentar.pavlovic.ui.comments.ReplyActivity;
 
@@ -17,19 +18,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RvItemComment implements RecyclerViewItemDetail{
+public class RvItemComment implements RecyclerViewItemDetail {
 
-    ResponseCommentData data;
+    ResponseComment.ResponseCommentData data;
+
     private int like;
     private int dislike;
 
-    public RvItemComment(ResponseCommentData data) {
+    public RvItemComment(ResponseComment.ResponseCommentData data) {
         this.data = data;
     }
 
     @Override
     public int getType() {
-        return 6;
+        return 5;
     }
 
     @Override
@@ -43,14 +45,14 @@ public class RvItemComment implements RecyclerViewItemDetail{
         binding.textViewPerson.setText(data.name);
         binding.textViewDate.setText(data.created_at);
         binding.textViewContent.setText(data.content);
-        binding.textViewLike.setText(like+"");
-        binding.textViewDissLike.setText(dislike+"");
+        binding.textViewLike.setText(like + "");
+        binding.textViewDissLike.setText(dislike + "");
 
 
         //Nisam imao vremena da usavrsim ovo, ali ako je problem poslacu kad usavrsim :)
 
 
-        Retrofit retrofit= new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://komentar.rs/wp-json/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -62,12 +64,12 @@ public class RvItemComment implements RecyclerViewItemDetail{
             @Override
             public void onClick(View view) {
 
-                service.postLike(Integer.parseInt(data.id),true).enqueue(new Callback<ResponseComment>() {
+                service.postLike(Integer.parseInt(data.id), true).enqueue(new Callback<ResponseComment>() {
                     @Override
                     public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
                         like++;
-                        binding.textViewLike.setText((like)+"");
-                        Toast.makeText(view.getContext().getApplicationContext(),"Bravo za LAJK",Toast.LENGTH_SHORT).show();
+                        binding.textViewLike.setText((like) + "");
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -84,12 +86,12 @@ public class RvItemComment implements RecyclerViewItemDetail{
             @Override
             public void onClick(View view) {
 
-                service.postDislike(Integer.parseInt(data.id),true).enqueue(new Callback<ResponseComment>() {
+                service.postDislike(Integer.parseInt(data.id), true).enqueue(new Callback<ResponseComment>() {
                     @Override
                     public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
                         dislike++;
-                        binding.textViewDissLike.setText((dislike)+"");
-                        Toast.makeText(view.getContext().getApplicationContext(),"Bravo za DISLAJK",Toast.LENGTH_SHORT).show();
+                        binding.textViewDissLike.setText((dislike) + "");
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -107,9 +109,9 @@ public class RvItemComment implements RecyclerViewItemDetail{
                 if (data.id != null) {
                     replyIntent.putExtra("main_id", data.id);
                 }
-                    if (data.children.size() > 0) {
-                        replyIntent.putExtra("reply_id", data.children.get(Integer.parseInt(data.id)).id);
-                    }
+                if (data.children.size() > 0) {
+                    replyIntent.putExtra("reply_id", data.children.get(Integer.parseInt(data.id)).id);
+                }
 
                 view.getContext().startActivity(replyIntent);
             }

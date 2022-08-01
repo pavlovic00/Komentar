@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding= ActivityHomeBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -48,36 +48,36 @@ public class HomeActivity extends AppCompatActivity {
 
                 Fragment selectedFragment = null;
 
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
 
                     case R.id.home:
-                        selectedFragment= HomeFragment.newInstance();
+                        selectedFragment = HomeFragment.newInstance();
                     {
                         binding.imageRight.setVisibility(View.VISIBLE);
                     }
-                        break;
+                    break;
                     case R.id.latest:
-                        selectedFragment= LatestFragment.newInstance();
+                        selectedFragment = LatestFragment.newInstance();
                     {
                         binding.imageRight.setVisibility(View.GONE);
                     }
-                        break;
+                    break;
                     case R.id.video:
-                        selectedFragment= VideoFragment.newInstance();
+                        selectedFragment = VideoFragment.newInstance();
                     {
                         binding.imageRight.setVisibility(View.GONE);
                     }
-                        break;
+                    break;
                     case R.id.search:
-                        selectedFragment= SearchFragment.newInstance();
+                        selectedFragment = SearchFragment.newInstance();
                     {
                         binding.imageRight.setVisibility(View.GONE);
                     }
-                        break;
+                    break;
                 }
 
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.homeLayout,selectedFragment)
+                        .replace(R.id.homeLayout, selectedFragment)
                         .commit();
 
                 return true;
@@ -149,12 +149,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (click){
-                    Toast.makeText(view.getContext().getApplicationContext(),"Push notifikacije su uključene!",Toast.LENGTH_SHORT).show();
+                if (click) {
+                    Toast.makeText(view.getContext().getApplicationContext(), "Push notifikacije su uključene!", Toast.LENGTH_SHORT).show();
                     click = false;
-                }
-                else{
-                    Toast.makeText(view.getContext().getApplicationContext(),"Push notifikacije su isključene!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(view.getContext().getApplicationContext(), "Push notifikacije su isključene!", Toast.LENGTH_SHORT).show();
                     click = true;
                 }
 
@@ -166,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"https://komentar.rs/wp-json/");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://komentar.rs/wp-json/");
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
                 HomeActivity.this.startActivity(shareIntent);
@@ -178,7 +177,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"https://komentar.rs/wp-json/");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://komentar.rs/wp-json/");
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
                 HomeActivity.this.startActivity(shareIntent);
@@ -190,7 +189,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"https://komentar.rs/wp-json/");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://komentar.rs/wp-json/");
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
                 HomeActivity.this.startActivity(shareIntent);

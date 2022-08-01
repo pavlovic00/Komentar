@@ -16,18 +16,19 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.response.responsecategories.ResponseCategoriesData;
+import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
+
 import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context context;
-    private ArrayList<ResponseCategoriesData> list;
+    private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
-    public CategoryAdapter(Context context, ArrayList<ResponseCategoriesData> list) {
+    public CategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,22 +37,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemCategoryItemBinding binding = RvItemCategoryItemBinding.inflate(LayoutInflater.from(context),parent,false);
+        RvItemCategoryItemBinding binding = RvItemCategoryItemBinding.inflate(LayoutInflater.from(context), parent, false);
 
-        return  new CategoryAdapter.CategoryViewHolder(binding);
+        return new CategoryAdapter.CategoryViewHolder(binding);
     }
 
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
 
-        ResponseCategoriesData categories = list.get(position);
+        ResponseCategories.ResponseCategoriesData categories = list.get(position);
 
         holder.binding.textViewCategory.setText(categories.name);
         holder.binding.view.setBackgroundColor(Color.parseColor(categories.color));
         holder.binding.submenuarrow.setRotation(270);
 
-        if (list.get(position).subcategories.size() == 0){
+        if (list.get(position).subcategories.size() == 0) {
             holder.binding.submenuarrow.setVisibility(View.INVISIBLE);
         }
 
@@ -63,20 +64,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 categories.open = !categories.open;
 
                 if (categories.open) {
-                   holder.binding.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(context));
-                   holder.binding.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(context, categories.subcategories));
+                    holder.binding.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(context));
+                    holder.binding.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(context, categories.subcategories));
 
-                   holder.binding.submenuarrow.setRotation(90);
+                    holder.binding.submenuarrow.setRotation(90);
 
                 } else {
-                   holder.binding.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(context));
-                   holder.binding.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(context, new ArrayList<ResponseCategoriesData>()));
+                    holder.binding.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(context));
+                    holder.binding.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(context, new ArrayList<ResponseCategories.ResponseCategoriesData>()));
 
-                   holder.binding.submenuarrow.setRotation(-90);
+                    holder.binding.submenuarrow.setRotation(-90);
                 }
 
-           }
-       });
+            }
+        });
 
         holder.binding.textViewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,11 +86,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 DrawerLayout drawer = ((HomeActivity) context).findViewById(R.id.drawerLayout);
                 ViewPager viewPager = ((HomeActivity) context).findViewById(R.id.viewPagerHome);
                 drawer.closeDrawer(((HomeActivity) context).findViewById(R.id.navigationView));
-                viewPager.setCurrentItem(position+1);
+                viewPager.setCurrentItem(position + 1);
 
-                    Intent categoryIntent = new Intent(context, CategoryActivity.class);
-                    categoryIntent.putExtra("id", list.get(position).id);
-                    categoryIntent.putExtra("category", list.get(position).name);
+                Intent categoryIntent = new Intent(context, CategoryActivity.class);
+                categoryIntent.putExtra("id", list.get(position).id);
+                categoryIntent.putExtra("category", list.get(position).name);
 //                    context.startActivity(categoryIntent);
 
             }
@@ -102,7 +103,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return list.size();
     }
 
-    public class CategoryViewHolder extends RecyclerView.ViewHolder{
+    public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         private RvItemCategoryItemBinding binding;
 
