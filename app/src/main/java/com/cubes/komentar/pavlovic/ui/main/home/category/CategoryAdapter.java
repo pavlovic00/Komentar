@@ -18,6 +18,7 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
 import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
 
 
@@ -55,7 +56,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         if (list.get(position).subcategories.size() == 0) {
             holder.binding.submenuarrow.setVisibility(View.INVISIBLE);
         }
-
         holder.binding.submenuarrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

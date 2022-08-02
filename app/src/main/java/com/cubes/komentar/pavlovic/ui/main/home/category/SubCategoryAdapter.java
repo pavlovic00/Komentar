@@ -12,13 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
+import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder> {
 
     private Context context;
+    public ArrayList<News> newsList;
     private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
     public SubCategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {

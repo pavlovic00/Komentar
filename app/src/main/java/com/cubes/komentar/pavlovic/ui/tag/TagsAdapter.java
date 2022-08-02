@@ -46,6 +46,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsHolder> {
                 Intent tagsIntent = new Intent(view.getContext(), TagsActivity.class);
                 tagsIntent.putExtra("id", tags.id);
                 tagsIntent.putExtra("title", tags.title);
+                tagsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(tagsIntent);
             }
         });

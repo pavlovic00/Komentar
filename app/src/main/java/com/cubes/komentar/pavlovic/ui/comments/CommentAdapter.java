@@ -28,7 +28,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     private Context context;
     private ArrayList<ResponseComment.ResponseCommentData> dataList;
-    ResponseComment.ResponseCommentData data;
     private int like;
     private int dislike;
 
@@ -81,7 +80,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
                             RetrofitService service = retrofit.create(RetrofitService.class);
 
-
                             holder.binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -102,7 +100,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
                                 }
                             });
-
 
                             holder.binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -127,13 +124,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                             holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent replyIntent = new Intent(view.getContext(), ReplyActivity.class);
-                                    if (data.id != null) {
-                                        replyIntent.putExtra("main_id", data.id);
-                                    }
-                                    if (data.children.size() > 0) {
-                                        replyIntent.putExtra("reply_id", data.children.get(Integer.parseInt(data.id)).id);
-                                    }
+                                    Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
+
+                                        replyIntent.putExtra("reply_id", comment.id);
+                                        replyIntent.putExtra("news", comment.news);
+
                                     replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                     view.getContext().startActivity(replyIntent);
@@ -150,15 +145,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             }
         }
 
-        holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {                                        //Jako bitna linija koda.
-                Intent replyIntent = new Intent(context, ReplyActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(replyIntent);
-            }
-        });
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://komentar.rs/wp-json/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -166,6 +152,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         RetrofitService service = retrofit.create(RetrofitService.class);
 
+        holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
+                replyIntent.putExtra("reply_id", comment.id);
+                replyIntent.putExtra("news", comment.news);
+                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(replyIntent);
+            }
+        });
 
         holder.binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +184,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             }
         });
 
-
         holder.binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,23 +204,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             }
         });
 
-
-        holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent replyIntent = new Intent(context, ReplyActivity.class);
-                if (data.id != null) {
-                    replyIntent.putExtra("main_id", data.id);
-                }
-                if (data.children.size() > 0) {
-                    replyIntent.putExtra("reply_id", data.children.get(Integer.parseInt(data.id)).id);
-                }
-                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-                context.startActivity(replyIntent);
-            }
-        });
     }
 
     @Override

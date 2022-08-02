@@ -24,6 +24,11 @@ public class RvItemButtonPutComment implements RecyclerViewItemDetail {
             @Override
             public void onClick(View view) {
                 Intent replyIntent = new Intent(view.getContext(), ReplyActivity.class);
+
+//                replyIntent.putExtra("news", data.news);
+//                replyIntent.putExtra("id", data.id);
+
+                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(replyIntent);
             }
         });

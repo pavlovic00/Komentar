@@ -36,14 +36,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
         });
 
-        binding.imageViewShare.setOnClickListener(view1 -> {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, dataResponse.url);
-            sendIntent.setType("text/plain");
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
-        });
+        loadCommentData();
 
         binding.imageViewComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +47,17 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
         });
 
-        loadCommentData();
+
+        binding.imageViewShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_STREAM, dataResponse.url);
+                i.setType("text/plain");
+                startActivity(Intent.createChooser(i, null));
+            }
+        });
     }
 
     public void loadCommentData() {
@@ -62,9 +65,10 @@ public class NewsDetailActivity extends AppCompatActivity {
         DataRepository.getInstance().loadDetailData(id, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(ResponseDetail response) {
+                dataResponse = response.data;
 
                 binding.recyclerViewDetail.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerViewDetail.setAdapter(new DetailNewsAdapter(response.data, getApplicationContext()));
+                binding.recyclerViewDetail.setAdapter(new DetailNewsAdapter(dataResponse, getApplicationContext()));
             }
 
             @Override

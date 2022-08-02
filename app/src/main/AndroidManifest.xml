@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Komentar">
         <activity
+            android:name=".pavlovic.ui.comments.ReplyCommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".pavlovic.ui.main.menu.HoroscopeActivity"
             android:exported="false" />
         <activity

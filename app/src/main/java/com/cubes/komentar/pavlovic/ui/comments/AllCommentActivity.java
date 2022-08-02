@@ -10,6 +10,8 @@ import com.cubes.komentar.databinding.ActivityAllCommentBinding;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseComment;
 
+import java.util.ArrayList;
+
 
 public class AllCommentActivity extends AppCompatActivity {
 
@@ -38,13 +40,13 @@ public class AllCommentActivity extends AppCompatActivity {
         loadCommentData();
     }
 
-    public void loadCommentData(){
+    public void loadCommentData() {
 
         DataRepository.getInstance().loadCommentData(id, new DataRepository.CommentResponseListener() {
             @Override
-            public void onResponse(ResponseComment response) {
+            public void onResponse(ArrayList<ResponseComment.ResponseCommentData> response) {
                 binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerViewComments.setAdapter(new CommentAdapter(getApplicationContext(), response.data));
+                binding.recyclerViewComments.setAdapter(new CommentAdapter(getApplicationContext(), response));
             }
 
             @Override

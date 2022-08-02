@@ -2,6 +2,7 @@ package com.cubes.komentar.pavlovic.data.repository;
 
 import android.content.Context;
 
+import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
 import com.cubes.komentar.pavlovic.data.response.ResponseForPaging;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -235,7 +237,7 @@ public class DataRepository {
 
     public interface CommentResponseListener {
 
-        void onResponse(ResponseComment response);
+        void onResponse(ArrayList<ResponseComment.ResponseCommentData> response);
 
         void onFailure(Throwable t);
     }
@@ -247,7 +249,7 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(response.body().data);
                 }
             }
 
@@ -344,4 +346,29 @@ public class DataRepository {
 
     }
 
+    public interface PostResponseListener {
+
+        void onResponse(ResponseCommentSend.ResponseBody response);
+
+        void onFailure(Throwable t);
+    }
+    public void postComment(String news, String reply_id, String name, String email, String content, PostResponseListener listener){
+
+        service.postComment(news, reply_id, name, email, content).enqueue(new Callback<ResponseCommentSend>() {
+            @Override
+            public void onResponse(Call<ResponseCommentSend> call, Response<ResponseCommentSend> response) {
+                if (response.body() != null
+                        && response.isSuccessful()
+                        && response.body().data != null) {
+                    listener.onResponse(response.body().data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCommentSend> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+
+    }
 }

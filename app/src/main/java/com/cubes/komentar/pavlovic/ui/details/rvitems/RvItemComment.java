@@ -9,6 +9,7 @@ import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
 import com.cubes.komentar.pavlovic.data.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.ui.comments.ReplyCommentActivity;
 import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 import com.cubes.komentar.pavlovic.ui.comments.ReplyActivity;
 
@@ -104,13 +105,12 @@ public class RvItemComment implements RecyclerViewItemDetail {
         binding.buttonReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent replyIntent = new Intent(view.getContext(), ReplyActivity.class);
-                if (data.id != null) {
-                    replyIntent.putExtra("main_id", data.id);
-                }
-                if (data.children.size() > 0) {
-                    replyIntent.putExtra("reply_id", data.children.get(Integer.parseInt(data.id)).id);
-                }
+                Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
+
+                replyIntent.putExtra("news", data.news);
+                replyIntent.putExtra("id", data.id);
+
+                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 view.getContext().startActivity(replyIntent);
             }

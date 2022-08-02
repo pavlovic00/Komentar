@@ -96,6 +96,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                     public void onClick(View view) {
                         Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
                         startDetailIntent.putExtra("id", news.id);
+                        startDetailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         view.getContext().startActivity(startDetailIntent);
                     }
                 });
