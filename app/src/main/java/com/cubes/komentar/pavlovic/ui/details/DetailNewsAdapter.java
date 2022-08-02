@@ -57,16 +57,16 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         //4-5-6-7
         this.items.add(new RvItemButtonPutComment());
 
-        //if (data.comments_top_n.size() > 0) {
-            this.items.add(new RvItemTitleComment("Komentari", data));
 
-            for (int i = 0; i < data.comments_top_n.size(); i++) {
-                ResponseComment.ResponseCommentData commentData = (ResponseComment.ResponseCommentData) data.comments_top_n.get(i);
-                this.items.add(new RvItemComment(commentData));
-            }
+        this.items.add(new RvItemTitleComment("Komentari", data));
 
-            this.items.add(new RvItemButtonAllComment(data));
-      //  }
+        for (int i = 0; i < data.comments_top_n.size(); i++) {
+            ResponseComment.ResponseCommentData commentData = (ResponseComment.ResponseCommentData) data.comments_top_n.get(i);
+            this.items.add(new RvItemComment(commentData));
+        }
+
+        this.items.add(new RvItemButtonAllComment(data));
+
 
         //8-9
         if (data.related_news.size() > 0) {

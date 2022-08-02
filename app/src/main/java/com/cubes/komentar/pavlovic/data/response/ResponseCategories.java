@@ -41,6 +41,4 @@ public class ResponseCategories extends ParentResponse {
         public ArrayList<ResponseCategoriesSubcategories> subcategories;
 
     }
-
-
 }

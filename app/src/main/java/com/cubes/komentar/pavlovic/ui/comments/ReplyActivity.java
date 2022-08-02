@@ -70,7 +70,7 @@ public class ReplyActivity extends AppCompatActivity {
 
         RetrofitService service = retrofit.create(RetrofitService.class);
 
-        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(id), name, email, content);
+        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(reply_id), name, email, content);
 
         service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
             @Override

@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.data.response;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ResponseComment extends ParentResponse{
@@ -8,7 +7,7 @@ public class ResponseComment extends ParentResponse{
 
     public ArrayList<ResponseCommentData> data;
 
-    public static class ResponseCommentData implements Serializable {
+    public static class ResponseCommentData {
 
         public boolean open;
         public int negative_votes;

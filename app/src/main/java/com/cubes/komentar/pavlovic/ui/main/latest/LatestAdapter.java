@@ -130,8 +130,11 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
         if (newsList == null) {
             return 0;
         }
-
-        return newsList.size() + 1;
+        if (newsList.size() == 20 || newsList.size() > 20) {
+            return newsList.size() + 1;
+        } else {
+            return newsList.size();
+        }
     }
 
     public void setLoadingNewsListener(LoadingNewsListener loadingNewsListener) {

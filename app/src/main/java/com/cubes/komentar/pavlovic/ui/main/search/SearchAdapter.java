@@ -100,8 +100,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public int getItemCount() {
         if (newsList == null) {
             return 0;
+        } else if (newsList.size() == 20 || newsList.size() > 20) {
+            return newsList.size() + 1;
+        } else {
+            return newsList.size();
         }
-        return newsList.size() + 1;
     }
 
     public void setLoadingNewsListener(LoadingNewsListener loadingNewsListener) {

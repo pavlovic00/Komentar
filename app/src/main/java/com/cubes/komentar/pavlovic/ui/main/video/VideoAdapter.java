@@ -61,7 +61,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 holder.bindingLoading.progressBar.setVisibility(View.GONE);
                 holder.bindingLoading.loading.setVisibility(View.GONE);
             }
-            if (!isLoading & !isFinished & loadingNewsListener != null & newsList.size() == 20) {
+            if (!isLoading & !isFinished & loadingNewsListener != null) {
                 isLoading = true;
                 loadingNewsListener.loadMoreNews(page);
             }
@@ -107,7 +107,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         if (newsList == null) {
             return 0;
         }
-        return newsList.size() + 1;
+        if (newsList.size() > 20){
+            return newsList.size() + 1;
+        }
+        else{
+            return newsList.size();
+        }
     }
 
     public void setLoadingNewsListener(LoadingNewsListener loadingNewsListener) {
