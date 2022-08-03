@@ -11,18 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.cubes.komentar.databinding.RvItemCommentBinding;
-import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
+
+import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseComment;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
@@ -59,99 +54,42 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.binding.textViewLike.setText(like + "");
         holder.binding.textViewDissLike.setText(dislike + "");
 
-        if (comment.children != null) {
-
-            if (comment.children.size() > 0) {
-
-                holder.binding.textViewOdgovori.setOnClickListener(new View.OnClickListener() {
+        holder.binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onResponse(ResponseComment response) {
+                        like++;
+                        holder.binding.textViewLike.setText((like) + "");
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+                    }
 
-                        comment.open = !comment.open;
-
-                        if (comment.open) {
-                            holder.binding.recyclerViewChildren.setLayoutManager(new LinearLayoutManager(context));
-                            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(context, comment.children));
-
-                            Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl("https://komentar.rs/wp-json/")
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build();
-
-                            RetrofitService service = retrofit.create(RetrofitService.class);
-
-                            holder.binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                    service.postLike(Integer.parseInt(comment.id), true).enqueue(new Callback<ResponseComment>() {
-                                        @Override
-                                        public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
-                                            like++;
-                                            holder.binding.textViewLike.setText((like) + "");
-                                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<ResponseComment> call, Throwable t) {
-
-                                        }
-                                    });
-
-                                }
-                            });
-
-                            holder.binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                    service.postDislike(Integer.parseInt(comment.id), true).enqueue(new Callback<ResponseComment>() {
-                                        @Override
-                                        public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
-                                            dislike++;
-                                            holder.binding.textViewDissLike.setText((dislike) + "");
-                                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<ResponseComment> call, Throwable t) {
-
-                                        }
-                                    });
-                                }
-                            });
-
-                            holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
-
-                                        replyIntent.putExtra("reply_id", comment.id);
-                                        replyIntent.putExtra("news", comment.news);
-
-                                    replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                    view.getContext().startActivity(replyIntent);
-                                }
-                            });
-
-                        } else {
-                            holder.binding.recyclerViewChildren.setLayoutManager(new LinearLayoutManager(context));
-                            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(context, new ArrayList<ResponseComment.ResponseCommentData>()));
-                        }
+                    @Override
+                    public void onFailure(Throwable t) {
 
                     }
                 });
             }
-        }
+        });
+        holder.binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
+                    @Override
+                    public void onResponse(ResponseComment response) {
+                        dislike++;
+                        holder.binding.textViewDissLike.setText((dislike) + "");
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
+                    }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://komentar.rs/wp-json/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                    @Override
+                    public void onFailure(Throwable t) {
 
-        RetrofitService service = retrofit.create(RetrofitService.class);
-
+                    }
+                });
+            }
+        });
         holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,47 +101,71 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             }
         });
 
-        holder.binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if (comment.children != null && comment.children.size() > 0) {
 
-                service.postLike(Integer.parseInt(comment.id), true).enqueue(new Callback<ResponseComment>() {
-                    @Override
-                    public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
-                        like++;
-                        holder.binding.textViewLike.setText((like) + "");
-                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                    }
+            holder.binding.recyclerViewChildren.setLayoutManager(new LinearLayoutManager(context));
+            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(context, comment.children));
 
-                    @Override
-                    public void onFailure(Call<ResponseComment> call, Throwable t) {
-
-                    }
-                });
-
+            if (comment.parent_comment != "0") {
+                setMargins(holder.binding.recyclerViewChildren, 80, 0, 0, 0);
             }
-        });
 
-        holder.binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            holder.binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
+                        @Override
+                        public void onResponse(ResponseComment response) {
+                            like++;
+                            holder.binding.textViewLike.setText((like) + "");
+                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+                        }
 
-                service.postDislike(Integer.parseInt(comment.id), true).enqueue(new Callback<ResponseComment>() {
-                    @Override
-                    public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
-                        dislike++;
-                        holder.binding.textViewDissLike.setText((dislike) + "");
-                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onFailure(Throwable t) {
 
-                    @Override
-                    public void onFailure(Call<ResponseComment> call, Throwable t) {
+                        }
+                    });
+                }
+            });
+            holder.binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
+                        @Override
+                        public void onResponse(ResponseComment response) {
+                            dislike++;
+                            holder.binding.textViewDissLike.setText((dislike) + "");
+                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
+                        }
 
-                    }
-                });
-            }
-        });
+                        @Override
+                        public void onFailure(Throwable t) {
 
+                        }
+                    });
+                }
+            });
+            holder.binding.buttonReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
+                    replyIntent.putExtra("reply_id", comment.id);
+                    replyIntent.putExtra("news", comment.news);
+                    replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().startActivity(replyIntent);
+                }
+            });
+
+        }
+    }
+
+    private void setMargins(RecyclerView view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            view.requestLayout();
+        }
     }
 
     @Override

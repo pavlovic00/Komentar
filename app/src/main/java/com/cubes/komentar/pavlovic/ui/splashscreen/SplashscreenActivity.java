@@ -2,6 +2,7 @@ package com.cubes.komentar.pavlovic.ui.splashscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,12 @@ public class SplashscreenActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        finish();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
+            }
+        }, 800);
     }
 }

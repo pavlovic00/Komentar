@@ -27,12 +27,5 @@ public class RvItemTitle implements RecyclerViewItemHomepage {
 
         binding.textViewTitle.setText(title);
         binding.viewColor.setBackgroundColor(Color.parseColor(color));
-
-//        if (title.equalsIgnoreCase("Video")){
-//            binding.textViewTitle.setText(title);
-//            binding.rootLayout.setBackgroundColor(Color.parseColor("#0F2039"));
-//            binding.textViewTitle.setTextColor(Color.parseColor("#FFFFFFFF"));
-//            binding.viewColor.setBackgroundColor(Color.parseColor(color));
-//        }
     }
 }

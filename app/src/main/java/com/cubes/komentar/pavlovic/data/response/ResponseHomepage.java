@@ -9,7 +9,7 @@ public class ResponseHomepage extends ParentResponse {
 
     public ResponseHomepageData data;
 
-    public static class ResponseHomepageData {
+    public class ResponseHomepageData {
 
         public ArrayList<News> slider;
         public ArrayList<News> top;
@@ -22,7 +22,7 @@ public class ResponseHomepage extends ParentResponse {
 
     }
 
-    public static class ResponseHomePageDataCategoryBox {
+    public class ResponseHomePageDataCategoryBox {
 
         public int id;
         public String title;

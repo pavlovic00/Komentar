@@ -54,7 +54,6 @@ public class HomepageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loadHomeData();
-
     }
 
     public void loadHomeData() {

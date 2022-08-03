@@ -1,6 +1,7 @@
 package com.cubes.komentar.pavlovic.data.repository;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
 import com.cubes.komentar.pavlovic.data.response.ResponseForPaging;
@@ -11,6 +12,7 @@ import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 import java.util.ArrayList;
 
@@ -312,39 +314,6 @@ public class DataRepository {
         });
 
     }
-    //loading...
-    public void getNewsDetails(Context context, News news) {
-
-        service.getNewsDetailPaging(news.id).enqueue(new Callback<ResponseForPaging>() {
-            @Override
-            public void onResponse(Call<ResponseForPaging> call, retrofit2.Response<ResponseForPaging> response) {
-                News newsDetails = response.body().data;
-
-//                DataRepository.getInstance().loadCommentData(news.id, new CommentResponseListener() {
-//                    @Override
-//                    public void onResponse(ResponseComment response) {
-//                        DataContainer.commentList = response.data;
-//
-//                        Intent i = new Intent(context, NewsDetailActivity.class);
-//                        i.putExtra("news", newsDetails);
-//                        context.startActivity(i);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable t) {
-//
-//                    }
-//                });
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseForPaging> call, Throwable t) {
-
-            }
-        });
-
-    }
 
     public interface PostResponseListener {
 
@@ -352,21 +321,101 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
-    public void postComment(String news, String reply_id, String name, String email, String content, PostResponseListener listener){
+    public void postComment(String news, String name, String email, String content, PostResponseListener listener){
 
-        service.postComment(news, reply_id, name, email, content).enqueue(new Callback<ResponseCommentSend>() {
+        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), name, email, content);
+
+        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseCommentSend> call, Response<ResponseCommentSend> response) {
+            public void onResponse(Call<ResponseCommentSend.ResponseBody> call, Response<ResponseCommentSend.ResponseBody> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null) {
-                    listener.onResponse(response.body().data);
+                        && response.body() != null) {
+                    listener.onResponse(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseCommentSend> call, Throwable t) {
+            public void onFailure(Call<ResponseCommentSend.ResponseBody> call, Throwable t) {
                 listener.onFailure(t);
+            }
+        });
+    }
+    public void replyComment(String news,String reply_id, String name, String email, String content, PostResponseListener listener){
+
+        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), String.valueOf(reply_id), name, email, content);
+
+        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseCommentSend.ResponseBody> call, Response<ResponseCommentSend.ResponseBody> response) {
+                if (response.body() != null
+                        && response.isSuccessful()
+                        && response.body() != null) {
+                    listener.onResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCommentSend.ResponseBody> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
+
+    public interface VoteCommentListener {
+
+        void onResponse(ResponseComment response);
+
+        void onFailure(Throwable t);
+    }
+    public void voteComment(String id, boolean vote, VoteCommentListener listener){
+
+        service.postLike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
+            @Override
+            public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
+                if (response.body() != null
+                        && response.isSuccessful()
+                        && response.body().data != null) {
+                    listener.onResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseComment> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
+    public void unVoteComment(String id, boolean unVote, VoteCommentListener listener){
+
+        service.postLike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
+            @Override
+            public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
+                if (response.body() != null
+                        && response.isSuccessful()
+                        && response.body().data != null) {
+                    listener.onResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseComment> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
+    //loading...
+    public void getNewsDetails(Context context, News news) {
+
+        service.getNewsDetailPaging(news.id).enqueue(new Callback<ResponseForPaging>() {
+            @Override
+            public void onResponse(Call<ResponseForPaging> call, retrofit2.Response<ResponseForPaging> response) {
+                News newsDetails = response.body().data;
+            }
+
+            @Override
+            public void onFailure(Call<ResponseForPaging> call, Throwable t) {
+
             }
         });
 

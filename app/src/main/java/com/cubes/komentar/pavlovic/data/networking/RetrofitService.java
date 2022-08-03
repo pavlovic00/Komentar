@@ -62,10 +62,5 @@ public interface RetrofitService {
                                           @Field("content") String content);
 
     @POST("api/commentinsert")
-    Call<ResponseCommentSend> postComment2(@Field("name") String name,
-                                          @Field("email") String email,
-                                          @Field("content") String content);
-
-    @POST("api/commentinsert")
     Call<ResponseCommentSend.ResponseBody> createPost(@Body ResponseCommentSend.ResponseBody body);
 }

@@ -11,7 +11,7 @@ public class ResponseDetail extends ParentResponse {
 
     public ResponseDetailData data;
 
-    public static class ResponseDetailData {
+    public class ResponseDetailData {
 
         public int id;
         public String image;

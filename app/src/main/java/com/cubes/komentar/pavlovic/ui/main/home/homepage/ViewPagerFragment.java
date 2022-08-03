@@ -28,7 +28,6 @@ public class ViewPagerFragment extends Fragment {
 
     private FragmentViewPagerBinding binding;
     public ArrayList<News> newsList;
-    //public int id;
     private ResponseCategories.ResponseCategoriesData category;
     private LatestAdapter adapter;
     private int page = 1;

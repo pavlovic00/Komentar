@@ -27,11 +27,5 @@ public class ResponseCommentSend extends ParentResponse{
             this.content = content;
             this.news = news;
         }
-
-        public ResponseBody(String name, String email, String content) {
-            this.name = name;
-            this.email = email;
-            this.content = content;
-        }
     }
 }

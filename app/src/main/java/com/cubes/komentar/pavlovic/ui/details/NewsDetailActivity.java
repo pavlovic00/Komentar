@@ -36,7 +36,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
         });
 
-        loadCommentData();
+        loadDetailData();
 
         binding.imageViewComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +60,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void loadCommentData() {
+    public void loadDetailData() {
 
         DataRepository.getInstance().loadDetailData(id, new DataRepository.DetailResponseListener() {
             @Override
