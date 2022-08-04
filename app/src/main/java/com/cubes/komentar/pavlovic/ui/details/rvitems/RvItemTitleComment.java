@@ -11,6 +11,7 @@ public class RvItemTitleComment implements RecyclerViewItemDetail {
     private String title;
     private ResponseDetail.ResponseDetailData data;
 
+
     public RvItemTitleComment(String title, ResponseDetail.ResponseDetailData data) {
         this.title = title;
         this.data = data;

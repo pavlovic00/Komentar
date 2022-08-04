@@ -1,7 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.latest;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,31 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
+import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestViewHolder> {
 
-    private Context context;
-    public ArrayList<News> newsList;
+    public ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
     private boolean isFinished;
     private NewsListener newsListener;
     private LoadingNewsListener loadingNewsListener;
-    private int page;
+    private int page = 2;
 
 
-    public LatestAdapter(Context context, ArrayList<News> newsList) {
-        this.context = context;
-        this.newsList = newsList;
-        this.page = 2;
-        this.isLoading = false;
-        this.isFinished = false;
+    public LatestAdapter() {
     }
 
     @NonNull
@@ -45,13 +38,13 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
     public LatestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new LatestViewHolder(binding);
         } else if (viewType == 1) {
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new LatestViewHolder(binding);
         } else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new LatestViewHolder(binding);
         }
     }
@@ -74,9 +67,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                        startDetailIntent.putExtra("id", news.id);
-                        view.getContext().startActivity(startDetailIntent);
+                        newsListener.onNewsCLicked(news);
                     }
                 });
             }
@@ -94,10 +85,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                        startDetailIntent.putExtra("id", news.id);
-                        startDetailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        view.getContext().startActivity(startDetailIntent);
+                        newsListener.onNewsCLicked(news);
                     }
                 });
             }
@@ -157,8 +145,8 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
         notifyDataSetChanged();
     }
 
-    public void refreshNewsList(ArrayList<News> newsList) {
-        this.newsList = newsList;
+    public void setData(ResponseNewsList.ResponseData responseNewsList) {
+        this.newsList = responseNewsList.news;
         notifyDataSetChanged();
     }
 

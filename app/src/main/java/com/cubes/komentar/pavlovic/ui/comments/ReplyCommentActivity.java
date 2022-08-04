@@ -16,6 +16,7 @@ public class ReplyCommentActivity extends AppCompatActivity {
     private String news;
     private String reply_id;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

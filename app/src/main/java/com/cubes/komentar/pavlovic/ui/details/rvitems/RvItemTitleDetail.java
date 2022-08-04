@@ -7,6 +7,7 @@ public class RvItemTitleDetail implements RecyclerViewItemDetail {
 
     private String title;
 
+
     public RvItemTitleDetail(String title) {
         this.title = title;
     }

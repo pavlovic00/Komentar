@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 
 import com.cubes.komentar.databinding.ActivityAllCommentBinding;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
@@ -38,6 +40,7 @@ public class AllCommentActivity extends AppCompatActivity {
         });
 
         loadCommentData();
+        refresh();
     }
 
     public void loadCommentData() {
@@ -46,14 +49,31 @@ public class AllCommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<ResponseComment.ResponseCommentData> response) {
                 binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerViewComments.setAdapter(new CommentAdapter(getApplicationContext(), response));
+                binding.recyclerViewComments.setAdapter(new CommentAdapter(response));
+
+                binding.refresh.setVisibility(View.GONE);
+                binding.recyclerViewComments.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                binding.refresh.setVisibility(View.VISIBLE);
             }
         });
 
+    }
+
+    public void refresh() {
+
+        binding.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(300);
+                binding.refresh.startAnimation(rotate);
+                loadCommentData();
+            }
+        });
     }
 }

@@ -19,6 +19,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage {
     private ArrayList<News> most_comented;
     private ArrayList<News> most_read;
 
+
     public RvItemButtonsNews(ArrayList<News> latest, ArrayList<News> most_comented, ArrayList<News> most_read) {
         this.latest = latest;
         this.most_comented = most_comented;

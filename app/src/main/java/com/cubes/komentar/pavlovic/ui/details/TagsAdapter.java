@@ -1,6 +1,5 @@
-package com.cubes.komentar.pavlovic.ui.tag;
+package com.cubes.komentar.pavlovic.ui.details;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.databinding.RvItemButtonTagBinding;
 import com.cubes.komentar.pavlovic.data.model.Tags;
+import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 
 import java.util.ArrayList;
 
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsHolder> {
 
     private ArrayList<Tags> list;
-    private Context context;
 
 
-    public TagsAdapter(ArrayList<Tags> list, Context context) {
+    public TagsAdapter(ArrayList<Tags> list) {
         this.list = list;
-        this.context = context;
     }
 
     @NonNull

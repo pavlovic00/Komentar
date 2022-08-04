@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.latest;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,13 +20,11 @@ import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-
-import java.util.ArrayList;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 public class LatestFragment extends Fragment {
 
     private FragmentLatestBinding binding;
-    private ArrayList<News> newsList;
     private LatestAdapter adapter;
     private int page = 1;
 
@@ -43,7 +42,6 @@ public class LatestFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -59,64 +57,25 @@ public class LatestFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupRecyclerView();
         loadDataLatest();
         refresh();
     }
 
-    public void refresh() {
-
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadDataLatest();
-            }
-        });
-
-    }
-
-    public void loadDataLatest() {
-
-        DataRepository.getInstance().loadLatestData(page, new DataRepository.LatestResponseListener() {
-            @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                newsList = response.news;
-                updateUI();
-
-                binding.refresh.setVisibility(View.GONE);
-                binding.recyclerViewLatest.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                binding.refresh.setVisibility(View.VISIBLE);
-            }
-        });
-
-    }
-
-    public void updateUI() {
-
+    public void setupRecyclerView(){
         binding.recyclerViewLatest.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter(getContext(), newsList);
+        adapter = new LatestAdapter();
+        binding.recyclerViewLatest.setAdapter(adapter);
 
         adapter.setNewsListener(new NewsListener() {
             @Override
             public void onNewsCLicked(News news) {
-                DataRepository.getInstance().getNewsDetails(getContext(), news);
+                Intent i = new Intent(getContext(), NewsDetailActivity.class);
+                i.putExtra("id", news.id);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(i);
             }
         });
-
-        loadMoreNews();
-
-        binding.recyclerViewLatest.setAdapter(adapter);
-
-    }
-
-    public void loadMoreNews() {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
@@ -140,6 +99,41 @@ public class LatestFragment extends Fragment {
                 });
             }
         });
+    }
+
+    public void loadDataLatest() {
+
+        DataRepository.getInstance().loadLatestData(page, new DataRepository.LatestResponseListener() {
+            @Override
+            public void onResponse(ResponseNewsList.ResponseData response) {
+
+                adapter.setData(response);
+
+                binding.refresh.setVisibility(View.GONE);
+                binding.recyclerViewLatest.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                binding.refresh.setVisibility(View.VISIBLE);
+            }
+        });
 
     }
+
+    public void refresh() {
+
+        binding.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(300);
+                binding.refresh.startAnimation(rotate);
+                loadDataLatest();
+            }
+        });
+
+    }
+
 }

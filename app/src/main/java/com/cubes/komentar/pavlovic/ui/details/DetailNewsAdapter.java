@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.details;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -37,12 +36,11 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
 
     public ResponseDetail.ResponseDetailData data;
     public News news;
-    public Context context;
     private ArrayList<RecyclerViewItemDetail> items;
 
-    public DetailNewsAdapter(ResponseDetail.ResponseDetailData data, Context context) {
+
+    public DetailNewsAdapter(ResponseDetail.ResponseDetailData data) {
         this.data = data;
-        this.context = context;
 
         this.items = new ArrayList<>();
         //0
@@ -52,7 +50,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         //2-3
         if (data.tags.size() > 0) {
             this.items.add(new RvItemTitleDetail("Tagovi:"));
-            this.items.add(new RvItemTagsDetail(data.tags, context));
+            this.items.add(new RvItemTagsDetail(data.tags));
         }
         //4-5-6-7
         this.items.add(new RvItemButtonPutComment());
@@ -66,7 +64,6 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         }
 
         this.items.add(new RvItemButtonAllComment(data));
-
 
         //8-9
         if (data.related_news.size() > 0) {

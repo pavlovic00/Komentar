@@ -16,6 +16,7 @@ public class RvItemSlider implements RecyclerViewItemHomepage {
     public ArrayList<News> sliderList;
     PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
 
+
     public RvItemSlider(ArrayList<News> sliderList) {
         this.sliderList = sliderList;
     }

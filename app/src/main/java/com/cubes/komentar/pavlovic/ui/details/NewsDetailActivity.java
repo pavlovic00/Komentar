@@ -36,8 +36,6 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
         });
 
-        loadDetailData();
-
         binding.imageViewComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +44,6 @@ public class NewsDetailActivity extends AppCompatActivity {
                 view.getContext().startActivity(commentIntent);
             }
         });
-
 
         binding.imageViewShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +55,8 @@ public class NewsDetailActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(i, null));
             }
         });
+
+        loadDetailData();
     }
 
     public void loadDetailData() {
@@ -68,7 +67,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 dataResponse = response.data;
 
                 binding.recyclerViewDetail.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerViewDetail.setAdapter(new DetailNewsAdapter(dataResponse, getApplicationContext()));
+                binding.recyclerViewDetail.setAdapter(new DetailNewsAdapter(dataResponse));
             }
 
             @Override

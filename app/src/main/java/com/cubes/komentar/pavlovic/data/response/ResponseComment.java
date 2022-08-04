@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class ResponseComment extends ParentResponse{
 
-
     public ArrayList<ResponseCommentData> data;
+
 
     public class ResponseCommentData {
 
@@ -18,7 +18,6 @@ public class ResponseComment extends ParentResponse{
         public String id;
         public String content;
         public ArrayList<ResponseCommentData> children;
-
     }
 
 }

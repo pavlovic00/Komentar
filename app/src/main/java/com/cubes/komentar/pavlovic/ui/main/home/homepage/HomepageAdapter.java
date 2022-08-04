@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -30,11 +29,13 @@ import java.util.ArrayList;
 
 public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.HomepageViewHolder> {
 
+
     public interface Listener {
         void onNewsItemClick(News news);
     }
 
     private Listener listener;
+
 
     public void setListener(Listener listener) {
         this.listener = listener;
@@ -42,13 +43,11 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
 
     public ResponseHomepage.ResponseHomepageData data;
     public ArrayList<ResponseHomepage.ResponseHomePageDataCategoryBox> dataBox;
-    private Context context;
     private ArrayList<RecyclerViewItemHomepage> items;
     private ArrayList<News> news;
 
-    public HomepageAdapter(ResponseHomepage.ResponseHomepageData data, Context context) {
+    public HomepageAdapter(ResponseHomepage.ResponseHomepageData data) {
         this.data = data;
-        this.context = context;
         this.items = new ArrayList<>();
         this.dataBox = data.category;
 
@@ -70,12 +69,12 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         //5-6
         if (data.videos.size() > 0) {
             this.items.add(new RvItemTitle("Video", "#FF0000"));
-            this.items.add(new RvItemVideo(data.videos, context));
+            this.items.add(new RvItemVideo(data.videos));
         }
         //7-8
         for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : dataBox) {
             this.items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            this.items.add(new RvItemSportBox(categoryBox.title, categoryBox.news, context));
+            this.items.add(new RvItemSportBox(categoryBox.title, categoryBox.news));
         }
 
     }

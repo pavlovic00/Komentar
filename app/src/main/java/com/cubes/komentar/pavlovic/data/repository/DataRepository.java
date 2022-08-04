@@ -1,18 +1,13 @@
 package com.cubes.komentar.pavlovic.data.repository;
 
-import android.content.Context;
-import android.content.Intent;
-
 import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
-import com.cubes.komentar.pavlovic.data.response.ResponseForPaging;
-import com.cubes.komentar.pavlovic.data.model.News;
+
 import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.response.ResponseHomepage;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 import java.util.ArrayList;
 
@@ -26,9 +21,6 @@ public class DataRepository {
 
     private static DataRepository instance;
     private RetrofitService service;
-    private Context context;
-    private News news;
-    private ArrayList<News> newsArrayList;
 
     private DataRepository() {
         callRetrofit();
@@ -106,7 +98,7 @@ public class DataRepository {
 
     public interface SearchResponseListener {
 
-        void onResponse(ResponseNewsList responseNewsList);
+        void onResponse(ResponseNewsList.ResponseData responseNewsList);
 
         void onFailure(Throwable t);
     }
@@ -119,7 +111,7 @@ public class DataRepository {
                         && response.isSuccessful()
                         && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(response.body().data);
                 }
             }
 
@@ -133,7 +125,7 @@ public class DataRepository {
 
     public interface CategoryResponseListener {
 
-        void onResponse(ResponseNewsList responseNewsList);
+        void onResponse(ResponseNewsList.ResponseData responseNewsList);
 
         void onFailure(Throwable t);
     }
@@ -146,7 +138,7 @@ public class DataRepository {
                         && response.isSuccessful()
                         && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(response.body().data);
                 }
             }
 
@@ -388,7 +380,7 @@ public class DataRepository {
     }
     public void unVoteComment(String id, boolean unVote, VoteCommentListener listener){
 
-        service.postLike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
+        service.postDislike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
             @Override
             public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
                 if (response.body() != null
@@ -403,21 +395,5 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-    }
-    //loading...
-    public void getNewsDetails(Context context, News news) {
-
-        service.getNewsDetailPaging(news.id).enqueue(new Callback<ResponseForPaging>() {
-            @Override
-            public void onResponse(Call<ResponseForPaging> call, retrofit2.Response<ResponseForPaging> response) {
-                News newsDetails = response.body().data;
-            }
-
-            @Override
-            public void onFailure(Call<ResponseForPaging> call, Throwable t) {
-
-            }
-        });
-
     }
 }

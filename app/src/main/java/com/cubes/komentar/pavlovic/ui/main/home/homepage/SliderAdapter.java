@@ -19,6 +19,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
 
     private ArrayList<News> list;
 
+
     public SliderAdapter(ArrayList<News> list) {
         this.list = list;
     }

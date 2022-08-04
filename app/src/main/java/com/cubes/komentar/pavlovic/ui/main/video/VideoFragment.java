@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.video;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 public class VideoFragment extends Fragment {
 
     private FragmentVideoBinding binding;
-    private ArrayList<News> newsList;
     private VideoAdapter adapter;
     private int page = 1;
 
@@ -53,8 +53,6 @@ public class VideoFragment extends Fragment {
 
         binding = FragmentVideoBinding.inflate(inflater, container, false);
 
-        newsList = new ArrayList<>();
-
         return binding.getRoot();
     }
 
@@ -62,64 +60,28 @@ public class VideoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupRecyclerView();
         loadDataVideo();
         refresh();
     }
 
-    public void refresh() {
+    public void setupRecyclerView(){
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadDataVideo();
-            }
-        });
-
-    }
-
-    public void loadDataVideo() {
-
-        DataRepository.getInstance().loadVideoData(page, new DataRepository.VideoResponseListener() {
-            @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                newsList = response.news;
-                updateUI();
-
-                binding.refresh.setVisibility(View.GONE);
-                binding.recyclerViewVideo.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                binding.refresh.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    public void updateUI() {
         binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new VideoAdapter(getContext(), newsList);
+        adapter = new VideoAdapter();
+        binding.recyclerViewVideo.setAdapter(adapter);
 
         adapter.setNewsListener(new NewsListener() {
             @Override
             public void onNewsCLicked(News news) {
-                DataRepository.getInstance().getNewsDetails(getContext(), news);
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_TEXT, news.url);
+                i.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(i, null);
+                getContext().startActivity(shareIntent);
             }
         });
-
-        if (newsList.size() > 20) {
-
-            loadMoreNews();
-        }
-
-        binding.recyclerViewVideo.setAdapter(adapter);
-    }
-
-    public void loadMoreNews() {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
@@ -142,6 +104,40 @@ public class VideoFragment extends Fragment {
                         adapter.setFinished(true);
                     }
                 });
+            }
+        });
+
+    }
+
+    public void loadDataVideo() {
+
+        DataRepository.getInstance().loadVideoData(page, new DataRepository.VideoResponseListener() {
+            @Override
+            public void onResponse(ResponseNewsList.ResponseData response) {
+
+                adapter.setData(response);
+
+                binding.refresh.setVisibility(View.GONE);
+                binding.recyclerViewVideo.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                binding.refresh.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void refresh() {
+
+        binding.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(300);
+                binding.refresh.startAnimation(rotate);
+                loadDataVideo();
             }
         });
 

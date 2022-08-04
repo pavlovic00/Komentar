@@ -8,6 +8,7 @@ public class RvItemFirstItemDetail implements RecyclerViewItemDetail {
 
     private ResponseDetail.ResponseDetailData data;
 
+
     public RvItemFirstItemDetail(ResponseDetail.ResponseDetailData data) {
         this.data = data;
     }

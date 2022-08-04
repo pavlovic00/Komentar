@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,14 +21,12 @@ import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
-
-import java.util.ArrayList;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
-    private ArrayList<News> searchList;
     private SearchAdapter adapter;
     private int page = 1;
 
@@ -73,37 +72,63 @@ public class SearchFragment extends Fragment {
 
                 //Log.d("TAG", "onClick:Search " + term);
 
+                setupRecyclerView();
                 loadSearchData();
             }
         });
 
         refresh();
-
     }
 
-    public void refresh() {
+    public void setupRecyclerView(){
+        binding.recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new SearchAdapter();
+        binding.recyclerViewSearch.setAdapter(adapter);
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
+
+        adapter.setNewsListener(new NewsListener() {
             @Override
-            public void onClick(View view) {
-
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadSearchData();
+            public void onNewsCLicked(News news) {
+                Intent i = new Intent(getContext(), NewsDetailActivity.class);
+                i.putExtra("id", news.id);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(i);
             }
         });
 
+        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+            @Override
+            public void loadMoreNews(int page) {
+                DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), page, new DataRepository.SearchResponseListener() {
+                    @Override
+                    public void onResponse(ResponseNewsList.ResponseData responseData) {
+                        adapter.addNewsList(responseData.news);
+
+                        if (responseData.news.size() < 20) {
+                            adapter.setFinished(true);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        binding.recyclerViewSearch.setVisibility(View.GONE);
+                        binding.refresh.setVisibility(View.VISIBLE);
+                        adapter.setFinished(true);
+                    }
+                });
+            }
+        });
+
+
     }
 
-    //Load Search Data.
     public void loadSearchData() {
 
         DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), page, new DataRepository.SearchResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList responseNewsList) {
-                searchList = responseNewsList.data.news;
-                updateUI();
+            public void onResponse(ResponseNewsList.ResponseData responseData) {
+
+                adapter.setDataSearch(responseData);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.recyclerViewSearch.setVisibility(View.VISIBLE);
@@ -117,44 +142,16 @@ public class SearchFragment extends Fragment {
 
     }
 
-    public void updateUI() {
-        binding.recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new SearchAdapter(getContext(), searchList);
+    public void refresh() {
 
-        adapter.setNewsListener(new NewsListener() {
+        binding.refresh.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNewsCLicked(News news) {
-                DataRepository.getInstance().getNewsDetails(getContext(), news);
-            }
-        });
+            public void onClick(View view) {
 
-        loadMoreNews();
-
-        binding.recyclerViewSearch.setAdapter(adapter);
-    }
-
-    public void loadMoreNews() {
-
-        adapter.setLoadingNewsListener(new LoadingNewsListener() {
-            @Override
-            public void loadMoreNews(int page) {
-                DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), page, new DataRepository.SearchResponseListener() {
-                    @Override
-                    public void onResponse(ResponseNewsList responseNewsList) {
-                        adapter.addNewsList(responseNewsList.data.news);
-
-                        if (responseNewsList.data.news.size() < 20) {
-                            adapter.setFinished(true);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        binding.recyclerViewSearch.setVisibility(View.GONE);
-                        binding.refresh.setVisibility(View.VISIBLE);
-                        adapter.setFinished(true);
-                    }
-                });
+                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(300);
+                binding.refresh.startAnimation(rotate);
+                loadSearchData();
             }
         });
 

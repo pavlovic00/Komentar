@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +20,12 @@ import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private Context context;
     private ArrayList<ResponseComment.ResponseCommentData> dataList;
     private int like;
     private int dislike;
 
-    public CommentAdapter(Context context, ArrayList<ResponseComment.ResponseCommentData> dataList) {
-        this.context = context;
+
+    public CommentAdapter(ArrayList<ResponseComment.ResponseCommentData> dataList) {
         this.dataList = dataList;
     }
 
@@ -35,7 +33,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public CommentAdapter.CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemCommentBinding binding = RvItemCommentBinding.inflate(LayoutInflater.from(context), parent, false);
+        RvItemCommentBinding binding = RvItemCommentBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new CommentAdapter.CommentViewHolder(binding);
     }
@@ -103,8 +101,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         if (comment.children != null && comment.children.size() > 0) {
 
-            holder.binding.recyclerViewChildren.setLayoutManager(new LinearLayoutManager(context));
-            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(context, comment.children));
+            holder.binding.recyclerViewChildren.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
+            holder.binding.recyclerViewChildren.setAdapter(new CommentAdapter(comment.children));
 
             if (comment.parent_comment != "0") {
                 setMargins(holder.binding.recyclerViewChildren, 80, 0, 0, 0);

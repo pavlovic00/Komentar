@@ -29,6 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private Context context;
     private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
+
     public CategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         this.context = context;
         this.list = list;

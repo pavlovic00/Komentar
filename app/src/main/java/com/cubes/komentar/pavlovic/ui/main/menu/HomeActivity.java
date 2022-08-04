@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private boolean click = true;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,8 +132,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Novi activity.
-                Intent i = new Intent(HomeActivity.this, CourseListActivity.class);
-                HomeActivity.this.startActivity(i);
+                CourseListActivity.start(HomeActivity.this);
             }
         });
         //Horoskop
@@ -140,8 +140,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Novi activity.
-                Intent i = new Intent(HomeActivity.this, HoroscopeActivity.class);
-                HomeActivity.this.startActivity(i);
+                HoroscopeActivity.start(HomeActivity.this);
             }
         });
         //Push notifikacije

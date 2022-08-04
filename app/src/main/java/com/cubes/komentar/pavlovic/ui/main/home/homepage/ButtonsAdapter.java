@@ -18,6 +18,7 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsH
 
     private ArrayList<News> list;
 
+
     public ButtonsAdapter(ArrayList<News> list) {
         this.list = list;
     }

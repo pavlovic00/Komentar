@@ -1,7 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems;
 
-import android.content.Context;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,12 +14,11 @@ public class RvItemSportBox implements RecyclerViewItemHomepage {
 
     private String title;
     private ArrayList<News> news;
-    private Context context;
 
-    public RvItemSportBox(String title, ArrayList<News> news, Context context) {
+
+    public RvItemSportBox(String title, ArrayList<News> news) {
         this.title = title;
         this.news = news;
-        this.context = context;
     }
 
     @Override
@@ -35,7 +32,7 @@ public class RvItemSportBox implements RecyclerViewItemHomepage {
         RvItemRvBinding binding = (RvItemRvBinding) holder.binding;
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                 RecyclerView.VERTICAL, false));
-        binding.recyclerView.setAdapter(new NewsForHomepageAdapter(context, news));
+        binding.recyclerView.setAdapter(new NewsForHomepageAdapter(news));
 
     }
 }

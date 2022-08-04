@@ -14,6 +14,7 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
     private News news;
 
+
     public RvItemRelatedNews(News news) {
         this.news = news;
     }

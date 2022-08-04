@@ -14,6 +14,7 @@ public class RvItemTopNews implements RecyclerViewItemHomepage {
 
     private News news;
 
+
     public RvItemTopNews(News news) {
         this.news = news;
     }

@@ -1,7 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.video;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 import com.squareup.picasso.Picasso;
@@ -21,21 +20,19 @@ import java.util.ArrayList;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
-    private Context context;
-    public ArrayList<News> newsList;
+    public ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
     private boolean isFinished;
     private NewsListener newsListener;
     private LoadingNewsListener loadingNewsListener;
-    private int page;
+    private int page = 2;
 
 
-    public VideoAdapter(Context context, ArrayList<News> newsList) {
-        this.context = context;
+    public VideoAdapter() {
+    }
+
+    public VideoAdapter(ArrayList<News> newsList) {
         this.newsList = newsList;
-        this.page = 2;
-        this.isLoading = false;
-        this.isFinished = false;
     }
 
     @NonNull
@@ -43,10 +40,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            RvItemVideoBinding binding = RvItemVideoBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemVideoBinding binding = RvItemVideoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new VideoViewHolder(binding);
         } else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new VideoViewHolder(binding);
         }
     }
@@ -79,12 +76,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 holder.binding.imageViewPlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, news.url);
-                        sendIntent.setType("text/plain");
-                        Intent shareIntent = Intent.createChooser(sendIntent, null);
-                        context.startActivity(shareIntent);
+                        newsListener.onNewsCLicked(news);
                     }
                 });
             }
@@ -132,6 +124,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         this.newsList.addAll(newsList);
         this.isLoading = false;
         this.page = this.page + 1;
+        notifyDataSetChanged();
+    }
+
+    public void setData(ResponseNewsList.ResponseData responseNewsList) {
+        this.newsList = responseNewsList.news;
         notifyDataSetChanged();
     }
 

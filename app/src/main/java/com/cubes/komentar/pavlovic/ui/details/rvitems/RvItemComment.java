@@ -15,6 +15,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
 
     ResponseComment.ResponseCommentData comment;
 
+
     private int like;
     private int dislike;
 

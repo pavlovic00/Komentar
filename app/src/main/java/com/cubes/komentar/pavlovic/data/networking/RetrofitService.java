@@ -10,7 +10,6 @@ import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -53,13 +52,6 @@ public interface RetrofitService {
 
     @POST("api/commentvote")
     Call<ResponseComment> postDislike(@Query("comment") int id, @Query("downvote") boolean vote);
-
-    @POST("api/commentinsert")
-    Call<ResponseCommentSend> postComment(@Field("news") String news,
-                                          @Field("reply_id") String reply_id,
-                                          @Field("name") String name,
-                                          @Field("email") String email,
-                                          @Field("content") String content);
 
     @POST("api/commentinsert")
     Call<ResponseCommentSend.ResponseBody> createPost(@Body ResponseCommentSend.ResponseBody body);

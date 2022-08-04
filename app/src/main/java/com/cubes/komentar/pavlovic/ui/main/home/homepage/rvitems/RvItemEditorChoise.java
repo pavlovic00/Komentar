@@ -15,6 +15,7 @@ public class RvItemEditorChoise implements RecyclerViewItemHomepage {
 
     public ArrayList<News> editorsChoiceList;
 
+
     public RvItemEditorChoise(ArrayList<News> editorsChoiceList) {
         this.editorsChoiceList = editorsChoiceList;
     }

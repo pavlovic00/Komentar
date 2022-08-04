@@ -3,8 +3,11 @@ package com.cubes.komentar.pavlovic.ui.tag;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 
 import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
@@ -12,18 +15,17 @@ import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchAdapter;
-
-import java.util.ArrayList;
 
 public class TagsActivity extends AppCompatActivity {
 
     private ActivityTagsBinding binding;
     private int id;
     private String title;
-    private ArrayList<News> newsList;
     private SearchAdapter adapter;
     private int page = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,50 +40,33 @@ public class TagsActivity extends AppCompatActivity {
 
         binding.textViewTag.setText(title);
 
-        loadTagData();
-
         binding.imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
+        setupRecyclerView();
+        loadTagData();
+        refresh();
     }
 
-    public void loadTagData() {
+    public void setupRecyclerView() {
 
-        DataRepository.getInstance().loadTagData(id, page, new DataRepository.TagResponseListener() {
-            @Override
-            public void onResponse(ResponseNewsList responseNewsList) {
-                newsList = responseNewsList.data.news;
-                updateUI();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
-    }
-
-    public void updateUI() {
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new SearchAdapter(getApplicationContext(), newsList);
+        adapter = new SearchAdapter();
+        binding.recyclerViewTags.setAdapter(adapter);
 
         adapter.setNewsListener(new NewsListener() {
             @Override
             public void onNewsCLicked(News news) {
-                DataRepository.getInstance().getNewsDetails(getApplicationContext(), news);
+                Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
+                i.putExtra("id", news.id);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(i);
             }
         });
-
-        loadMoreNews();
-
-        binding.recyclerViewTags.setAdapter(adapter);
-    }
-
-    public void loadMoreNews() {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
@@ -98,9 +83,46 @@ public class TagsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Throwable t) {
-
+                        binding.recyclerViewTags.setVisibility(View.GONE);
+                        binding.refresh.setVisibility(View.VISIBLE);
+                        adapter.setFinished(true);
                     }
                 });
+            }
+        });
+
+    }
+
+    public void loadTagData() {
+
+        DataRepository.getInstance().loadTagData(id, page, new DataRepository.TagResponseListener() {
+            @Override
+            public void onResponse(ResponseNewsList responseNewsList) {
+
+                adapter.setDataTags(responseNewsList);
+
+                binding.refresh.setVisibility(View.GONE);
+                binding.recyclerViewTags.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                binding.refresh.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    public void refresh() {
+
+        binding.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(300);
+                binding.refresh.startAnimation(rotate);
+                loadTagData();
             }
         });
 

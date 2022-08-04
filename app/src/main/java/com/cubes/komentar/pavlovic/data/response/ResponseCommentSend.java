@@ -2,8 +2,8 @@ package com.cubes.komentar.pavlovic.data.response;
 
 public class ResponseCommentSend extends ParentResponse{
 
-
     public ResponseBody data;
+
 
     public static class ResponseBody {
 

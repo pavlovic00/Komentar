@@ -12,6 +12,7 @@ public class RvItemButtonAllComment implements RecyclerViewItemDetail {
 
     private ResponseDetail.ResponseDetailData data;
 
+
     public RvItemButtonAllComment(ResponseDetail.ResponseDetailData data) {
         this.data = data;
     }

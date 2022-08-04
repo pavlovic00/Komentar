@@ -4,7 +4,7 @@ public class News {
 
     public int id;
     public String image;
-    public String  image_source;
+    public String image_source;
     public String author_name;
     public String source;
     public Category category;
@@ -16,5 +16,4 @@ public class News {
     public String created_at;
     public String url;
     public String click_type;
-
 }

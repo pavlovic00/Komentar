@@ -24,6 +24,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     public ArrayList<News> newsList;
     private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
+
     public SubCategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         this.context = context;
         this.list = list;

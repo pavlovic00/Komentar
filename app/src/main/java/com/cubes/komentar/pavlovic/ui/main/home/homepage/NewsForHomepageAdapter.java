@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -20,13 +19,11 @@ import java.util.ArrayList;
 
 public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepageAdapter.NewsViewHolder> {
 
-    private Context context;
     public ArrayList<News> newsList;
     private final int limit = 5;
 
 
-    public NewsForHomepageAdapter(Context context, ArrayList<News> newsList) {
-        this.context = context;
+    public NewsForHomepageAdapter(ArrayList<News> newsList) {
         this.newsList = newsList;
     }
 
@@ -35,10 +32,10 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new NewsViewHolder(binding);
         } else {
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new NewsViewHolder(binding);
         }
     }

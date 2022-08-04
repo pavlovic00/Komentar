@@ -1,7 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.search;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,30 +11,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
-    private Context context;
-    public ArrayList<News> newsList;
+    public ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
     private boolean isFinished;
     private NewsListener newsListener;
     private LoadingNewsListener loadingNewsListener;
-    private int page;
+    private int page = 2;
 
 
-    public SearchAdapter(Context context, ArrayList<News> newsList) {
-        this.context = context;
-        this.newsList = newsList;
-        this.page = 2;
-        this.isLoading = false;
-        this.isFinished = false;
+    public SearchAdapter() {
     }
 
     @NonNull
@@ -44,10 +37,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == 0) {
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new SearchAdapter.SearchViewHolder(binding);
         } else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(context), parent, false);
+            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new SearchAdapter.SearchViewHolder(binding);
         }
     }
@@ -79,10 +72,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                        startDetailIntent.putExtra("id", news.id);
-                        startDetailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        view.getContext().startActivity(startDetailIntent);
+                        newsListener.onNewsCLicked(news);
                     }
                 });
             }
@@ -124,6 +114,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.newsList.addAll(list);
         this.isLoading = false;
         this.page = this.page + 1;
+        notifyDataSetChanged();
+    }
+
+    public void setDataTags(ResponseNewsList responseNewsList) {
+        this.newsList = responseNewsList.data.news;
+        notifyDataSetChanged();
+    }
+
+    public void setDataSearch(ResponseNewsList.ResponseData responseNewsList) {
+        this.newsList = responseNewsList.news;
         notifyDataSetChanged();
     }
 

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class ResponseDetail extends ParentResponse {
 
-
     public ResponseDetailData data;
+
 
     public class ResponseDetailData {
 
@@ -32,6 +32,5 @@ public class ResponseDetail extends ParentResponse {
         public ArrayList<News> related_news;
         public ArrayList<News> category_news;
         public ArrayList comments_top_n;
-
     }
 }

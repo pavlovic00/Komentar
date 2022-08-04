@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class ResponseNewsList extends ParentResponse {
 
-
     public ResponseData data;
+
 
     public class ResponseData {
 

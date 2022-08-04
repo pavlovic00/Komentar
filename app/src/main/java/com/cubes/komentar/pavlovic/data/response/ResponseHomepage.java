@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class ResponseHomepage extends ParentResponse {
 
-
     public ResponseHomepageData data;
+
 
     public class ResponseHomepageData {
 

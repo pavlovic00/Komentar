@@ -10,6 +10,7 @@ public class RvItemTitle implements RecyclerViewItemHomepage {
     private String title;
     private String color;
 
+
     public RvItemTitle(String title, String color) {
         this.title = title;
         this.color = color;

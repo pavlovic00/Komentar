@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class ResponseCategories extends ParentResponse {
 
-
     public ArrayList<ResponseCategoriesData> data;
+
 
     public class ResponseCategoriesData {
 
