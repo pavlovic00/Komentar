@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemTextForNewsHomepageBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
@@ -27,18 +28,22 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsH
     @Override
     public ButtonsAdapter.ButtonsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemTextForNewsHomepageBinding binding = RvItemTextForNewsHomepageBinding.
-                inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new ButtonsAdapter.ButtonsHolder(binding);
+        binding = RvItemTextForNewsHomepageBinding.inflate(inflater,parent,false);
+
+        return new ButtonsHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ButtonsAdapter.ButtonsHolder holder, int position) {
         News news = list.get(position);
 
-        holder.binding.textViewTitle.setText(news.title);
-        holder.binding.textViewDate.setText(news.created_at);
+        RvItemTextForNewsHomepageBinding binding = (RvItemTextForNewsHomepageBinding) holder.binding;
+
+        binding.textViewTitle.setText(news.title);
+        binding.date.setText(news.created_at);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,9 +62,9 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsH
 
     public class ButtonsHolder extends RecyclerView.ViewHolder {
 
-        RvItemTextForNewsHomepageBinding binding;
+        public ViewBinding binding;
 
-        public ButtonsHolder(@NonNull RvItemTextForNewsHomepageBinding binding) {
+        public ButtonsHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

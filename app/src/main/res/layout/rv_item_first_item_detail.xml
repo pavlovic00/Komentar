@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewDate"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_main"
@@ -39,8 +39,8 @@
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginTop="3dp"
         android:src="@drawable/ic_comment"
-        app:layout_constraintStart_toEndOf="@+id/textViewDate"
-        app:layout_constraintTop_toTopOf="@+id/textViewDate"
+        app:layout_constraintStart_toEndOf="@+id/date"
+        app:layout_constraintTop_toTopOf="@+id/date"
         app:tint="@color/blue" />
 
     <TextView
@@ -53,7 +53,7 @@
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textViewComment"
-        app:layout_constraintTop_toTopOf="@+id/textViewDate" />
+        app:layout_constraintTop_toTopOf="@+id/date" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -63,7 +63,7 @@
         android:background="@color/gray_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate">
+        app:layout_constraintTop_toBottomOf="@+id/date">
 
         <TextView
             android:id="@+id/textView"

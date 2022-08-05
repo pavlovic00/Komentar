@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private ArrayList<ResponseCategories.ResponseCategoriesData> categoriesList;
-    private ArrayList<News> newsList = new ArrayList<>();
 
 
     public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
@@ -29,7 +28,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         if (position == 0) {
-            HomepageFragment fragment = HomepageFragment.newInstance(newsList);
+            HomepageFragment fragment = HomepageFragment.newInstance();
             return fragment;
         } else {
             ResponseCategories.ResponseCategoriesData categoriesData = categoriesList.get(position - 1);

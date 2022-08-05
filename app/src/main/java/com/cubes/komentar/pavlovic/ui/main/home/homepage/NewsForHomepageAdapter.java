@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
@@ -31,13 +32,15 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
         if (viewType == 0) {
-            RvItemBigBinding binding = RvItemBigBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new NewsViewHolder(binding);
+            binding = RvItemBigBinding.inflate(inflater, parent, false);
         } else {
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new NewsViewHolder(binding);
+            binding = RvItemSmallBinding.inflate(inflater, parent, false);
         }
+        return new NewsViewHolder(binding);
     }
 
     @Override
@@ -46,19 +49,24 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
         News news = newsList.get(position);
 
         if (position == 0) {
-            holder.bindingBig.textViewTitle.setText(news.title);
-            holder.bindingBig.textViewDate.setText(news.created_at);
-            holder.bindingBig.textViewCategory.setText(news.category.name);
-            holder.bindingBig.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
-            Picasso.get().load(news.image).into(holder.bindingBig.imageView);
+            RvItemBigBinding bindingBig = (RvItemBigBinding) holder.binding;
+
+            bindingBig.textViewTitle.setText(news.title);
+            bindingBig.date.setText(news.created_at);
+            bindingBig.textViewCategory.setText(news.category.name);
+            bindingBig.textViewCategory.setTextColor(Color.parseColor(news.category.color));
+
+            Picasso.get().load(news.image).into(bindingBig.imageView);
         } else {
-            holder.bindingSmall.textViewTitle.setText(news.title);
-            holder.bindingSmall.textViewDate.setText(news.created_at);
-            holder.bindingSmall.textViewCategory.setText(news.category.name);
-            holder.bindingSmall.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
-            Picasso.get().load(news.image).into(holder.bindingSmall.imageView);
+            RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
+            bindingSmall.textViewTitle.setText(news.title);
+            bindingSmall.date.setText(news.created_at);
+            bindingSmall.textViewCategory.setText(news.category.name);
+            bindingSmall.textViewCategory.setTextColor(Color.parseColor(news.category.color));
+
+            Picasso.get().load(news.image).into(bindingSmall.imageView);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,17 +99,11 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
 
     public class NewsViewHolder extends RecyclerView.ViewHolder {
 
-        private RvItemSmallBinding bindingSmall;
-        private RvItemBigBinding bindingBig;
+        public ViewBinding binding;
 
-        public NewsViewHolder(RvItemSmallBinding bindingSmall) {
-            super(bindingSmall.getRoot());
-            this.bindingSmall = bindingSmall;
-        }
-
-        public NewsViewHolder(RvItemBigBinding bindingBig) {
-            super(bindingBig.getRoot());
-            this.bindingBig = bindingBig;
+        public NewsViewHolder(@NonNull ViewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

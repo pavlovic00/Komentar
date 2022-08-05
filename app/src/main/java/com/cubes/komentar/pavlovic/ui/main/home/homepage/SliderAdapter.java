@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemForHorizontalRvBinding;
+import com.cubes.komentar.databinding.RvItemTextForNewsHomepageBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.squareup.picasso.Picasso;
@@ -28,7 +30,10 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
     @Override
     public SliderAdapter.SliderHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemForHorizontalRvBinding binding = RvItemForHorizontalRvBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        binding = RvItemForHorizontalRvBinding.inflate(inflater,parent,false);
 
         return new SliderHolder(binding);
     }
@@ -37,11 +42,13 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
     public void onBindViewHolder(@NonNull SliderAdapter.SliderHolder holder, int position) {
         News news = list.get(position);
 
-        holder.binding.textViewTitle.setText(news.title);
-        holder.binding.textViewCategory.setText(news.category.name);
-        holder.binding.textViewDate.setText(news.created_at);
+        RvItemForHorizontalRvBinding binding = (RvItemForHorizontalRvBinding) holder.binding;
 
-        Picasso.get().load(news.image).into(holder.binding.imageView);
+        binding.textViewTitle.setText(news.title);
+        binding.textViewCategory.setText(news.category.name);
+        binding.date.setText(news.created_at);
+
+        Picasso.get().load(news.image).into(binding.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,9 +67,9 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
 
     public class SliderHolder extends RecyclerView.ViewHolder {
 
-        RvItemForHorizontalRvBinding binding;
+        public ViewBinding binding;
 
-        public SliderHolder(@NonNull RvItemForHorizontalRvBinding binding) {
+        public SliderHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

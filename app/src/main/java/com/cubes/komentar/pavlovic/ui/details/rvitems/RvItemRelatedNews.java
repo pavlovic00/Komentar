@@ -30,7 +30,7 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
         binding.textViewTitle.setText(news.title);
-        binding.textViewDate.setText(news.created_at);
+        binding.date.setText(news.created_at);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 

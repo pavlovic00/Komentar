@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView" />
 
     <TextView
-        android:id="@+id/textViewDate"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_small"

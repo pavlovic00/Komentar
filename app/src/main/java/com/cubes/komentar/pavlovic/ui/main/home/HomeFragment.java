@@ -22,10 +22,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
 
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;

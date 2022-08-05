@@ -31,10 +31,6 @@ public class SearchFragment extends Fragment {
     private int page = 1;
 
 
-    public SearchFragment() {
-        // Required empty public constructor
-    }
-
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
         return fragment;
@@ -104,16 +100,12 @@ public class SearchFragment extends Fragment {
                     public void onResponse(ResponseNewsList.ResponseData responseData) {
                         adapter.addNewsList(responseData.news);
 
-                        if (responseData.news.size() < 20) {
-                            adapter.setFinished(true);
-                        }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         binding.recyclerViewSearch.setVisibility(View.GONE);
                         binding.refresh.setVisibility(View.VISIBLE);
-                        adapter.setFinished(true);
                     }
                 });
             }
@@ -151,6 +143,7 @@ public class SearchFragment extends Fragment {
                 RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
+                setupRecyclerView();
                 loadSearchData();
             }
         });

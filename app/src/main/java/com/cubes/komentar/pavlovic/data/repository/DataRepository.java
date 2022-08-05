@@ -179,7 +179,7 @@ public class DataRepository {
 
     public interface HomeResponseListener {
 
-        void onResponse(ResponseHomepage response);
+        void onResponse(ResponseHomepage.ResponseHomepageData response);
 
         void onFailure(Throwable t);
     }
@@ -191,7 +191,7 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(response.body().data);
                 }
             }
 
@@ -231,7 +231,7 @@ public class DataRepository {
 
     public interface CommentResponseListener {
 
-        void onResponse(ArrayList<ResponseComment.ResponseCommentData> response);
+        void onResponse(ArrayList<ResponseComment.Comment> response);
 
         void onFailure(Throwable t);
     }
@@ -257,7 +257,7 @@ public class DataRepository {
 
     public interface DetailResponseListener {
 
-        void onResponse(ResponseDetail response);
+        void onResponse(ResponseDetail.ResponseDetailData response);
 
         void onFailure(Throwable t);
     }
@@ -269,7 +269,7 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(response.body().data);
                 }
             }
 

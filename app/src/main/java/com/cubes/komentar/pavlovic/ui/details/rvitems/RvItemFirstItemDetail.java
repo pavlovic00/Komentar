@@ -26,7 +26,7 @@ public class RvItemFirstItemDetail implements RecyclerViewItemDetail {
         binding.textViewAuthor.setText(data.author_name);
         binding.textViewIzvor.setText(data.source);
         binding.textViewTitle.setText(data.title);
-        binding.textViewDate.setText(data.created_at);
+        binding.date.setText(data.created_at);
         binding.textViewDescription.setText(data.description);
         binding.textViewCommentCount.setText("" + data.comments_count);
 

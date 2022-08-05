@@ -97,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(ResponseCategories response) {
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        binding.recyclerView.setAdapter(new CategoryAdapter(HomeActivity.this, response.data));
+                        binding.recyclerView.setAdapter(new CategoryAdapter(response.data));
                     }
 
                     @Override
@@ -202,7 +202,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResponseCategories response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerView.setAdapter(new CategoryAdapter(HomeActivity.this, response.data));
+                binding.recyclerView.setAdapter(new CategoryAdapter(response.data));
             }
 
             @Override

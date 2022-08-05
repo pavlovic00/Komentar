@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +24,15 @@ import java.util.ArrayList;
 public class HomepageFragment extends Fragment {
 
     private FragmentHomepageBinding binding;
-    public ArrayList<News> newsList;
-    public ResponseHomepage.ResponseHomepageData data;
+    public HomepageAdapter adapter;
 
 
     public HomepageFragment() {
         // Required empty public constructor
     }
 
-    public static HomepageFragment newInstance(ArrayList<News> newsList) {
+    public static HomepageFragment newInstance() {
         HomepageFragment fragment = new HomepageFragment();
-        fragment.newsList = newsList;
         return fragment;
     }
 
@@ -54,24 +53,26 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupRecyclerView();
         loadHomeData();
         refresh();
+    }
+
+    public void setupRecyclerView(){
+
+        binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new HomepageAdapter();
+        binding.recyclerViewHomepage.setAdapter(adapter);
+
     }
 
     public void loadHomeData() {
 
         DataRepository.getInstance().loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
-            public void onResponse(ResponseHomepage response) {
-                HomepageAdapter homepageAdapter = new HomepageAdapter(response.data);
-                homepageAdapter.setListener(new HomepageAdapter.Listener() {
-                    @Override
-                    public void onNewsItemClick(News news) {
+            public void onResponse(ResponseHomepage.ResponseHomepageData response) {
 
-                    }
-                });
-                binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.recyclerViewHomepage.setAdapter(homepageAdapter);
+                adapter.setDataItems(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.recyclerViewHomepage.setVisibility(View.VISIBLE);

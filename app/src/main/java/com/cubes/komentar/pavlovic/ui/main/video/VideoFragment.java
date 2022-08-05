@@ -21,18 +21,12 @@ import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.data.tools.NewsListener;
 
-import java.util.ArrayList;
 
 public class VideoFragment extends Fragment {
 
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
     private int page = 1;
-
-
-    public VideoFragment() {
-        // Required empty public constructor
-    }
 
 
     public static VideoFragment newInstance() {
@@ -91,17 +85,12 @@ public class VideoFragment extends Fragment {
                     public void onResponse(ResponseNewsList.ResponseData response) {
                         adapter.addNewsList(response.news);
 
-                        if (response.news.size() < 20) {
-                            adapter.setFinished(true);
-                        }
-
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         binding.recyclerViewVideo.setVisibility(View.GONE);
                         binding.refresh.setVisibility(View.VISIBLE);
-                        adapter.setFinished(true);
                     }
                 });
             }
@@ -137,6 +126,7 @@ public class VideoFragment extends Fragment {
                 RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
+                setupRecyclerView();
                 loadDataVideo();
             }
         });

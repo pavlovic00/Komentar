@@ -31,14 +31,14 @@ public class ReplyActivity extends AppCompatActivity {
 
         String name = binding.textViewName.getText().toString();
         String email = binding.textMail.getText().toString();
-        String content = binding.textViewContent.getText().toString();
+        String content = binding.content.getText().toString();
 
         binding.commentSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (binding.textViewName.getText().toString().isEmpty() ||
                         binding.textMail.getText().toString().isEmpty() ||
-                        binding.textViewContent.getText().toString().isEmpty()) {
+                        binding.content.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Popunite sva polja", Toast.LENGTH_LONG).show();
                 } else {
                     postComment(name, email, content);
@@ -61,7 +61,7 @@ public class ReplyActivity extends AppCompatActivity {
             public void onResponse(ResponseCommentSend.ResponseBody response) {
                 binding.textViewName.setText("");
                 binding.textMail.setText("");
-                binding.textViewContent.setText("");
+                binding.content.setText("");
                 Toast.makeText(getApplicationContext(), "RADI POSTAVLJANJE!", Toast.LENGTH_LONG).show();
                 finish();
             }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cubes.komentar.R;
@@ -26,12 +27,10 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
-    private Context context;
     private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
 
-    public CategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
-        this.context = context;
+    public CategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         this.list = list;
     }
 
@@ -39,9 +38,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemCategoryItemBinding binding = RvItemCategoryItemBinding.inflate(LayoutInflater.from(context), parent, false);
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new CategoryAdapter.CategoryViewHolder(binding);
+        binding = RvItemCategoryItemBinding.inflate(inflater, parent, false);
+
+        return new CategoryViewHolder(binding);
     }
 
     @SuppressLint("RecyclerView")
@@ -50,14 +52,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         ResponseCategories.ResponseCategoriesData categories = list.get(position);
 
-        holder.binding.textViewCategory.setText(categories.name);
-        holder.binding.view.setBackgroundColor(Color.parseColor(categories.color));
-        holder.binding.submenuarrow.setRotation(270);
+        RvItemCategoryItemBinding bindingCategory = (RvItemCategoryItemBinding) holder.binding;
+
+        bindingCategory.textViewCategory.setText(categories.name);
+        bindingCategory.view.setBackgroundColor(Color.parseColor(categories.color));
+        bindingCategory.submenuarrow.setRotation(270);
 
         if (list.get(position).subcategories.size() == 0) {
-            holder.binding.submenuarrow.setVisibility(View.INVISIBLE);
+            bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
-        holder.binding.submenuarrow.setOnClickListener(new View.OnClickListener() {
+        bindingCategory.submenuarrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -65,31 +69,31 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 categories.open = !categories.open;
 
                 if (categories.open) {
-                    holder.binding.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(context));
-                    holder.binding.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(context, categories.subcategories));
+                    bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                    bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(categories.subcategories));
 
-                    holder.binding.submenuarrow.setRotation(90);
+                    bindingCategory.submenuarrow.setRotation(90);
 
                 } else {
-                    holder.binding.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(context));
-                    holder.binding.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(context, new ArrayList<ResponseCategories.ResponseCategoriesData>()));
+                    bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                    bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(new ArrayList<ResponseCategories.ResponseCategoriesData>()));
 
-                    holder.binding.submenuarrow.setRotation(-90);
+                    bindingCategory.submenuarrow.setRotation(-90);
                 }
 
             }
         });
 
-        holder.binding.textViewCategory.setOnClickListener(new View.OnClickListener() {
+        bindingCategory.textViewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                DrawerLayout drawer = ((HomeActivity) context).findViewById(R.id.drawerLayout);
-                ViewPager viewPager = ((HomeActivity) context).findViewById(R.id.viewPagerHome);
-                drawer.closeDrawer(((HomeActivity) context).findViewById(R.id.navigationView));
+                DrawerLayout drawer = ((HomeActivity) view.getContext()).findViewById(R.id.drawerLayout);
+                ViewPager viewPager = ((HomeActivity) view.getContext()).findViewById(R.id.viewPagerHome);
+                drawer.closeDrawer(((HomeActivity) view.getContext()).findViewById(R.id.navigationView));
                 viewPager.setCurrentItem(position + 1);
 
-                Intent categoryIntent = new Intent(context, CategoryActivity.class);
+                Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
                 categoryIntent.putExtra("id", list.get(position).id);
                 categoryIntent.putExtra("category", list.get(position).name);
             }
@@ -104,9 +108,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
-        private RvItemCategoryItemBinding binding;
+        public ViewBinding binding;
 
-        public CategoryViewHolder(RvItemCategoryItemBinding binding) {
+        public CategoryViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

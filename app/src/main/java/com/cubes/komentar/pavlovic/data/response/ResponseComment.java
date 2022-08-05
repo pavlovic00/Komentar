@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class ResponseComment extends ParentResponse{
 
-    public ArrayList<ResponseCommentData> data;
+    public ArrayList<Comment> data;
 
 
-    public class ResponseCommentData {
+    public class Comment {
 
         public int negative_votes;
         public int positive_votes;
@@ -17,7 +17,7 @@ public class ResponseComment extends ParentResponse{
         public String parent_comment;
         public String id;
         public String content;
-        public ArrayList<ResponseCommentData> children;
+        public ArrayList<Comment> children;
     }
 
 }

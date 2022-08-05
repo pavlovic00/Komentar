@@ -23,7 +23,7 @@ public class TagsActivity extends AppCompatActivity {
     private ActivityTagsBinding binding;
     private int id;
     private String title;
-    private SearchAdapter adapter;
+    private TagsAdapter adapter;
     private int page = 1;
 
 
@@ -55,7 +55,7 @@ public class TagsActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new SearchAdapter();
+        adapter = new TagsAdapter();
         binding.recyclerViewTags.setAdapter(adapter);
 
         adapter.setNewsListener(new NewsListener() {
@@ -76,16 +76,12 @@ public class TagsActivity extends AppCompatActivity {
                     public void onResponse(ResponseNewsList responseNewsList) {
                         adapter.addNewsList(responseNewsList.data.news);
 
-                        if (responseNewsList.data.news.size() < 20) {
-                            adapter.setFinished(true);
-                        }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         binding.recyclerViewTags.setVisibility(View.GONE);
                         binding.refresh.setVisibility(View.VISIBLE);
-                        adapter.setFinished(true);
                     }
                 });
             }
@@ -122,6 +118,7 @@ public class TagsActivity extends AppCompatActivity {
                 RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
+                setupRecyclerView();
                 loadTagData();
             }
         });

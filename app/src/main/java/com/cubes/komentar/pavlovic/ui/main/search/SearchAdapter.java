@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
@@ -36,13 +37,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
         if (viewType == 0) {
-            RvItemSmallBinding binding = RvItemSmallBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new SearchAdapter.SearchViewHolder(binding);
+            binding = RvItemSmallBinding.inflate(inflater, parent, false);
         } else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new SearchAdapter.SearchViewHolder(binding);
+            binding = RvItemLoadingBinding.inflate(inflater, parent, false);
         }
+        return new SearchViewHolder(binding);
     }
 
     @Override
@@ -50,9 +53,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         if (position == newsList.size()) {
 
+            RvItemLoadingBinding bindingLoading = (RvItemLoadingBinding) holder.binding;
+
             if (isFinished) {
-                holder.loadingBinding.progressBar.setVisibility(View.GONE);
-                holder.loadingBinding.loading.setVisibility(View.GONE);
+                bindingLoading.progressBar.setVisibility(View.GONE);
+                bindingLoading.loading.setVisibility(View.GONE);
             }
             if (!isLoading & !isFinished & loadingNewsListener != null) {
                 isLoading = true;
@@ -63,11 +68,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             if (newsList.size() > 0) {
                 News news = newsList.get(position);
 
-                holder.smallBinding.textViewTitle.setText(news.title);
-                holder.smallBinding.textViewDate.setText(news.created_at);
-                holder.smallBinding.textViewCategory.setText(news.category.name);
-                holder.smallBinding.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
-                Picasso.get().load(news.image).into(holder.smallBinding.imageView);
+                RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
+
+                bindingSmall.textViewTitle.setText(news.title);
+                bindingSmall.date.setText(news.created_at);
+                bindingSmall.textViewCategory.setText(news.category.name);
+                bindingSmall.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
+                Picasso.get().load(news.image).into(bindingSmall.imageView);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -114,11 +121,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.newsList.addAll(list);
         this.isLoading = false;
         this.page = this.page + 1;
-        notifyDataSetChanged();
-    }
-
-    public void setDataTags(ResponseNewsList responseNewsList) {
-        this.newsList = responseNewsList.data.news;
+        if (list.size() < 20) {
+            setFinished(true);
+        }
         notifyDataSetChanged();
     }
 
@@ -129,17 +134,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     public class SearchViewHolder extends RecyclerView.ViewHolder {
 
-        private RvItemSmallBinding smallBinding;
-        private RvItemLoadingBinding loadingBinding;
+        public ViewBinding binding;
 
-        public SearchViewHolder(RvItemSmallBinding smallBinding) {
-            super(smallBinding.getRoot());
-            this.smallBinding = smallBinding;
-        }
-
-        public SearchViewHolder(RvItemLoadingBinding loadingBinding) {
-            super(loadingBinding.getRoot());
-            this.loadingBinding = loadingBinding;
+        public SearchViewHolder(@NonNull ViewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

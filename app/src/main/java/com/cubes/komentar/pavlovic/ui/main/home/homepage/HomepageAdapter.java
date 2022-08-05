@@ -29,54 +29,10 @@ import java.util.ArrayList;
 
 public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.HomepageViewHolder> {
 
-
-    public interface Listener {
-        void onNewsItemClick(News news);
-    }
-
-    private Listener listener;
+    private ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
 
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
-    public ResponseHomepage.ResponseHomepageData data;
-    public ArrayList<ResponseHomepage.ResponseHomePageDataCategoryBox> dataBox;
-    private ArrayList<RecyclerViewItemHomepage> items;
-    private ArrayList<News> news;
-
-    public HomepageAdapter(ResponseHomepage.ResponseHomepageData data) {
-        this.data = data;
-        this.items = new ArrayList<>();
-        this.dataBox = data.category;
-
-        //0
-        this.items.add(new RvItemSlider(data.slider));
-        //1
-        for (int i = 0; i < data.top.size(); i++) {
-            News news = data.top.get(i);
-
-            this.items.add(new RvItemTopNews(news));
-        }
-        //2
-        this.items.add(new RvItemButtonsNews(data.latest, data.most_comented, data.most_read));
-        //3-4
-        if (data.editors_choice.size() > 0) {
-            this.items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
-            this.items.add(new RvItemEditorChoise(data.editors_choice));
-        }
-        //5-6
-        if (data.videos.size() > 0) {
-            this.items.add(new RvItemTitle("Video", "#FF0000"));
-            this.items.add(new RvItemVideo(data.videos));
-        }
-        //7-8
-        for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : dataBox) {
-            this.items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            this.items.add(new RvItemSportBox(categoryBox.title, categoryBox.news));
-        }
-
+    public HomepageAdapter() {
     }
 
     @NonNull
@@ -132,6 +88,34 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
     public int getItemCount() {
 
         return this.items.size();
+    }
+
+    public void setDataItems(ResponseHomepage.ResponseHomepageData response) {
+        //0
+        items.add(new RvItemSlider(response.slider));
+        //1
+        for (int i = 0; i < response.top.size(); i++) {
+            News news = response.top.get(i);
+            items.add(new RvItemTopNews(news));
+        }
+        //2
+        items.add(new RvItemButtonsNews(response.latest, response.most_comented, response.most_read));
+        //3-4
+        if (response.editors_choice.size() > 0) {
+            items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
+            items.add(new RvItemEditorChoise(response.editors_choice));
+        }
+        //5-6
+        if (response.videos.size() > 0) {
+            items.add(new RvItemTitle("Video", "#FF0000"));
+            items.add(new RvItemVideo(response.videos));
+        }
+        //7-8
+        for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : response.category) {
+            items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
+            items.add(new RvItemSportBox(categoryBox.title, categoryBox.news));
+        }
+        notifyDataSetChanged();
     }
 
     public class HomepageViewHolder extends RecyclerView.ViewHolder {

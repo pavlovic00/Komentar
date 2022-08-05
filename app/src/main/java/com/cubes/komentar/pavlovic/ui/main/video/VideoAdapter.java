@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
@@ -39,13 +40,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
         if (viewType == 0) {
-            RvItemVideoBinding binding = RvItemVideoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new VideoViewHolder(binding);
+            binding = RvItemVideoBinding.inflate(inflater, parent, false);
         } else {
-            RvItemLoadingBinding binding = RvItemLoadingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new VideoViewHolder(binding);
+            binding = RvItemLoadingBinding.inflate(inflater, parent, false);
         }
+        return new VideoViewHolder(binding);
     }
 
     @Override
@@ -53,10 +56,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         if (position == newsList.size()) {
 
-            //pod znakom pitanja.
+            RvItemLoadingBinding bindingLoading = (RvItemLoadingBinding) holder.binding;
+
             if (isFinished) {
-                holder.bindingLoading.progressBar.setVisibility(View.GONE);
-                holder.bindingLoading.loading.setVisibility(View.GONE);
+                bindingLoading.progressBar.setVisibility(View.GONE);
+                bindingLoading.loading.setVisibility(View.GONE);
             }
             if (!isLoading & !isFinished & loadingNewsListener != null) {
                 isLoading = true;
@@ -67,13 +71,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             if (newsList.size() > 0) {
                 News news = newsList.get(position);
 
-                holder.binding.textViewTitle.setText(news.title);
-                holder.binding.textViewDate.setText(news.created_at);
-                holder.binding.textViewCategory.setText(news.category.name);
-                holder.binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
-                Picasso.get().load(news.image).into(holder.binding.imageView);
+                RvItemVideoBinding bindingVideo = (RvItemVideoBinding) holder.binding;
 
-                holder.binding.imageViewPlay.setOnClickListener(new View.OnClickListener() {
+                bindingVideo.textViewTitle.setText(news.title);
+                bindingVideo.date.setText(news.created_at);
+                bindingVideo.textViewCategory.setText(news.category.name);
+                bindingVideo.textViewCategory.setTextColor(Color.parseColor(news.category.color));
+                Picasso.get().load(news.image).into(bindingVideo.imageView);
+
+                bindingVideo.imageViewPlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         newsListener.onNewsCLicked(news);
@@ -124,6 +130,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         this.newsList.addAll(newsList);
         this.isLoading = false;
         this.page = this.page + 1;
+        if (newsList.size() < 20) {
+            setFinished(true);
+        }
         notifyDataSetChanged();
     }
 
@@ -134,18 +143,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     public class VideoViewHolder extends RecyclerView.ViewHolder {
 
-        private RvItemVideoBinding binding;
-        private RvItemLoadingBinding bindingLoading;
+        public ViewBinding binding;
 
-        public VideoViewHolder(RvItemVideoBinding binding) {
+        public VideoViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
-
-        public VideoViewHolder(RvItemLoadingBinding bindingLoading) {
-            super(bindingLoading.getRoot());
-            this.bindingLoading = bindingLoading;
-        }
     }
-
 }

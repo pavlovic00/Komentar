@@ -29,10 +29,6 @@ public class LatestFragment extends Fragment {
     private int page = 1;
 
 
-    public LatestFragment() {
-        // Required empty public constructor
-    }
-
     public static LatestFragment newInstance() {
         LatestFragment fragment = new LatestFragment();
 
@@ -63,6 +59,7 @@ public class LatestFragment extends Fragment {
     }
 
     public void setupRecyclerView(){
+
         binding.recyclerViewLatest.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LatestAdapter();
         binding.recyclerViewLatest.setAdapter(adapter);
@@ -84,17 +81,12 @@ public class LatestFragment extends Fragment {
                     @Override
                     public void onResponse(ResponseNewsList.ResponseData response) {
                         adapter.addNewsList(response.news);
-
-                        if (response.news.size() < 20) {
-                            adapter.setFinished(true);
-                        }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         binding.recyclerViewLatest.setVisibility(View.GONE);
                         binding.refresh.setVisibility(View.VISIBLE);
-                        adapter.setFinished(true);
                     }
                 });
             }
@@ -103,9 +95,14 @@ public class LatestFragment extends Fragment {
 
     public void loadDataLatest() {
 
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewLatest.setVisibility(View.GONE);
+
         DataRepository.getInstance().loadLatestData(page, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
+
+                binding.progressBar.setVisibility(View.GONE);
 
                 adapter.setData(response);
 
@@ -115,6 +112,7 @@ public class LatestFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -130,6 +128,7 @@ public class LatestFragment extends Fragment {
                 RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
+                setupRecyclerView();
                 loadDataLatest();
             }
         });

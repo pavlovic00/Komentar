@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class AllCommentActivity extends AppCompatActivity {
 
     private ActivityAllCommentBinding binding;
+    private CommentAdapter adapter;
     private int id;
 
 
@@ -39,17 +40,26 @@ public class AllCommentActivity extends AppCompatActivity {
             }
         });
 
+        setupRecyclerView();
         loadCommentData();
         refresh();
+    }
+
+    public void setupRecyclerView(){
+
+        binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        adapter = new CommentAdapter();
+        binding.recyclerViewComments.setAdapter(adapter);
+
     }
 
     public void loadCommentData() {
 
         DataRepository.getInstance().loadCommentData(id, new DataRepository.CommentResponseListener() {
             @Override
-            public void onResponse(ArrayList<ResponseComment.ResponseCommentData> response) {
-                binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerViewComments.setAdapter(new CommentAdapter(response));
+            public void onResponse(ArrayList<ResponseComment.Comment> response) {
+
+                adapter.setDataComment(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.recyclerViewComments.setVisibility(View.VISIBLE);

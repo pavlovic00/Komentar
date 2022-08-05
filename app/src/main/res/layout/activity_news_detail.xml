@@ -59,4 +59,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerLayout" />
 
+    <ImageView
+        android:id="@+id/refresh"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_refresh"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

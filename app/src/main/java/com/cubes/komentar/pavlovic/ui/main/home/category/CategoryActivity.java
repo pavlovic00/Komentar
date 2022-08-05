@@ -76,16 +76,12 @@ public class CategoryActivity extends AppCompatActivity {
                     public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
                         adapter.addNewsList(responseNewsList.news);
 
-                        if (responseNewsList.news.size() < 20) {
-                            adapter.setFinished(true);
-                        }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         binding.recyclerViewCategory.setVisibility(View.GONE);
                         binding.refresh.setVisibility(View.VISIBLE);
-                        adapter.setFinished(true);
                     }
 
                 });
@@ -123,6 +119,7 @@ public class CategoryActivity extends AppCompatActivity {
                 RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
+                setupRecyclerView();
                 loadCategoryData();
             }
         });

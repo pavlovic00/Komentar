@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.databinding.RvItemButtonCommentBinding;
-import com.cubes.komentar.databinding.RvItemCommentBinding;
+import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
@@ -34,47 +34,10 @@ import java.util.ArrayList;
 
 public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.DetailNewsViewHolder> {
 
-    public ResponseDetail.ResponseDetailData data;
-    public News news;
-    private ArrayList<RecyclerViewItemDetail> items;
+    private ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
 
 
-    public DetailNewsAdapter(ResponseDetail.ResponseDetailData data) {
-        this.data = data;
-
-        this.items = new ArrayList<>();
-        //0
-        //this.items.add(new RvItemFirstItemDetail(data));
-        //1
-        this.items.add(new RvItemWebviewDetail(data));
-        //2-3
-        if (data.tags.size() > 0) {
-            this.items.add(new RvItemTitleDetail("Tagovi:"));
-            this.items.add(new RvItemTagsDetail(data.tags));
-        }
-        //4-5-6-7
-        this.items.add(new RvItemButtonPutComment());
-
-
-        this.items.add(new RvItemTitleComment("Komentari", data));
-
-        for (int i = 0; i < data.comments_top_n.size(); i++) {
-            ResponseComment.ResponseCommentData commentData = (ResponseComment.ResponseCommentData) data.comments_top_n.get(i);
-            this.items.add(new RvItemComment(commentData));
-        }
-
-        this.items.add(new RvItemButtonAllComment(data));
-
-        //8-9
-        if (data.related_news.size() > 0) {
-            this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
-
-            for (int i = 0; i < data.related_news.size(); i++) {
-                News news = data.related_news.get(i);
-
-                this.items.add(new RvItemRelatedNews(news));
-            }
-        }
+    public DetailNewsAdapter() {
     }
 
     @NonNull
@@ -105,7 +68,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
                 binding = RvItemButtonCommentBinding.inflate(inflater, parent, false);
                 break;
             case 5:
-                binding = RvItemCommentBinding.inflate(inflater, parent, false);
+                binding = RvItemCommentParentBinding.inflate(inflater, parent, false);
                 break;
             case 6:
                 binding = RvItemButtonAllCommentBinding.inflate(inflater, parent, false);
@@ -139,6 +102,36 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         return this.items.size();
     }
 
+    public void setDataItems(ResponseDetail.ResponseDetailData response){
+        //0
+        //this.items.add(new RvItemFirstItemDetail(data));
+        //1
+        this.items.add(new RvItemWebviewDetail(response));
+        //2-3
+        if (response.tags.size() > 0) {
+            this.items.add(new RvItemTitleDetail("Tagovi:"));
+            this.items.add(new RvItemTagsDetail(response.tags));
+        }
+        //4-5-6-7
+        this.items.add(new RvItemButtonPutComment());
+        this.items.add(new RvItemTitleComment("Komentari", response));
+        for (int i = 0; i < response.comments_top_n.size(); i++) {
+            ResponseComment.Comment commentData = (ResponseComment.Comment) response.comments_top_n.get(i);
+            this.items.add(new RvItemComment(commentData));
+        }
+        this.items.add(new RvItemButtonAllComment(response));
+        //8-9
+        if (response.related_news.size() > 0) {
+            this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
+
+            for (int i = 0; i < response.related_news.size(); i++) {
+                News news = response.related_news.get(i);
+
+                this.items.add(new RvItemRelatedNews(news));
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     public class DetailNewsViewHolder extends RecyclerView.ViewHolder {
 

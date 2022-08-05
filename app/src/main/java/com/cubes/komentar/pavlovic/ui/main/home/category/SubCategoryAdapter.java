@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
@@ -20,13 +21,10 @@ import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder> {
 
-    private Context context;
-    public ArrayList<News> newsList;
     private ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
 
-    public SubCategoryAdapter(Context context, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
-        this.context = context;
+    public SubCategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list) {
         this.list = list;
     }
 
@@ -34,9 +32,12 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     @Override
     public SubCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        RvItemCategoryItemBinding binding = RvItemCategoryItemBinding.inflate(LayoutInflater.from(context), parent, false);
+        ViewBinding binding;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new SubCategoryAdapter.SubCategoryViewHolder(binding);
+        binding = RvItemCategoryItemBinding.inflate(inflater, parent, false);
+
+        return new SubCategoryViewHolder(binding);
     }
 
     @SuppressLint("RecyclerView")
@@ -45,22 +46,24 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
         ResponseCategories.ResponseCategoriesData categories = list.get(position);
 
-        holder.binding.textViewCategory.setText(categories.name);
-        holder.binding.textViewCategory.setTextSize(15);
-        holder.binding.textViewCategory.setTextColor(Color.parseColor("#76FFFFFF"));
-        holder.binding.view.setVisibility(View.GONE);
+        RvItemCategoryItemBinding bindingCategory = (RvItemCategoryItemBinding) holder.binding;
+
+        bindingCategory.textViewCategory.setText(categories.name);
+        bindingCategory.textViewCategory.setTextSize(15);
+        bindingCategory.textViewCategory.setTextColor(Color.parseColor("#76FFFFFF"));
+        bindingCategory.view.setVisibility(View.GONE);
 
         if (list.get(position).subcategories.size() == 0) {
-            holder.binding.submenuarrow.setVisibility(View.INVISIBLE);
+            bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
 
-        holder.binding.textViewCategory.setOnClickListener(new View.OnClickListener() {
+        bindingCategory.textViewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent categoryIntent = new Intent(context, CategoryActivity.class);
+                Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
                 categoryIntent.putExtra("id", list.get(position).id);
                 categoryIntent.putExtra("category", list.get(position).name);
-                context.startActivity(categoryIntent);
+                view.getContext().startActivity(categoryIntent);
             }
         });
 
@@ -73,9 +76,9 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
     public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
 
-        private RvItemCategoryItemBinding binding;
+        public ViewBinding binding;
 
-        public SubCategoryViewHolder(RvItemCategoryItemBinding binding) {
+        public SubCategoryViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

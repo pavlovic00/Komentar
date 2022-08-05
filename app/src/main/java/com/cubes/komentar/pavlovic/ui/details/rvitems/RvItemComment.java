@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cubes.komentar.databinding.RvItemCommentBinding;
+import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseComment;
@@ -13,13 +13,13 @@ import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 
 public class RvItemComment implements RecyclerViewItemDetail {
 
-    ResponseComment.ResponseCommentData comment;
+    ResponseComment.Comment comment;
 
 
     private int like;
     private int dislike;
 
-    public RvItemComment(ResponseComment.ResponseCommentData comment) {
+    public RvItemComment(ResponseComment.Comment comment) {
         this.comment = comment;
     }
 
@@ -31,16 +31,16 @@ public class RvItemComment implements RecyclerViewItemDetail {
     @Override
     public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
 
-        RvItemCommentBinding binding = (RvItemCommentBinding) holder.binding;
+        RvItemCommentParentBinding binding = (RvItemCommentParentBinding) holder.binding;
 
         like = comment.positive_votes;
         dislike = comment.negative_votes;
 
-        binding.textViewPerson.setText(comment.name);
-        binding.textViewDate.setText(comment.created_at);
-        binding.textViewContent.setText(comment.content);
-        binding.textViewLike.setText(like + "");
-        binding.textViewDissLike.setText(dislike + "");
+        binding.person.setText(comment.name);
+        binding.date.setText(comment.created_at);
+        binding.content.setText(comment.content);
+        binding.like.setText(like + "");
+        binding.disLike.setText(dislike + "");
 
 
         binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +50,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
                     @Override
                     public void onResponse(ResponseComment response) {
                         like++;
-                        binding.textViewLike.setText((like) + "");
+                        binding.like.setText((like) + "");
                         Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -68,7 +68,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
                     @Override
                     public void onResponse(ResponseComment response) {
                         dislike++;
-                        binding.textViewDissLike.setText((dislike) + "");
+                        binding.disLike.setText((dislike) + "");
                         Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
                     }
 
