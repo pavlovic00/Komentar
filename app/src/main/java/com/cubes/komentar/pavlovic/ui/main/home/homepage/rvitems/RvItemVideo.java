@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.databinding.RvRecyclerviewVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoAdapter;
 

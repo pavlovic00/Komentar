@@ -55,6 +55,9 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     public void loadDetailData() {
 
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewDetail.setVisibility(View.GONE);
+
         DataRepository.getInstance().loadDetailData(id, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(ResponseDetail.ResponseDetailData response) {
@@ -82,11 +85,13 @@ public class NewsDetailActivity extends AppCompatActivity {
                 });
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewDetail.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -102,6 +107,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
                 loadDetailData();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
     }

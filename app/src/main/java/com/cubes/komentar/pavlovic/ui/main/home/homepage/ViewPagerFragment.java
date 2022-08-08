@@ -2,38 +2,33 @@ package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
-import com.cubes.komentar.databinding.FragmentViewPagerBinding;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.databinding.FragmentViewPagerBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
-
-import java.util.ArrayList;
 
 public class ViewPagerFragment extends Fragment {
 
     private FragmentViewPagerBinding binding;
-    public ArrayList<News> newsList;
     private ResponseCategories.ResponseCategoriesData category;
     private LatestAdapter adapter;
-    private int page = 1;
+    private int nextPage = 1;
 
 
     public ViewPagerFragment() {
@@ -43,7 +38,6 @@ public class ViewPagerFragment extends Fragment {
     public static ViewPagerFragment newInstance(ResponseCategories.ResponseCategoriesData category) {
         ViewPagerFragment fragment = new ViewPagerFragment();
         fragment.category = category;
-        fragment.newsList = new ArrayList<News>();
         return fragment;
     }
 
@@ -86,12 +80,13 @@ public class ViewPagerFragment extends Fragment {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
-            public void loadMoreNews(int page) {
-                DataRepository.getInstance().loadCategoriesNewsData(category.id, page, new DataRepository.NewsResponseListener() {
+            public void loadMoreNews() {
+                DataRepository.getInstance().loadCategoriesNewsData(category.id, nextPage, new DataRepository.NewsResponseListener() {
                     @Override
                     public void onResponse(ResponseNewsList.ResponseData response) {
                         adapter.addNewsList(response.news);
 
+                        nextPage++;
                     }
 
                     @Override
@@ -107,19 +102,25 @@ public class ViewPagerFragment extends Fragment {
 
     public void loadHomeData() {
 
-        DataRepository.getInstance().loadCategoriesNewsData(category.id, page, new DataRepository.NewsResponseListener() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewPager.setVisibility(View.GONE);
+
+        DataRepository.getInstance().loadCategoriesNewsData(category.id, 1, new DataRepository.NewsResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
-                if (response != null) {
-                    newsList = response.news;
-                }
+
                 adapter.setData(response);
+
+                nextPage++;
+
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewPager.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -137,6 +138,7 @@ public class ViewPagerFragment extends Fragment {
                 binding.refresh.startAnimation(rotate);
                 setupRecyclerView();
                 loadHomeData();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
     }

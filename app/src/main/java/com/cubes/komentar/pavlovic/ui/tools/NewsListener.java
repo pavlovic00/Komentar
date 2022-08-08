@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.tools;
+package com.cubes.komentar.pavlovic.ui.tools;
 
 import com.cubes.komentar.pavlovic.data.model.News;
 

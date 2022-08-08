@@ -55,6 +55,9 @@ public class AllCommentActivity extends AppCompatActivity {
 
     public void loadCommentData() {
 
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewComments.setVisibility(View.GONE);
+
         DataRepository.getInstance().loadCommentData(id, new DataRepository.CommentResponseListener() {
             @Override
             public void onResponse(ArrayList<ResponseComment.Comment> response) {
@@ -62,11 +65,13 @@ public class AllCommentActivity extends AppCompatActivity {
                 adapter.setDataComment(response);
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewComments.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -83,6 +88,7 @@ public class AllCommentActivity extends AppCompatActivity {
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
                 loadCommentData();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
     }

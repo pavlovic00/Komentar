@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class RvItemEditorChoise implements RecyclerViewItemHomepage {
 
     public ArrayList<News> editorsChoiceList;
-
+    PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
 
     public RvItemEditorChoise(ArrayList<News> editorsChoiceList) {
         this.editorsChoiceList = editorsChoiceList;
@@ -34,10 +34,10 @@ public class RvItemEditorChoise implements RecyclerViewItemHomepage {
                 RecyclerView.HORIZONTAL, false));
         binding.recyclerViewHorizontal2.setAdapter(new SliderAdapter(editorsChoiceList));
 
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHorizontal2);
 
-
-        binding.indicator.attachToRecyclerView(binding.recyclerViewHorizontal2, pagerSnapHelper);
+        if (binding.recyclerViewHorizontal2.getOnFlingListener() == null){
+            pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHorizontal2);
+            binding.indicator.attachToRecyclerView(binding.recyclerViewHorizontal2, pagerSnapHelper);
+        }
     }
 }

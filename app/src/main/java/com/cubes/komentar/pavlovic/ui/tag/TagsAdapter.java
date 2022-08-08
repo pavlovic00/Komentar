@@ -13,8 +13,8 @@ import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +27,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
     private boolean isFinished;
     private NewsListener newsListener;
     private LoadingNewsListener loadingNewsListener;
-    private int page = 2;
 
 
     public TagsAdapter() {
@@ -62,7 +61,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
             }
             if (!isLoading & !isFinished & loadingNewsListener != null) {
                 isLoading = true;
-                loadingNewsListener.loadMoreNews(page);
+                loadingNewsListener.loadMoreNews();
             }
         } else {
 
@@ -122,7 +121,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
     public void addNewsList(ArrayList<News> list) {
         this.newsList.addAll(list);
         this.isLoading = false;
-        this.page = this.page + 1;
         if (list.size() < 20) {
             setFinished(true);
         }

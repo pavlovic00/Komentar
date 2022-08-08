@@ -30,8 +30,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        loadCategoriesData();
     }
 
     @Override
@@ -56,8 +54,13 @@ public class HomeFragment extends Fragment {
         DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ResponseCategories response) {
-                binding.viewPagerHome.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager(), response.data));
+                if (getActivity() != null) {
+                    //uvek koristi child ovde da bi se resio baga.
+                    binding.viewPagerHome.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), response.data));
+                }
                 binding.tabLayout.setupWithViewPager(binding.viewPagerHome);
+
+
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.viewPagerHome.setVisibility(View.VISIBLE);

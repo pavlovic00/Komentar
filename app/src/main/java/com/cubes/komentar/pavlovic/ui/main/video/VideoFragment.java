@@ -18,15 +18,15 @@ import com.cubes.komentar.databinding.FragmentVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 
 
 public class VideoFragment extends Fragment {
 
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
-    private int page = 1;
+    private int nextPage = 1;
 
 
     public static VideoFragment newInstance() {
@@ -79,12 +79,13 @@ public class VideoFragment extends Fragment {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
-            public void loadMoreNews(int page) {
-                DataRepository.getInstance().loadVideoData(page, new DataRepository.VideoResponseListener() {
+            public void loadMoreNews() {
+                DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
                     @Override
                     public void onResponse(ResponseNewsList.ResponseData response) {
                         adapter.addNewsList(response.news);
 
+                        nextPage++;
                     }
 
                     @Override
@@ -100,18 +101,24 @@ public class VideoFragment extends Fragment {
 
     public void loadDataVideo() {
 
-        DataRepository.getInstance().loadVideoData(page, new DataRepository.VideoResponseListener() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewVideo.setVisibility(View.GONE);
+
+        DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
 
+                nextPage++;
                 adapter.setData(response);
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewVideo.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -128,6 +135,7 @@ public class VideoFragment extends Fragment {
                 binding.refresh.startAnimation(rotate);
                 setupRecyclerView();
                 loadDataVideo();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
 

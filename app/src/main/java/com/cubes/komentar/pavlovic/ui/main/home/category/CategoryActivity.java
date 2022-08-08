@@ -13,8 +13,8 @@ import com.cubes.komentar.databinding.ActivityCategoryBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 
@@ -24,7 +24,7 @@ public class CategoryActivity extends AppCompatActivity {
     private String category;
     private LatestAdapter adapter;
     private int id;
-    private int page = 1;
+    private int nextPage = 1;
 
 
     @Override
@@ -70,12 +70,13 @@ public class CategoryActivity extends AppCompatActivity {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
-            public void loadMoreNews(int page) {
-                DataRepository.getInstance().loadCategoryData(id, page, new DataRepository.CategoryResponseListener() {
+            public void loadMoreNews() {
+                DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
                     @Override
                     public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
                         adapter.addNewsList(responseNewsList.news);
 
+                        nextPage++;
                     }
 
                     @Override
@@ -92,18 +93,24 @@ public class CategoryActivity extends AppCompatActivity {
 
     public void loadCategoryData() {
 
-        DataRepository.getInstance().loadCategoryData(id, page, new DataRepository.CategoryResponseListener() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewCategory.setVisibility(View.GONE);
+
+        DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
 
+                nextPage++;
                 adapter.setData(responseNewsList);
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewCategory.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -121,6 +128,7 @@ public class CategoryActivity extends AppCompatActivity {
                 binding.refresh.startAnimation(rotate);
                 setupRecyclerView();
                 loadCategoryData();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
     }

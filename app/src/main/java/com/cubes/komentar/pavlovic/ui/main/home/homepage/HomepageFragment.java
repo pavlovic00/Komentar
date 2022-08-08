@@ -68,6 +68,9 @@ public class HomepageFragment extends Fragment {
 
     public void loadHomeData() {
 
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewHomepage.setVisibility(View.GONE);
+
         DataRepository.getInstance().loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
             public void onResponse(ResponseHomepage.ResponseHomepageData response) {
@@ -75,11 +78,13 @@ public class HomepageFragment extends Fragment {
                 adapter.setDataItems(response);
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewHomepage.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -96,6 +101,7 @@ public class HomepageFragment extends Fragment {
                 rotate.setDuration(300);
                 binding.refresh.startAnimation(rotate);
                 loadHomeData();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
     }

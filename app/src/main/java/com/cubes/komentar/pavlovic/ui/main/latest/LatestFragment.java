@@ -15,8 +15,8 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
 import com.cubes.komentar.databinding.FragmentLatestBinding;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
@@ -26,7 +26,7 @@ public class LatestFragment extends Fragment {
 
     private FragmentLatestBinding binding;
     private LatestAdapter adapter;
-    private int page = 1;
+    private int nextPage = 1;
 
 
     public static LatestFragment newInstance() {
@@ -58,7 +58,7 @@ public class LatestFragment extends Fragment {
         refresh();
     }
 
-    public void setupRecyclerView(){
+    public void setupRecyclerView() {
 
         binding.recyclerViewLatest.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LatestAdapter();
@@ -76,11 +76,13 @@ public class LatestFragment extends Fragment {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
-            public void loadMoreNews(int page) {
-                DataRepository.getInstance().loadLatestData(page, new DataRepository.LatestResponseListener() {
+            public void loadMoreNews() {
+                DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
                     @Override
                     public void onResponse(ResponseNewsList.ResponseData response) {
                         adapter.addNewsList(response.news);
+
+                        nextPage++;
                     }
 
                     @Override
@@ -98,15 +100,15 @@ public class LatestFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewLatest.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadLatestData(page, new DataRepository.LatestResponseListener() {
+        DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
 
-                binding.progressBar.setVisibility(View.GONE);
-
+                nextPage++;
                 adapter.setData(response);
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewLatest.setVisibility(View.VISIBLE);
             }
 
@@ -130,9 +132,9 @@ public class LatestFragment extends Fragment {
                 binding.refresh.startAnimation(rotate);
                 setupRecyclerView();
                 loadDataLatest();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
 
     }
-
 }

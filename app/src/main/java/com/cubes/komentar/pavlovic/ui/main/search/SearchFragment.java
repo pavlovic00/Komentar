@@ -19,8 +19,8 @@ import com.cubes.komentar.databinding.FragmentSearchBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.data.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.data.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 
@@ -28,7 +28,7 @@ public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
     private SearchAdapter adapter;
-    private int page = 1;
+    private int nextPage = 1;
 
 
     public static SearchFragment newInstance() {
@@ -76,7 +76,7 @@ public class SearchFragment extends Fragment {
         refresh();
     }
 
-    public void setupRecyclerView(){
+    public void setupRecyclerView() {
         binding.recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SearchAdapter();
         binding.recyclerViewSearch.setAdapter(adapter);
@@ -94,12 +94,13 @@ public class SearchFragment extends Fragment {
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {
             @Override
-            public void loadMoreNews(int page) {
-                DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), page, new DataRepository.SearchResponseListener() {
+            public void loadMoreNews() {
+                DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
                     @Override
                     public void onResponse(ResponseNewsList.ResponseData responseData) {
                         adapter.addNewsList(responseData.news);
 
+                        nextPage++;
                     }
 
                     @Override
@@ -116,18 +117,24 @@ public class SearchFragment extends Fragment {
 
     public void loadSearchData() {
 
-        DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), page, new DataRepository.SearchResponseListener() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerViewSearch.setVisibility(View.GONE);
+
+        DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData responseData) {
 
+                nextPage++;
                 adapter.setDataSearch(responseData);
 
                 binding.refresh.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewSearch.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         });
@@ -145,6 +152,7 @@ public class SearchFragment extends Fragment {
                 binding.refresh.startAnimation(rotate);
                 setupRecyclerView();
                 loadSearchData();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
 

@@ -28,13 +28,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         if (position == 0) {
-            HomepageFragment fragment = HomepageFragment.newInstance();
-            return fragment;
+            return HomepageFragment.newInstance();
         } else {
             ResponseCategories.ResponseCategoriesData categoriesData = categoriesList.get(position - 1);
 
-            ViewPagerFragment fragment = ViewPagerFragment.newInstance(categoriesData);
-            return fragment;
+            return ViewPagerFragment.newInstance(categoriesData);
         }
     }
 
