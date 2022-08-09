@@ -15,12 +15,12 @@ import com.cubes.komentar.databinding.RvItemRvBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.databinding.RvRecyclerviewVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RecyclerViewItemHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemButtonsNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemEditorChoise;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSlider;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSportBox;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBox;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTopNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideo;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.HomepageViewHolder> {
 
-    private ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
+    private final ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
 
 
     public HomepageAdapter() {
@@ -113,12 +113,12 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         //7-8
         for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : response.category) {
             items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            items.add(new RvItemSportBox(categoryBox.title, categoryBox.news));
+            items.add(new RvItemBox(categoryBox.title, categoryBox.news));
         }
         notifyDataSetChanged();
     }
 
-    public class HomepageViewHolder extends RecyclerView.ViewHolder {
+    public static class HomepageViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

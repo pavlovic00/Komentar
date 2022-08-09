@@ -12,18 +12,17 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
-import com.cubes.komentar.pavlovic.data.model.News;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestViewHolder> {
 
-    public ArrayList<News> newsList = new ArrayList<>();
+    private ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
     private boolean isFinished;
     private NewsListener newsListener;
@@ -55,7 +54,6 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
     public void onBindViewHolder(@NonNull LatestViewHolder holder, int position) {
 
 
-
         if (position == 0) {
 
             if (newsList.size() > 0) {
@@ -69,33 +67,22 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                 bindingBig.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
                 Picasso.get().load(news.image).into(bindingBig.imageView);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        newsListener.onNewsCLicked(news);
-                    }
-                });
+                holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
             }
         } else if (position > 0 & position < newsList.size()) {
 
-            if (newsList.size() > 0) {
-                News news = newsList.get(position);
+            newsList.size();
+            News news = newsList.get(position);
 
-                RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
+            RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
 
-                bindingSmall.textViewTitle.setText(news.title);
-                bindingSmall.date.setText(news.created_at);
-                bindingSmall.textViewCategory.setText(news.category.name);
-                bindingSmall.textViewCategory.setTextColor(Color.parseColor(news.category.color));
+            bindingSmall.textViewTitle.setText(news.title);
+            bindingSmall.date.setText(news.created_at);
+            bindingSmall.textViewCategory.setText(news.category.name);
+            bindingSmall.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
-                Picasso.get().load(news.image).into(bindingSmall.imageView);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        newsListener.onNewsCLicked(news);
-                    }
-                });
-            }
+            Picasso.get().load(news.image).into(bindingSmall.imageView);
+            holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
         } else {
 
             RvItemLoadingBinding bindingLoading = (RvItemLoadingBinding) holder.binding;
@@ -162,7 +149,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
         notifyDataSetChanged();
     }
 
-    public class LatestViewHolder extends RecyclerView.ViewHolder {
+    public static class LatestViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

@@ -1,13 +1,15 @@
-package com.cubes.komentar.pavlovic.data.repository;
+package com.cubes.komentar.pavlovic.data.source.repository;
 
-import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
+import androidx.annotation.NonNull;
 
-import com.cubes.komentar.pavlovic.data.networking.RetrofitService;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-import com.cubes.komentar.pavlovic.data.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
-import com.cubes.komentar.pavlovic.data.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
+
+import com.cubes.komentar.pavlovic.data.source.networking.RetrofitService;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 
 import java.util.ArrayList;
 
@@ -52,7 +54,7 @@ public class DataRepository {
 
         service.getVideo(page).enqueue(new Callback<ResponseNewsList>() {
             @Override
-            public void onResponse(Call<ResponseNewsList> call, retrofit2.Response<ResponseNewsList> response) {
+            public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
 
                 if (response.body() != null
                         && response.isSuccessful()
@@ -63,7 +65,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseNewsList> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseNewsList> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -79,7 +81,7 @@ public class DataRepository {
 
         service.getLatestNews(page).enqueue(new Callback<ResponseNewsList>() {
             @Override
-            public void onResponse(Call<ResponseNewsList> call, retrofit2.Response<ResponseNewsList> response) {
+            public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null
@@ -89,7 +91,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseNewsList> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseNewsList> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -106,7 +108,7 @@ public class DataRepository {
 
         service.getSearch(term, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
-            public void onResponse(Call<ResponseNewsList> call, retrofit2.Response<ResponseNewsList> response) {
+            public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null
@@ -116,7 +118,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseNewsList> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseNewsList> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -133,7 +135,7 @@ public class DataRepository {
 
         service.getAllNews(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
-            public void onResponse(Call<ResponseNewsList> call, retrofit2.Response<ResponseNewsList> response) {
+            public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null
@@ -143,7 +145,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseNewsList> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseNewsList> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -160,7 +162,7 @@ public class DataRepository {
 
         service.getTag(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
-            public void onResponse(Call<ResponseNewsList> call, retrofit2.Response<ResponseNewsList> response) {
+            public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null
@@ -170,7 +172,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseNewsList> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseNewsList> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -187,7 +189,7 @@ public class DataRepository {
 
         service.getHomepage().enqueue(new Callback<ResponseHomepage>() {
             @Override
-            public void onResponse(Call<ResponseHomepage> call, retrofit2.Response<ResponseHomepage> response) {
+            public void onResponse(@NonNull Call<ResponseHomepage> call, @NonNull retrofit2.Response<ResponseHomepage> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -196,7 +198,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseHomepage> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseHomepage> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -213,7 +215,7 @@ public class DataRepository {
 
         service.getCategoryNews().enqueue(new Callback<ResponseCategories>() {
             @Override
-            public void onResponse(Call<ResponseCategories> call, retrofit2.Response<ResponseCategories> response) {
+            public void onResponse(@NonNull Call<ResponseCategories> call, @NonNull retrofit2.Response<ResponseCategories> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -222,7 +224,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseCategories> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseCategories> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -239,7 +241,7 @@ public class DataRepository {
 
         service.getComment(id).enqueue(new Callback<ResponseComment>() {
             @Override
-            public void onResponse(Call<ResponseComment> call, retrofit2.Response<ResponseComment> response) {
+            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull retrofit2.Response<ResponseComment> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -248,7 +250,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseComment> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -265,7 +267,7 @@ public class DataRepository {
 
         service.getNewsDetail(id).enqueue(new Callback<ResponseDetail>() {
             @Override
-            public void onResponse(Call<ResponseDetail> call, retrofit2.Response<ResponseDetail> response) {
+            public void onResponse(@NonNull Call<ResponseDetail> call, @NonNull retrofit2.Response<ResponseDetail> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -274,7 +276,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseDetail> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseDetail> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -291,7 +293,7 @@ public class DataRepository {
 
         service.getAllNews(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
-            public void onResponse(Call<ResponseNewsList> call, retrofit2.Response<ResponseNewsList> response) {
+            public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -300,7 +302,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseNewsList> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseNewsList> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -319,16 +321,15 @@ public class DataRepository {
 
         service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseCommentSend.ResponseBody> call, Response<ResponseCommentSend.ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> response) {
                 if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body() != null) {
+                        && response.isSuccessful()) {
                     listener.onResponse(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseCommentSend.ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -339,16 +340,15 @@ public class DataRepository {
 
         service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseCommentSend.ResponseBody> call, Response<ResponseCommentSend.ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> response) {
                 if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body() != null) {
+                        && response.isSuccessful()) {
                     listener.onResponse(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseCommentSend.ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -364,7 +364,7 @@ public class DataRepository {
 
         service.postLike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
             @Override
-            public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
+            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -373,7 +373,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseComment> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -382,7 +382,7 @@ public class DataRepository {
 
         service.postDislike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
             @Override
-            public void onResponse(Call<ResponseComment> call, Response<ResponseComment> response) {
+            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> response) {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
@@ -391,7 +391,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseComment> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });

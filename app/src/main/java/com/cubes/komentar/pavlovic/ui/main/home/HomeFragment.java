@@ -1,20 +1,19 @@
 package com.cubes.komentar.pavlovic.ui.main.home;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.cubes.komentar.databinding.FragmentHomeBinding;
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.ViewPagerAdapter;
 
 public class HomeFragment extends Fragment {
@@ -33,7 +32,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -61,7 +60,6 @@ public class HomeFragment extends Fragment {
                 binding.tabLayout.setupWithViewPager(binding.viewPagerHome);
 
 
-
                 binding.refresh.setVisibility(View.GONE);
                 binding.viewPagerHome.setVisibility(View.VISIBLE);
             }
@@ -75,15 +73,12 @@ public class HomeFragment extends Fragment {
 
     public void refresh() {
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.refresh.setOnClickListener(view -> {
 
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadCategoriesData();
-            }
+            RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(300);
+            binding.refresh.startAnimation(rotate);
+            loadCategoriesData();
         });
     }
 }

@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.response;
+package com.cubes.komentar.pavlovic.data.source.response;
 
 public class ParentResponse {
 

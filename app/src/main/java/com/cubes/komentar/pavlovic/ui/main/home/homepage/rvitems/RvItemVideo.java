@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.databinding.RvRecyclerviewVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoAdapter;
 
@@ -15,8 +14,7 @@ import java.util.ArrayList;
 
 public class RvItemVideo implements RecyclerViewItemHomepage {
 
-    public ArrayList<News> videoList;
-    private VideoAdapter adapter;
+    private final ArrayList<News> videoList;
 
 
     public RvItemVideo(ArrayList<News> videoList) {
@@ -35,18 +33,16 @@ public class RvItemVideo implements RecyclerViewItemHomepage {
 
         binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                 RecyclerView.VERTICAL, false));
+        VideoAdapter adapter;
         binding.recyclerViewVideo.setAdapter(adapter = new VideoAdapter(videoList));
 
-        adapter.setNewsListener(new NewsListener() {
-            @Override
-            public void onNewsCLicked(News news) {
-                Intent i = new Intent();
-                i.setAction(Intent.ACTION_SEND);
-                i.putExtra(Intent.EXTRA_TEXT, news.url);
-                i.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(i, null);
-                holder.itemView.getContext().startActivity(shareIntent);
-            }
+        adapter.setNewsListener(news -> {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_SEND);
+            i.putExtra(Intent.EXTRA_TEXT, news.url);
+            i.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(i, null);
+            holder.itemView.getContext().startActivity(shareIntent);
         });
 
     }

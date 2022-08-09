@@ -12,10 +12,9 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     private boolean isFinished;
     private NewsListener newsListener;
     private LoadingNewsListener loadingNewsListener;
-   // private int page = 2;
 
 
     public SearchAdapter() {
@@ -76,12 +74,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 bindingSmall.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
                 Picasso.get().load(news.image).into(bindingSmall.imageView);
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        newsListener.onNewsCLicked(news);
-                    }
-                });
+                holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
             }
         }
     }
@@ -120,7 +113,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void addNewsList(ArrayList<News> list) {
         this.newsList.addAll(list);
         this.isLoading = false;
-      //  this.page = this.page + 1;
         if (list.size() < 20) {
             setFinished(true);
         }
@@ -132,7 +124,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         notifyDataSetChanged();
     }
 
-    public class SearchViewHolder extends RecyclerView.ViewHolder {
+    public static class SearchViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

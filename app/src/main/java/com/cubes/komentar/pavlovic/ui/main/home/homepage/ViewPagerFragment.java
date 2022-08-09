@@ -14,19 +14,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentViewPagerBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 
 public class ViewPagerFragment extends Fragment {
 
     private FragmentViewPagerBinding binding;
-    private ResponseCategories.ResponseCategoriesData category;
+    private static final String CATEGORY_ID = "categoryId";
+    private int categoryId;
     private LatestAdapter adapter;
     private int nextPage = 1;
 
@@ -35,19 +32,24 @@ public class ViewPagerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ViewPagerFragment newInstance(ResponseCategories.ResponseCategoriesData category) {
+    public static ViewPagerFragment newInstance(int categoryId) {
         ViewPagerFragment fragment = new ViewPagerFragment();
-        fragment.category = category;
+        Bundle args = new Bundle();
+        args.putInt(CATEGORY_ID, categoryId);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            categoryId = getArguments().getInt(CATEGORY_ID);
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false);
 
@@ -63,40 +65,32 @@ public class ViewPagerFragment extends Fragment {
         refresh();
     }
 
-    public void setupRecyclerView(){
+    public void setupRecyclerView() {
         binding.recyclerViewPager.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LatestAdapter();
         binding.recyclerViewPager.setAdapter(adapter);
 
-        adapter.setNewsListener(new NewsListener() {
-            @Override
-            public void onNewsCLicked(News news) {
-                Intent i = new Intent(getContext(), NewsDetailActivity.class);
-                i.putExtra("id", news.id);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(i);
-            }
+        adapter.setNewsListener(news -> {
+            Intent i = new Intent(getContext(), NewsDetailActivity.class);
+            i.putExtra("id", news.id);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(i);
         });
 
-        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.NewsResponseListener() {
             @Override
-            public void loadMoreNews() {
-                DataRepository.getInstance().loadCategoriesNewsData(category.id, nextPage, new DataRepository.NewsResponseListener() {
-                    @Override
-                    public void onResponse(ResponseNewsList.ResponseData response) {
-                        adapter.addNewsList(response.news);
+            public void onResponse(ResponseNewsList.ResponseData response) {
+                adapter.addNewsList(response.news);
 
-                        nextPage++;
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        binding.recyclerViewPager.setVisibility(View.GONE);
-                        binding.refresh.setVisibility(View.VISIBLE);
-                    }
-                });
+                nextPage++;
             }
-        });
+
+            @Override
+            public void onFailure(Throwable t) {
+                binding.recyclerViewPager.setVisibility(View.GONE);
+                binding.refresh.setVisibility(View.VISIBLE);
+            }
+        }));
 
     }
 
@@ -105,7 +99,7 @@ public class ViewPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(category.id, 1, new DataRepository.NewsResponseListener() {
+        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 1, new DataRepository.NewsResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
 
@@ -129,17 +123,14 @@ public class ViewPagerFragment extends Fragment {
 
     public void refresh() {
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.refresh.setOnClickListener(view -> {
 
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                setupRecyclerView();
-                loadHomeData();
-                binding.progressBar.setVisibility(View.GONE);
-            }
+            RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(300);
+            binding.refresh.startAnimation(rotate);
+            setupRecyclerView();
+            loadHomeData();
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

@@ -12,7 +12,7 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.squareup.picasso.Picasso;
@@ -78,12 +78,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 bindingVideo.textViewCategory.setTextColor(Color.parseColor(news.category.color));
                 Picasso.get().load(news.image).into(bindingVideo.imageView);
 
-                bindingVideo.imageViewPlay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        newsListener.onNewsCLicked(news);
-                    }
-                });
+                bindingVideo.imageViewPlay.setOnClickListener(view -> newsListener.onNewsCLicked(news));
             }
         }
 
@@ -104,10 +99,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         if (newsList == null) {
             return 0;
         }
-        if (newsList.size() > 20){
+        if (newsList.size() > 20) {
             return newsList.size() + 1;
-        }
-        else{
+        } else {
             return newsList.size();
         }
     }
@@ -139,7 +133,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         notifyDataSetChanged();
     }
 
-    public class VideoViewHolder extends RecyclerView.ViewHolder {
+    public static class VideoViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

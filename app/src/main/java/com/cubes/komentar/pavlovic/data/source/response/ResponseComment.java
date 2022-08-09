@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.response;
+package com.cubes.komentar.pavlovic.data.source.response;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ public class ResponseComment extends ParentResponse{
     public ArrayList<Comment> data;
 
 
-    public class Comment {
+    public static class Comment {
 
         public int negative_votes;
         public int positive_votes;

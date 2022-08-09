@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.response;
+package com.cubes.komentar.pavlovic.data.source.response;
 
 import com.cubes.komentar.pavlovic.data.model.Category;
 import com.cubes.komentar.pavlovic.data.model.News;
@@ -11,7 +11,7 @@ public class ResponseDetail extends ParentResponse {
     public ResponseDetailData data;
 
 
-    public class ResponseDetailData {
+    public static class ResponseDetailData {
 
         public int id;
         public String image;
@@ -31,6 +31,6 @@ public class ResponseDetail extends ParentResponse {
         public ArrayList<Tags> tags;
         public ArrayList<News> related_news;
         public ArrayList<News> category_news;
-        public ArrayList comments_top_n;
+        public ArrayList<ResponseComment.Comment> comments_top_n;
     }
 }

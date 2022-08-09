@@ -7,8 +7,8 @@ import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 
 public class RvItemTitle implements RecyclerViewItemHomepage {
 
-    private String title;
-    private String color;
+    private final String title;
+    private final String color;
 
 
     public RvItemTitle(String title, String color) {

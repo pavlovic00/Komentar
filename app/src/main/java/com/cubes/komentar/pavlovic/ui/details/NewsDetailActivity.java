@@ -1,17 +1,17 @@
 package com.cubes.komentar.pavlovic.ui.details;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.cubes.komentar.databinding.ActivityNewsDetailBinding;
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 
 public class NewsDetailActivity extends AppCompatActivity {
@@ -31,13 +31,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         id = getIntent().getExtras().getInt("id");
 
-        binding.imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
+        binding.imageBack.setOnClickListener(view1 -> finish());
 
 
         setupRecyclerView();
@@ -45,7 +39,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         refresh();
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
 
         binding.recyclerViewDetail.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new DetailNewsAdapter();
@@ -64,24 +58,18 @@ public class NewsDetailActivity extends AppCompatActivity {
 
                 adapter.setDataItems(response);
 
-                binding.imageViewComment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent commentIntent = new Intent(view.getContext(), AllCommentActivity.class);
-                        commentIntent.putExtra("id",response.id);
-                        view.getContext().startActivity(commentIntent);
-                    }
+                binding.imageViewComment.setOnClickListener(view -> {
+                    Intent commentIntent = new Intent(view.getContext(), AllCommentActivity.class);
+                    commentIntent.putExtra("id", response.id);
+                    view.getContext().startActivity(commentIntent);
                 });
 
-                binding.imageViewShare.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent();
-                        i.setAction(Intent.ACTION_SEND);
-                        i.putExtra(Intent.EXTRA_STREAM,response.url);
-                        i.setType("text/plain");
-                        startActivity(Intent.createChooser(i, null));
-                    }
+                binding.imageViewShare.setOnClickListener(view -> {
+                    Intent i = new Intent();
+                    i.setAction(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_STREAM, response.url);
+                    i.setType("text/plain");
+                    startActivity(Intent.createChooser(i, null));
                 });
 
                 binding.refresh.setVisibility(View.GONE);
@@ -99,16 +87,13 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     public void refresh() {
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.refresh.setOnClickListener(view -> {
 
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadDetailData();
-                binding.progressBar.setVisibility(View.GONE);
-            }
+            RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(300);
+            binding.refresh.startAnimation(rotate);
+            loadDetailData();
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

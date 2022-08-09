@@ -6,16 +6,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<ResponseCategories.ResponseCategoriesData> categoriesList;
+    private final ArrayList<ResponseCategories.ResponseCategoriesData> categoriesList;
 
 
     public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
@@ -32,7 +29,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         } else {
             ResponseCategories.ResponseCategoriesData categoriesData = categoriesList.get(position - 1);
 
-            return ViewPagerFragment.newInstance(categoriesData);
+            return ViewPagerFragment.newInstance(categoriesData.id);
         }
     }
 

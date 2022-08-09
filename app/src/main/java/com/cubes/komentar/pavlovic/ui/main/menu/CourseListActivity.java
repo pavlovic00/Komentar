@@ -1,11 +1,11 @@
 package com.cubes.komentar.pavlovic.ui.main.menu;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cubes.komentar.databinding.ActivityCourseListBinding;
 
@@ -27,11 +27,6 @@ public class CourseListActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        binding.imageClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        binding.imageClose.setOnClickListener(view1 -> finish());
     }
 }

@@ -2,7 +2,6 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.view.View;
 
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
@@ -12,7 +11,7 @@ import com.squareup.picasso.Picasso;
 
 public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
-    private News news;
+    private final News news;
 
 
     public RvItemRelatedNews(News news) {
@@ -36,13 +35,10 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                startDetailIntent.putExtra("id", news.id);
-                view.getContext().startActivity(startDetailIntent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
+            startDetailIntent.putExtra("id", news.id);
+            view.getContext().startActivity(startDetailIntent);
         });
 
     }

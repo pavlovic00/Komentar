@@ -23,12 +23,9 @@ public class SplashscreenActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
         }, 800);
     }
 }

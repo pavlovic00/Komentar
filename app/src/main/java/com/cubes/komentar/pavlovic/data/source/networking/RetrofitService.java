@@ -1,12 +1,11 @@
-package com.cubes.komentar.pavlovic.data.networking;
+package com.cubes.komentar.pavlovic.data.source.networking;
 
-import com.cubes.komentar.pavlovic.data.response.ResponseForPaging;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-import com.cubes.komentar.pavlovic.data.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
-import com.cubes.komentar.pavlovic.data.response.ResponseHomepage;
-import com.cubes.komentar.pavlovic.data.response.ResponseCommentSend;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,9 +27,6 @@ public interface RetrofitService {
 
     @GET("api/newsdetails")
     Call<ResponseDetail> getNewsDetail(@Query("id") int id);
-
-    @GET("api/newsdetails")
-    Call<ResponseForPaging> getNewsDetailPaging(@Query("id") int id);
 
     @GET("api/comments")
     Call<ResponseComment> getComment(@Query("id") int id);

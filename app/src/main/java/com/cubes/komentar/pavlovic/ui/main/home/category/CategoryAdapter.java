@@ -1,7 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.home.category;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -17,17 +16,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
-
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
-    private ArrayList<ResponseCategories.ResponseCategoriesData> list;
+    private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
 
     public CategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list) {
@@ -61,42 +57,36 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         if (list.get(position).subcategories.size() == 0) {
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
-        bindingCategory.submenuarrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bindingCategory.submenuarrow.setOnClickListener(view -> {
 
-                //Jako bitno mora biti na pocetku.
-                categories.open = !categories.open;
+            //Jako bitno mora biti na pocetku.
+            categories.open = !categories.open;
 
-                if (categories.open) {
-                    bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                    bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(categories.subcategories));
+            if (categories.open) {
+                bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(categories.subcategories));
 
-                    bindingCategory.submenuarrow.setRotation(90);
+                bindingCategory.submenuarrow.setRotation(90);
 
-                } else {
-                    bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                    bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(new ArrayList<ResponseCategories.ResponseCategoriesData>()));
+            } else {
+                bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(new ArrayList<>()));
 
-                    bindingCategory.submenuarrow.setRotation(-90);
-                }
-
+                bindingCategory.submenuarrow.setRotation(-90);
             }
+
         });
 
-        bindingCategory.textViewCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bindingCategory.textViewCategory.setOnClickListener(view -> {
 
-                DrawerLayout drawer = ((HomeActivity) view.getContext()).findViewById(R.id.drawerLayout);
-                ViewPager viewPager = ((HomeActivity) view.getContext()).findViewById(R.id.viewPagerHome);
-                drawer.closeDrawer(((HomeActivity) view.getContext()).findViewById(R.id.navigationView));
-                viewPager.setCurrentItem(position + 1);
+            DrawerLayout drawer = ((HomeActivity) view.getContext()).findViewById(R.id.drawerLayout);
+            ViewPager viewPager = ((HomeActivity) view.getContext()).findViewById(R.id.viewPagerHome);
+            drawer.closeDrawer(((HomeActivity) view.getContext()).findViewById(R.id.navigationView));
+            viewPager.setCurrentItem(position + 1);
 
-                Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
-                categoryIntent.putExtra("id", list.get(position).id);
-                categoryIntent.putExtra("category", list.get(position).name);
-            }
+            Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
+            categoryIntent.putExtra("id", list.get(position).id);
+            categoryIntent.putExtra("category", list.get(position).name);
         });
 
     }
@@ -106,7 +96,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return list.size();
     }
 
-    public class CategoryViewHolder extends RecyclerView.ViewHolder {
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

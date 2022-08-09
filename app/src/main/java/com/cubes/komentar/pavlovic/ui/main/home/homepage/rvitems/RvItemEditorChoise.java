@@ -35,7 +35,7 @@ public class RvItemEditorChoise implements RecyclerViewItemHomepage {
         binding.recyclerViewHorizontal2.setAdapter(new SliderAdapter(editorsChoiceList));
 
 
-        if (binding.recyclerViewHorizontal2.getOnFlingListener() == null){
+        if (binding.recyclerViewHorizontal2.getOnFlingListener() == null) {
             pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHorizontal2);
             binding.indicator.attachToRecyclerView(binding.recyclerViewHorizontal2, pagerSnapHelper);
         }

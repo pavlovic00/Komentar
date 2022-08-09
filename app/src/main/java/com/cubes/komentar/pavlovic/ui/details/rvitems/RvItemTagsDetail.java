@@ -5,14 +5,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
 import com.cubes.komentar.pavlovic.data.model.Tags;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 import com.cubes.komentar.pavlovic.ui.details.ButtonTagsAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 
 import java.util.ArrayList;
 
 public class RvItemTagsDetail implements RecyclerViewItemDetail {
 
-    private ArrayList<Tags> tagsList;
+    private final ArrayList<Tags> tagsList;
 
 
     public RvItemTagsDetail(ArrayList<Tags> tagsList) {

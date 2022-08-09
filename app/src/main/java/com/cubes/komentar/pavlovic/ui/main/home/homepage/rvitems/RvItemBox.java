@@ -10,13 +10,13 @@ import com.cubes.komentar.pavlovic.ui.main.home.homepage.NewsForHomepageAdapter;
 
 import java.util.ArrayList;
 
-public class RvItemSportBox implements RecyclerViewItemHomepage {
+public class RvItemBox implements RecyclerViewItemHomepage {
 
-    private String title;
-    private ArrayList<News> news;
+    private final String title;
+    private final ArrayList<News> news;
 
 
-    public RvItemSportBox(String title, ArrayList<News> news) {
+    public RvItemBox(String title, ArrayList<News> news) {
         this.title = title;
         this.news = news;
     }

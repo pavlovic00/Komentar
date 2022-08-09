@@ -1,7 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.home.category;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -13,15 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseCategories;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 
 import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder> {
 
-    private ArrayList<ResponseCategories.ResponseCategoriesData> list;
+    private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
 
 
     public SubCategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list) {
@@ -57,14 +54,11 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
 
-        bindingCategory.textViewCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
-                categoryIntent.putExtra("id", list.get(position).id);
-                categoryIntent.putExtra("category", list.get(position).name);
-                view.getContext().startActivity(categoryIntent);
-            }
+        bindingCategory.textViewCategory.setOnClickListener(view -> {
+            Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
+            categoryIntent.putExtra("id", list.get(position).id);
+            categoryIntent.putExtra("category", list.get(position).name);
+            view.getContext().startActivity(categoryIntent);
         });
 
     }
@@ -74,7 +68,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         return list.size();
     }
 
-    public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
+    public static class SubCategoryViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

@@ -1,16 +1,16 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.cubes.komentar.databinding.ActivityAllCommentBinding;
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 
 import java.util.ArrayList;
 
@@ -33,19 +33,14 @@ public class AllCommentActivity extends AppCompatActivity {
 
         id = getIntent().getExtras().getInt("id");
 
-        binding.imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        binding.imageBack.setOnClickListener(view1 -> finish());
 
         setupRecyclerView();
         loadCommentData();
         refresh();
     }
 
-    public void setupRecyclerView(){
+    public void setupRecyclerView() {
 
         binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new CommentAdapter();
@@ -80,16 +75,13 @@ public class AllCommentActivity extends AppCompatActivity {
 
     public void refresh() {
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.refresh.setOnClickListener(view -> {
 
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadCommentData();
-                binding.progressBar.setVisibility(View.GONE);
-            }
+            RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(300);
+            binding.refresh.startAnimation(rotate);
+            loadCommentData();
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

@@ -1,25 +1,20 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
-import com.cubes.komentar.databinding.FragmentHomepageBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseHomepage;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import java.util.ArrayList;
+import com.cubes.komentar.databinding.FragmentHomepageBinding;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 
 public class HomepageFragment extends Fragment {
 
@@ -42,7 +37,7 @@ public class HomepageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomepageBinding.inflate(inflater, container, false);
 
@@ -58,7 +53,7 @@ public class HomepageFragment extends Fragment {
         refresh();
     }
 
-    public void setupRecyclerView(){
+    public void setupRecyclerView() {
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new HomepageAdapter();
@@ -93,16 +88,13 @@ public class HomepageFragment extends Fragment {
 
     public void refresh() {
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.refresh.setOnClickListener(view -> {
 
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                loadHomeData();
-                binding.progressBar.setVisibility(View.GONE);
-            }
+            RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(300);
+            binding.refresh.startAnimation(rotate);
+            loadHomeData();
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

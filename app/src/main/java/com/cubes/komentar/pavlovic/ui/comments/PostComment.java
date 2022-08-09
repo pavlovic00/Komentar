@@ -10,13 +10,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cubes.komentar.databinding.ActivityReplyCommentBinding;
+import com.cubes.komentar.databinding.ActivityPostCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
 
-public class ReplyCommentActivity extends AppCompatActivity {
 
-    private ActivityReplyCommentBinding binding;
+public class PostComment extends AppCompatActivity {
+
+    private ActivityPostCommentBinding binding;
     private String news;
     private String reply_id;
 
@@ -25,12 +26,12 @@ public class ReplyCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityReplyCommentBinding.inflate(getLayoutInflater());
+        binding = ActivityPostCommentBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-        news = getIntent().getExtras().getString("news");
-        reply_id = getIntent().getExtras().getString("reply_id");
+        //news = getIntent().getExtras().getString("news");
+        //reply_id = getIntent().getExtras().getString("reply_id");
 
         String name = binding.textViewName.getText().toString();
         String email = binding.textMail.getText().toString();
@@ -44,8 +45,8 @@ public class ReplyCommentActivity extends AppCompatActivity {
 
         binding.content.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_SEND) {
-                replyComment(name, email, content);
-                hideKeyboard(ReplyCommentActivity.this);
+                postComment(name, email, content);
+                hideKeyboard(PostComment.this);
                 return true;
             }
             return false;
@@ -57,22 +58,22 @@ public class ReplyCommentActivity extends AppCompatActivity {
                     binding.content.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Popunite sva polja", Toast.LENGTH_LONG).show();
             } else {
-                replyComment(name, email, content);
+                postComment(name, email, content);
             }
         });
 
         binding.imageClose.setOnClickListener(view1 -> finish());
     }
 
-    public void replyComment(String name, String email, String content) {
+    public void postComment(String name, String email, String content) {
 
-        DataRepository.getInstance().replyComment(String.valueOf(news), String.valueOf(reply_id), name, email, content, new DataRepository.PostResponseListener() {
+        DataRepository.getInstance().postComment(String.valueOf(news), name, email, content, new DataRepository.PostResponseListener() {
             @Override
             public void onResponse(ResponseCommentSend.ResponseBody response) {
                 binding.textViewName.setText("");
                 binding.textMail.setText("");
                 binding.content.setText("");
-                Toast.makeText(getApplicationContext(), "RADI ODGOVOR!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "RADI POSTAVLJANJE!", Toast.LENGTH_LONG).show();
                 finish();
             }
 

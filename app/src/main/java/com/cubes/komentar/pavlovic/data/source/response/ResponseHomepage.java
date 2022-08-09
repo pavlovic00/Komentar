@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.response;
+package com.cubes.komentar.pavlovic.data.source.response;
 
 import com.cubes.komentar.pavlovic.data.model.News;
 
@@ -9,7 +9,7 @@ public class ResponseHomepage extends ParentResponse {
     public ResponseHomepageData data;
 
 
-    public class ResponseHomepageData {
+    public static class ResponseHomepageData {
 
         public ArrayList<News> slider;
         public ArrayList<News> top;
@@ -22,7 +22,7 @@ public class ResponseHomepage extends ParentResponse {
 
     }
 
-    public class ResponseHomePageDataCategoryBox {
+    public static class ResponseHomePageDataCategoryBox {
 
         public int id;
         public String title;

@@ -12,17 +12,16 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder> {
 
-    public ArrayList<News> newsList = new ArrayList<>();
+    private ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
     private boolean isFinished;
     private NewsListener newsListener;
@@ -77,12 +76,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
                 bindingSmall.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
                 Picasso.get().load(news.image).into(bindingSmall.imageView);
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        newsListener.onNewsCLicked(news);
-                    }
-                });
+                holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
             }
         }
     }
@@ -132,7 +126,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
         notifyDataSetChanged();
     }
 
-    public class TagsViewHolder extends RecyclerView.ViewHolder {
+    public static class TagsViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

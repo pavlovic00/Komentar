@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.response;
+package com.cubes.komentar.pavlovic.data.source.response;
 
 import com.cubes.komentar.pavlovic.data.model.News;
 
@@ -9,13 +9,13 @@ public class ResponseNewsList extends ParentResponse {
     public ResponseData data;
 
 
-    public class ResponseData {
+    public static class ResponseData {
 
         public ResponsePagination pagination;
         public ArrayList<News> news;
     }
 
-    public class ResponsePagination {
+    public static class ResponsePagination {
 
         public int total;
         public int count;

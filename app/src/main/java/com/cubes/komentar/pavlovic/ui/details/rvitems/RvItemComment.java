@@ -1,21 +1,17 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.Toast;
 
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
-
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.comments.ReplyCommentActivity;
 import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 
 public class RvItemComment implements RecyclerViewItemDetail {
 
-    ResponseComment.Comment comment;
-
-
+    private final ResponseComment.Comment comment;
     private int like;
     private int dislike;
 
@@ -43,51 +39,38 @@ public class RvItemComment implements RecyclerViewItemDetail {
         binding.disLike.setText(dislike + "");
 
 
-        binding.imageViewLike.setOnClickListener(new View.OnClickListener() {
+        binding.imageViewLike.setOnClickListener(view -> DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
             @Override
-            public void onClick(View view) {
-                DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-                    @Override
-                    public void onResponse(ResponseComment response) {
-                        like++;
-                        binding.like.setText((like) + "");
-                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-
-                    }
-                });
+            public void onResponse(ResponseComment response) {
+                like++;
+                binding.like.setText((like) + "");
+                Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
             }
-        });
-        binding.imageViewDislike.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-                    @Override
-                    public void onResponse(ResponseComment response) {
-                        dislike++;
-                        binding.disLike.setText((dislike) + "");
-                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                    }
+            public void onFailure(Throwable t) {
 
-                    @Override
-                    public void onFailure(Throwable t) {
-
-                    }
-                });
             }
-        });
-        binding.buttonReply.setOnClickListener(new View.OnClickListener() {
+        }));
+        binding.imageViewDislike.setOnClickListener(view -> DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
             @Override
-            public void onClick(View view) {
-                Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
-                replyIntent.putExtra("reply_id", comment.id);
-                replyIntent.putExtra("news", comment.news);
-                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(replyIntent);
+            public void onResponse(ResponseComment response) {
+                dislike++;
+                binding.disLike.setText((dislike) + "");
+                Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }));
+        binding.buttonReply.setOnClickListener(view -> {
+            Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
+            replyIntent.putExtra("reply_id", comment.id);
+            replyIntent.putExtra("news", comment.news);
+            replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            view.getContext().startActivity(replyIntent);
         });
     }
 }

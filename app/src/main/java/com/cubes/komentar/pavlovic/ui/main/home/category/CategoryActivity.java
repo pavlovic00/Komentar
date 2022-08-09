@@ -1,27 +1,23 @@
 package com.cubes.komentar.pavlovic.ui.main.home.category;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.cubes.komentar.databinding.ActivityCategoryBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 
 public class CategoryActivity extends AppCompatActivity {
 
     private ActivityCategoryBinding binding;
-    private String category;
     private LatestAdapter adapter;
     private int id;
     private int nextPage = 1;
@@ -34,18 +30,13 @@ public class CategoryActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        category = getIntent().getExtras().getString("category");
+        String category = getIntent().getExtras().getString("category");
         id = getIntent().getExtras().getInt("id");
 
         binding.textViewTag.setText(category);
 
 
-        binding.imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        binding.imageBack.setOnClickListener(view1 -> finish());
 
         setupRecyclerView();
         loadCategoryData();
@@ -58,36 +49,28 @@ public class CategoryActivity extends AppCompatActivity {
         adapter = new LatestAdapter();
         binding.recyclerViewCategory.setAdapter(adapter);
 
-        adapter.setNewsListener(new NewsListener() {
-            @Override
-            public void onNewsCLicked(News news) {
-                Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
-                i.putExtra("id", news.id);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(i);
-            }
+        adapter.setNewsListener(news -> {
+            Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
+            i.putExtra("id", news.id);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
         });
 
-        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
             @Override
-            public void loadMoreNews() {
-                DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
-                    @Override
-                    public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
-                        adapter.addNewsList(responseNewsList.news);
+            public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
+                adapter.addNewsList(responseNewsList.news);
 
-                        nextPage++;
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        binding.recyclerViewCategory.setVisibility(View.GONE);
-                        binding.refresh.setVisibility(View.VISIBLE);
-                    }
-
-                });
+                nextPage++;
             }
-        });
+
+            @Override
+            public void onFailure(Throwable t) {
+                binding.recyclerViewCategory.setVisibility(View.GONE);
+                binding.refresh.setVisibility(View.VISIBLE);
+            }
+
+        }));
 
     }
 
@@ -119,17 +102,14 @@ public class CategoryActivity extends AppCompatActivity {
 
     public void refresh() {
 
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.refresh.setOnClickListener(view -> {
 
-                RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(300);
-                binding.refresh.startAnimation(rotate);
-                setupRecyclerView();
-                loadCategoryData();
-                binding.progressBar.setVisibility(View.GONE);
-            }
+            RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(300);
+            binding.refresh.startAnimation(rotate);
+            setupRecyclerView();
+            loadCategoryData();
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

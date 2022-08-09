@@ -2,7 +2,6 @@ package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 
 public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsHolder> {
 
-    private ArrayList<News> list;
+    private final ArrayList<News> list;
 
 
     public ButtonsAdapter(ArrayList<News> list) {
@@ -31,7 +30,7 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsH
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        binding = RvItemTextForNewsHomepageBinding.inflate(inflater,parent,false);
+        binding = RvItemTextForNewsHomepageBinding.inflate(inflater, parent, false);
 
         return new ButtonsHolder(binding);
     }
@@ -45,13 +44,10 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsH
         binding.textViewTitle.setText(news.title);
         binding.date.setText(news.created_at);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                startDetailIntent.putExtra("id",news.id);
-                view.getContext().startActivity(startDetailIntent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
+            startDetailIntent.putExtra("id", news.id);
+            view.getContext().startActivity(startDetailIntent);
         });
     }
 
@@ -60,7 +56,7 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ButtonsH
         return list.size();
     }
 
-    public class ButtonsHolder extends RecyclerView.ViewHolder {
+    public static class ButtonsHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

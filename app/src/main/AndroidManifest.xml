@@ -27,7 +27,7 @@
             android:name=".pavlovic.ui.main.home.category.CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".pavlovic.ui.comments.ReplyActivity"
+            android:name=".pavlovic.ui.comments.PostComment"
             android:exported="false" />
         <activity
             android:name=".pavlovic.ui.comments.AllCommentActivity"

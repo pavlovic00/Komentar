@@ -17,8 +17,8 @@ import com.cubes.komentar.databinding.RvItemHorizontalTextViewLongBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.databinding.RvItemWebviewBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RecyclerViewItemDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonAllComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonPutComment;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.DetailNewsViewHolder> {
 
-    private ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
+    private final ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
 
 
     public DetailNewsAdapter() {
@@ -49,9 +49,6 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType) {
-//            case 0:
-//                binding = RvItemFirstItemDetailBinding.inflate(inflater, parent, false);
-//                break;
             case 0:
                 binding = RvItemWebviewBinding.inflate(inflater, parent, false);
                 break;
@@ -102,7 +99,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         return this.items.size();
     }
 
-    public void setDataItems(ResponseDetail.ResponseDetailData response){
+    public void setDataItems(ResponseDetail.ResponseDetailData response) {
         //0
         //this.items.add(new RvItemFirstItemDetail(data));
         //1
@@ -116,7 +113,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         this.items.add(new RvItemButtonPutComment());
         this.items.add(new RvItemTitleComment("Komentari", response));
         for (int i = 0; i < response.comments_top_n.size(); i++) {
-            ResponseComment.Comment commentData = (ResponseComment.Comment) response.comments_top_n.get(i);
+            ResponseComment.Comment commentData = response.comments_top_n.get(i);
             this.items.add(new RvItemComment(commentData));
         }
         this.items.add(new RvItemButtonAllComment(response));
@@ -133,7 +130,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         notifyDataSetChanged();
     }
 
-    public class DetailNewsViewHolder extends RecyclerView.ViewHolder {
+    public static class DetailNewsViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 

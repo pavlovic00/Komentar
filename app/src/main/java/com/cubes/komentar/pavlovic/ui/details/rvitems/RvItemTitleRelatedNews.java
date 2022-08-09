@@ -5,7 +5,7 @@ import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 
 public class RvItemTitleRelatedNews implements RecyclerViewItemDetail {
 
-    private String title;
+    private final String title;
 
 
     public RvItemTitleRelatedNews(String title) {

@@ -3,7 +3,6 @@ package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepageAdapter.NewsViewHolder> {
 
     public ArrayList<News> newsList;
-    private final int limit = 5;
 
 
     public NewsForHomepageAdapter(ArrayList<News> newsList) {
@@ -69,13 +67,10 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
             Picasso.get().load(news.image).into(bindingSmall.imageView);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-                startDetailIntent.putExtra("id", news.id);
-                view.getContext().startActivity(startDetailIntent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
+            startDetailIntent.putExtra("id", news.id);
+            view.getContext().startActivity(startDetailIntent);
         });
     }
 
@@ -88,6 +83,8 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
     @Override
     public int getItemCount() {
 
+        int limit = 5;
+
         if (newsList == null) {
             return 0;
         } else if (newsList.size() > limit) {
@@ -97,7 +94,7 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
         }
     }
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder {
+    public static class NewsViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
