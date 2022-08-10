@@ -1,8 +1,10 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import android.content.Intent;
+import android.view.View;
 import android.widget.Toast;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
@@ -36,35 +38,55 @@ public class RvItemComment implements RecyclerViewItemDetail {
         binding.date.setText(comment.created_at);
         binding.content.setText(comment.content);
         binding.like.setText(like + "");
-        binding.disLike.setText(dislike + "");
+        binding.dislike.setText(dislike + "");
 
 
-        binding.imageViewLike.setOnClickListener(view -> DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-            @Override
-            public void onResponse(ResponseComment response) {
-                like++;
-                binding.like.setText((like) + "");
-                Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+        binding.imageViewLike.setOnClickListener(view -> {
+            if (!comment.voted) {
+
+                DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                    @Override
+                    public void onResponse(ResponseComment response) {
+                        binding.like.setText(String.valueOf(comment.positive_votes + 1));
+                        comment.voted = true;
+                        binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
+                        binding.likeCircle.setVisibility(View.VISIBLE);
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-
-            @Override
-            public void onFailure(Throwable t) {
-
+            else {
+                Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
             }
-        }));
-        binding.imageViewDislike.setOnClickListener(view -> DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-            @Override
-            public void onResponse(ResponseComment response) {
-                dislike++;
-                binding.disLike.setText((dislike) + "");
-                Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-            }
+        });
+        binding.imageViewDislike.setOnClickListener(view -> {
+            if (!comment.voted) {
 
-            @Override
-            public void onFailure(Throwable t) {
+                DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                    @Override
+                    public void onResponse(ResponseComment response) {
+                        binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
+                        comment.voted = true;
+                        binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+                        binding.dislikeCircle.setVisibility(View.INVISIBLE);
+                        Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        }));
+            else {
+                Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+            }
+        });
         binding.buttonReply.setOnClickListener(view -> {
             Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
             replyIntent.putExtra("reply_id", comment.id);

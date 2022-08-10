@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -45,6 +46,14 @@ public class AllCommentActivity extends AppCompatActivity {
         binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new CommentAdapter();
         binding.recyclerViewComments.setAdapter(adapter);
+
+        adapter.setCommentListener(comment -> {
+            Intent replyIntent = new Intent(getApplicationContext(), ReplyCommentActivity.class);
+            replyIntent.putExtra("reply_id", comment.id);
+            replyIntent.putExtra("news", comment.news);
+            replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(replyIntent);
+        });
 
     }
 

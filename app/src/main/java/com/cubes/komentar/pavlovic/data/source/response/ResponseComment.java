@@ -18,6 +18,8 @@ public class ResponseComment extends ParentResponse{
         public String id;
         public String content;
         public ArrayList<Comment> children;
+
+        public boolean voted = false;
     }
 
 }
