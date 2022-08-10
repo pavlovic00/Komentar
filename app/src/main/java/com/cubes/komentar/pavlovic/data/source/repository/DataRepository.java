@@ -1,15 +1,16 @@
 package com.cubes.komentar.pavlovic.data.source.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
-
 import com.cubes.komentar.pavlovic.data.source.networking.RetrofitService;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadVideoData(int page, VideoResponseListener listener) {
 
         service.getVideo(page).enqueue(new Callback<ResponseNewsList>() {
@@ -77,6 +79,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadLatestData(int page, LatestResponseListener listener) {
 
         service.getLatestNews(page).enqueue(new Callback<ResponseNewsList>() {
@@ -104,6 +107,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadSearchData(String term, int page, SearchResponseListener listener) {
 
         service.getSearch(term, page).enqueue(new Callback<ResponseNewsList>() {
@@ -131,6 +135,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadCategoryData(int id, int page, CategoryResponseListener listener) {
 
         service.getAllNews(id, page).enqueue(new Callback<ResponseNewsList>() {
@@ -158,7 +163,8 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
-    public void loadTagData(int id,int page, TagResponseListener listener) {
+
+    public void loadTagData(int id, int page, TagResponseListener listener) {
 
         service.getTag(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
@@ -185,6 +191,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadHomeData(HomeResponseListener listener) {
 
         service.getHomepage().enqueue(new Callback<ResponseHomepage>() {
@@ -211,6 +218,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadCategoriesData(CategoriesResponseListener listener) {
 
         service.getCategoryNews().enqueue(new Callback<ResponseCategories>() {
@@ -237,6 +245,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadCommentData(int id, CommentResponseListener listener) {
 
         service.getComment(id).enqueue(new Callback<ResponseComment>() {
@@ -263,6 +272,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadDetailData(int id, DetailResponseListener listener) {
 
         service.getNewsDetail(id).enqueue(new Callback<ResponseDetail>() {
@@ -289,6 +299,7 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
+
     public void loadCategoriesNewsData(int id, int page, NewsResponseListener listener) {
 
         service.getAllNews(id, page).enqueue(new Callback<ResponseNewsList>() {
@@ -315,7 +326,8 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
-    public void postComment(String news, String name, String email, String content, PostResponseListener listener){
+
+    public void postComment(String news, String name, String email, String content, PostResponseListener listener) {
 
         ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), name, email, content);
 
@@ -323,8 +335,11 @@ public class DataRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> response) {
                 if (response.body() != null
-                        && response.isSuccessful()) {
+                        && response.isSuccessful()
+                        && response.code() >= 200) {
                     listener.onResponse(response.body());
+
+                    Log.d("COMMENTPOST", "" + response.code());
                 }
             }
 
@@ -334,7 +349,8 @@ public class DataRepository {
             }
         });
     }
-    public void replyComment(String news,String reply_id, String name, String email, String content, PostResponseListener listener){
+
+    public void replyComment(String news, String reply_id, String name, String email, String content, PostResponseListener listener) {
 
         ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), String.valueOf(reply_id), name, email, content);
 
@@ -342,8 +358,11 @@ public class DataRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> response) {
                 if (response.body() != null
-                        && response.isSuccessful()) {
+                        && response.isSuccessful()
+                        && response.code() >= 200) {
                     listener.onResponse(response.body());
+
+                    Log.d("COMMENTPOST", "" + response.code());
                 }
             }
 
@@ -360,15 +379,18 @@ public class DataRepository {
 
         void onFailure(Throwable t);
     }
-    public void voteComment(String id, boolean vote, VoteCommentListener listener){
+
+    public void voteComment(String id, VoteCommentListener listener) {
 
         service.postLike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
             @Override
             public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> response) {
                 if (response.body() != null
                         && response.isSuccessful()
+                        && response.code() >= 200
                         && response.body().data != null) {
                     listener.onResponse(response.body());
+                    Log.d("LIKE", "" + response.code());
                 }
             }
 
@@ -378,15 +400,18 @@ public class DataRepository {
             }
         });
     }
-    public void unVoteComment(String id, boolean unVote, VoteCommentListener listener){
+
+    public void unVoteComment(String id, VoteCommentListener listener) {
 
         service.postDislike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
             @Override
             public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> response) {
                 if (response.body() != null
                         && response.isSuccessful()
+                        && response.code() >= 200
                         && response.body().data != null) {
                     listener.onResponse(response.body());
+                    Log.d("DISLIKE", "" + response.code());
                 }
             }
 

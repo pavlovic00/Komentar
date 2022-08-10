@@ -1,8 +1,8 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -14,8 +14,7 @@ import com.cubes.komentar.databinding.ActivityPostCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
 
-
-public class PostComment extends AppCompatActivity {
+public class PostCommentActivity extends AppCompatActivity {
 
     private ActivityPostCommentBinding binding;
     private String news;
@@ -30,48 +29,81 @@ public class PostComment extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        //news = getIntent().getExtras().getString("news");
-        //reply_id = getIntent().getExtras().getString("reply_id");
+        news = getIntent().getExtras().getString("news");
+        reply_id = getIntent().getExtras().getString("reply_id");
 
-        String name = binding.textViewName.getText().toString();
-        String email = binding.textMail.getText().toString();
+        String name = binding.name.getText().toString();
+        String email = binding.mail.getText().toString();
         String content = binding.content.getText().toString();
 
-        binding.textViewName.post(() -> {
-            binding.textViewName.requestFocus();
-            InputMethodManager i = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            i.showSoftInput(binding.textViewName, InputMethodManager.SHOW_IMPLICIT);
-        });
+        if (reply_id == null) {
+            binding.commentSend.setText("Postavi komentar");
+        } else {
+            binding.commentSend.setText("Odgovori na komentar");
+        }
 
         binding.content.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_SEND) {
-                postComment(name, email, content);
-                hideKeyboard(PostComment.this);
-                return true;
+                if (reply_id == null) {
+                    postComment(name, email, content);
+                    hideKeyboard(PostCommentActivity.this);
+                    Log.d("COMPOST", "RADIPOST");
+                } else {
+                    replyComment(name, email, content);
+                    hideKeyboard(PostCommentActivity.this);
+                    Log.d("COMPOST", "RADIREPLY");
+                }
             }
             return false;
         });
 
         binding.commentSend.setOnClickListener(view12 -> {
-            if (binding.textViewName.getText().toString().isEmpty() ||
-                    binding.textMail.getText().toString().isEmpty() ||
+            if (binding.name.getText().toString().isEmpty() ||
+                    binding.mail.getText().toString().isEmpty() ||
                     binding.content.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Popunite sva polja", Toast.LENGTH_LONG).show();
             } else {
-                postComment(name, email, content);
+
+                if (reply_id == null) {
+                    postComment(name, email, content);
+                    Log.d("COMPOST", "RADIPOST");
+                } else {
+                    replyComment(name, email, content);
+                    Log.d("COMPOST", "RADIREPLY");
+                }
+
             }
         });
 
         binding.imageClose.setOnClickListener(view1 -> finish());
     }
 
-    public void postComment(String name, String email, String content) {
+    public void replyComment(String name, String email, String content) {
 
-        DataRepository.getInstance().postComment(String.valueOf(news), name, email, content, new DataRepository.PostResponseListener() {
+        DataRepository.getInstance().replyComment(news, reply_id, name, email, content, new DataRepository.PostResponseListener() {
             @Override
             public void onResponse(ResponseCommentSend.ResponseBody response) {
-                binding.textViewName.setText("");
-                binding.textMail.setText("");
+                binding.name.setText("");
+                binding.mail.setText("");
+                binding.content.setText("");
+                Toast.makeText(getApplicationContext(), "RADI ODGOVOR!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(getApplicationContext(), "Došlo je do greške!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void postComment(String name, String email, String content) {
+
+        DataRepository.getInstance().postComment(news, name, email, content, new DataRepository.PostResponseListener() {
+            @Override
+            public void onResponse(ResponseCommentSend.ResponseBody response) {
+                binding.name.setText("");
+                binding.mail.setText("");
                 binding.content.setText("");
                 Toast.makeText(getApplicationContext(), "RADI POSTAVLJANJE!", Toast.LENGTH_LONG).show();
                 finish();

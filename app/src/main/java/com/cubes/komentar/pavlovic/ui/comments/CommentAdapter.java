@@ -1,7 +1,10 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -9,20 +12,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
-import com.cubes.komentar.databinding.RvItemCommentChildrenBinding;
-import com.cubes.komentar.databinding.RvItemCommentParentBinding;
-import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.R;
+import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.ui.SharedPrefs;
+import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
-    private int like;
-    private int dislike;
+    private ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
+    private CommentListener commentListener;
+    private Activity activity;
 
-    public CommentAdapter() {
+
+    public CommentAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     @NonNull
@@ -32,124 +41,97 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        if (viewType == 0) {
-            binding = RvItemCommentParentBinding.inflate(inflater, parent, false);
-        } else {
-            binding = RvItemCommentChildrenBinding.inflate(inflater, parent, false);
-        }
+
+        binding = RvItemCommentBinding.inflate(inflater, parent, false);
+
         return new CommentViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
 
+
+
         ResponseComment.Comment comment = allComments.get(position);
 
-        like = comment.positive_votes;
-        dislike = comment.negative_votes;
+        RvItemCommentBinding binding = (RvItemCommentBinding) holder.binding;
 
-        if (allComments.get(position).parent_comment.equals("0")) {
+        binding.person.setText(comment.name);
+        binding.date.setText(comment.created_at);
+        binding.content.setText(comment.content);
+        binding.like.setText(comment.positive_votes + "");
+        binding.dislike.setText(comment.negative_votes + "");
 
-            RvItemCommentParentBinding bindingParent = (RvItemCommentParentBinding) holder.binding;
 
-            bindingParent.person.setText(comment.name);
-            bindingParent.date.setText(comment.created_at);
-            bindingParent.content.setText(comment.content);
-            bindingParent.like.setText(like + "");
-            bindingParent.disLike.setText(dislike + "");
 
-            bindingParent.imageViewLike.setOnClickListener(view -> DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-                @Override
-                public void onResponse(ResponseComment response) {
-                    like++;
-                    bindingParent.like.setText((like) + "");
-                    Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                }
+        binding.imageViewLike.setOnClickListener(view -> {
+            if (comment.voted == 0) {
+                commentListener.like(comment.id);
+                like(comment, binding);
 
-                @Override
-                public void onFailure(Throwable t) {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                }
-            }));
-            bindingParent.imageViewDislike.setOnClickListener(view -> DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-                @Override
-                public void onResponse(ResponseComment response) {
-                    dislike++;
-                    bindingParent.disLike.setText((dislike) + "");
-                    Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.imageViewDislike.setOnClickListener(view -> {
+            if (comment.voted == 0) {
+                commentListener.dislike(comment.id);
+                dislike(comment, binding);
 
-                @Override
-                public void onFailure(Throwable t) {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                }
-            }));
-            bindingParent.buttonReply.setOnClickListener(view -> {
-                Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
-                replyIntent.putExtra("reply_id", comment.id);
-                replyIntent.putExtra("news", comment.news);
-                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(replyIntent);
-            });
-        } else {
+            } else {
+                Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
 
-            RvItemCommentChildrenBinding bindingChildren = (RvItemCommentChildrenBinding) holder.binding;
-
-            bindingChildren.person.setText(comment.name);
-            bindingChildren.date.setText(comment.created_at);
-            bindingChildren.content.setText(comment.content);
-            bindingChildren.like.setText(like + "");
-            bindingChildren.disLike.setText(dislike + "");
-
-            bindingChildren.imageViewLike.setOnClickListener(view -> DataRepository.getInstance().voteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-                @Override
-                public void onResponse(ResponseComment response) {
-                    like++;
-                    bindingChildren.like.setText((like) + "");
-                    Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                }
-            }));
-            bindingChildren.imageViewDislike.setOnClickListener(view -> DataRepository.getInstance().unVoteComment(String.valueOf(Integer.parseInt(comment.id)), true, new DataRepository.VoteCommentListener() {
-                @Override
-                public void onResponse(ResponseComment response) {
-                    dislike++;
-                    bindingChildren.disLike.setText((dislike) + "");
-                    Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                }
-            }));
-            bindingChildren.buttonReply.setOnClickListener(view -> {
-                Intent replyIntent = new Intent(view.getContext(), ReplyCommentActivity.class);
-                replyIntent.putExtra("reply_id", comment.id);
-                replyIntent.putExtra("news", comment.news);
-                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(replyIntent);
-            });
+        if (!allComments.get(position).parent_comment.equals("0")) {
+            setMargins(binding.rootLayout);
         }
     }
 
+    public void saveData(){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(allComments);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+
+    public void loadData(){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<ResponseComment.Comment>>(){}.getType();
+        allComments = gson.fromJson(json, type);
+
+        if (allComments == null){
+            allComments = new ArrayList<>();
+        }
+
+    }
 
     @Override
     public int getItemCount() {
         return allComments.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (allComments.get(position).parent_comment.equals("0")) {
-            return 0;
-        } else {
-            return 1;
-        }
+    public void like(ResponseComment.Comment comment, RvItemCommentBinding binding) {
+        binding.like.setText(String.valueOf(comment.positive_votes + 1));
+        comment.voted = 1;
+        binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
+        binding.likeCircle.setVisibility(View.VISIBLE);
+    }
+
+    public void dislike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
+        binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
+        comment.voted = 1;
+        binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+        binding.dislikeCircle.setVisibility(View.VISIBLE);
+    }
+
+    public void setCommentListener(CommentListener commentListener) {
+        this.commentListener = commentListener;
     }
 
     public void setDataComment(ArrayList<ResponseComment.Comment> commentData) {
@@ -166,6 +148,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 allComments.add(comment);
                 addChildren(comment.children);
             }
+        }
+    }
+
+    private void setMargins(View view) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(80, 0, 0, 0);
+            view.requestLayout();
         }
     }
 
