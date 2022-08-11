@@ -111,7 +111,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
             this.items.add(new RvItemTagsDetail(response.tags));
         }
         //3-4-5-6
-        this.items.add(new RvItemButtonPutComment());
+        this.items.add(new RvItemButtonPutComment(response));
         this.items.add(new RvItemTitleComment("Komentari", response));
         for (int i = 0; i < response.comments_top_n.size(); i++) {
             ResponseComment.Comment commentData = response.comments_top_n.get(i);

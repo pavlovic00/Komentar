@@ -55,20 +55,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         binding.imageViewLike.setOnClickListener(view -> {
             if (comment.voted == 0) {
-
                 commentListener.like(comment.id);
                 like(comment, binding);
-
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
         });
         binding.imageViewDislike.setOnClickListener(view -> {
             if (comment.voted == 0) {
-
                 commentListener.dislike(comment.id);
                 dislike(comment, binding);
-
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -85,14 +81,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return allComments.size();
     }
 
-    public void like (ResponseComment.Comment comment, RvItemCommentBinding binding){
+    public void like(ResponseComment.Comment comment, RvItemCommentBinding binding) {
         binding.like.setText(String.valueOf(comment.positive_votes + 1));
         comment.voted = 1;
         binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
         binding.likeCircle.setVisibility(View.VISIBLE);
     }
 
-    public void dislike(ResponseComment.Comment comment, RvItemCommentBinding binding){
+    public void dislike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
         binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
         comment.voted = 1;
         binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);

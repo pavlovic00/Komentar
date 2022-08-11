@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".pavlovic.ui.comments.PostComment">
+    tools:context=".pavlovic.ui.comments.PostCommentActivity">
 
     <ImageView
         android:id="@+id/imageClose"
@@ -128,10 +128,10 @@
 
     <Button
         android:id="@+id/commentSend"
-        android:layout_width="170dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:background="@drawable/color_corner_radius"
-        android:text="Ostavi komentar"
+        android:text="Send comment"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

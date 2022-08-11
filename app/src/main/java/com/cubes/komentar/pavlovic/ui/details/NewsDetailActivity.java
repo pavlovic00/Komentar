@@ -15,7 +15,7 @@ import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
-import com.cubes.komentar.pavlovic.ui.comments.ReplyCommentActivity;
+import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
 public class NewsDetailActivity extends AppCompatActivity {
@@ -37,7 +37,6 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 
-
         setupRecyclerView();
         loadDetailData();
         refresh();
@@ -49,7 +48,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         adapter = new DetailNewsAdapter(new CommentListener() {
             @Override
             public void onNewsCLicked(ResponseComment.Comment comment) {
-                Intent replyIntent = new Intent(getApplicationContext(), ReplyCommentActivity.class);
+                Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.id);
                 replyIntent.putExtra("news", comment.news);
                 replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
