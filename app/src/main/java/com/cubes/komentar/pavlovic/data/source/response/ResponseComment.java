@@ -19,7 +19,7 @@ public class ResponseComment extends ParentResponse{
         public String content;
         public ArrayList<Comment> children;
 
-        public boolean voted = false;
+        public int voted = 0;
     }
 
 }

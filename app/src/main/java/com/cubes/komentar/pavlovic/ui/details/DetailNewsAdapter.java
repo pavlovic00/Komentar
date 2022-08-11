@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.databinding.RvItemButtonCommentBinding;
-import com.cubes.komentar.databinding.RvItemCommentParentBinding;
+import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
@@ -68,7 +68,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
                 binding = RvItemButtonCommentBinding.inflate(inflater, parent, false);
                 break;
             case 5:
-                binding = RvItemCommentParentBinding.inflate(inflater, parent, false);
+                binding = RvItemCommentBinding.inflate(inflater, parent, false);
                 break;
             case 6:
                 binding = RvItemButtonAllCommentBinding.inflate(inflater, parent, false);

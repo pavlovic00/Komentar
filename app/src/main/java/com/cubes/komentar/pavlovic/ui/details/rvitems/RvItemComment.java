@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cubes.komentar.R;
-import com.cubes.komentar.databinding.RvItemCommentParentBinding;
+import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
@@ -27,7 +27,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
     @Override
     public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
 
-        RvItemCommentParentBinding binding = (RvItemCommentParentBinding) holder.binding;
+        RvItemCommentBinding binding = (RvItemCommentBinding) holder.binding;
 
         binding.person.setText(comment.name);
         binding.date.setText(comment.created_at);
@@ -37,12 +37,12 @@ public class RvItemComment implements RecyclerViewItemDetail {
 
 
         binding.imageViewLike.setOnClickListener(view -> {
-            if (!comment.voted) {
+            if (comment.voted == 0) {
 
                 commentListener.like(comment.id);
 
                 binding.like.setText(String.valueOf(comment.positive_votes + 1));
-                comment.voted = true;
+                comment.voted = 1;
                 binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
                 binding.likeCircle.setVisibility(View.VISIBLE);
             } else {
@@ -50,12 +50,12 @@ public class RvItemComment implements RecyclerViewItemDetail {
             }
         });
         binding.imageViewDislike.setOnClickListener(view -> {
-            if (!comment.voted) {
+            if (comment.voted == 0) {
 
                 commentListener.dislike(comment.id);
 
                 binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
-                comment.voted = true;
+                comment.voted = 1;
                 binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
                 binding.dislikeCircle.setVisibility(View.INVISIBLE);
             } else {
