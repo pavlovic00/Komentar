@@ -12,7 +12,6 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentChildrenBinding;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
-import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
@@ -60,21 +59,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             bindingParent.imageViewLike.setOnClickListener(view -> {
                 if (!comment.voted) {
 
-                    DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
-                        @Override
-                        public void onResponse(ResponseComment response) {
-                            bindingParent.like.setText(String.valueOf(comment.positive_votes + 1));
-                            comment.voted = true;
-                            bindingParent.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-                            bindingParent.likeCircle.setVisibility(View.VISIBLE);
-                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                        }
+                    commentListener.like(comment.id);
 
-                        @Override
-                        public void onFailure(Throwable t) {
-                            Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    bindingParent.like.setText(String.valueOf(comment.positive_votes + 1));
+                    comment.voted = true;
+                    bindingParent.imageViewLike.setImageResource(R.drawable.ic_like_vote);
+                    bindingParent.likeCircle.setVisibility(View.VISIBLE);
                 } else {
                     Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
                 }
@@ -82,28 +72,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             bindingParent.imageViewDislike.setOnClickListener(view -> {
                 if (!comment.voted) {
 
-                    DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
-                        @Override
-                        public void onResponse(ResponseComment response) {
-                            bindingParent.dislike.setText(String.valueOf(comment.negative_votes + 1));
-                            comment.voted = true;
-                            bindingParent.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                            bindingParent.dislikeCircle.setVisibility(View.VISIBLE);
-                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                        }
+                    commentListener.dislike(comment.id);
 
-                        @Override
-                        public void onFailure(Throwable t) {
-                            Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    bindingParent.dislike.setText(String.valueOf(comment.negative_votes + 1));
+                    comment.voted = true;
+                    bindingParent.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+                    bindingParent.dislikeCircle.setVisibility(View.VISIBLE);
                 } else {
                     Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
                 }
             });
-            bindingParent.buttonReply.setOnClickListener(view -> {
-                commentListener.onNewsCLicked(comment);
-            });
+            bindingParent.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
         } else {
 
             RvItemCommentChildrenBinding bindingChildren = (RvItemCommentChildrenBinding) holder.binding;
@@ -117,21 +96,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             bindingChildren.imageViewLike.setOnClickListener(view -> {
                 if (!comment.voted) {
 
-                    DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
-                        @Override
-                        public void onResponse(ResponseComment response) {
-                            bindingChildren.like.setText(String.valueOf(comment.positive_votes + 1));
-                            comment.voted = true;
-                            bindingChildren.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-                            bindingChildren.likeCircle.setVisibility(View.VISIBLE);
-                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
-                        }
+                    commentListener.like(comment.id);
 
-                        @Override
-                        public void onFailure(Throwable t) {
-                            Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    bindingChildren.like.setText(String.valueOf(comment.positive_votes + 1));
+                    comment.voted = true;
+                    bindingChildren.imageViewLike.setImageResource(R.drawable.ic_like_vote);
+                    bindingChildren.likeCircle.setVisibility(View.VISIBLE);
+                    Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
                 }
@@ -139,28 +110,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             bindingChildren.imageViewDislike.setOnClickListener(view -> {
                 if (!comment.voted) {
 
-                    DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
-                        @Override
-                        public void onResponse(ResponseComment response) {
-                            bindingChildren.dislike.setText(String.valueOf(comment.negative_votes + 1));
-                            comment.voted = true;
-                            bindingChildren.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                            bindingChildren.dislikeCircle.setVisibility(View.VISIBLE);
-                            Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
-                        }
+                    commentListener.dislike(comment.id);
 
-                        @Override
-                        public void onFailure(Throwable t) {
-                            Toast.makeText(view.getContext().getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    bindingChildren.dislike.setText(String.valueOf(comment.negative_votes + 1));
+                    comment.voted = true;
+                    bindingChildren.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+                    bindingChildren.dislikeCircle.setVisibility(View.VISIBLE);
+                    Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
                 }
             });
-            bindingChildren.buttonReply.setOnClickListener(view -> {
-                commentListener.onNewsCLicked(comment);
-            });
+            bindingChildren.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
         }
     }
 

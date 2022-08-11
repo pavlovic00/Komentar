@@ -29,15 +29,18 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebviewDetail;
+import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
 import java.util.ArrayList;
 
 public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.DetailNewsViewHolder> {
 
     private final ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
+    private final CommentListener commentListener;
 
 
-    public DetailNewsAdapter() {
+    public DetailNewsAdapter(CommentListener commentListener) {
+        this.commentListener = commentListener;
     }
 
     @NonNull
@@ -101,23 +104,21 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
 
     public void setDataItems(ResponseDetail.ResponseDetailData response) {
         //0
-        //this.items.add(new RvItemFirstItemDetail(data));
-        //1
         this.items.add(new RvItemWebviewDetail(response));
-        //2-3
+        //1-2
         if (response.tags.size() > 0) {
             this.items.add(new RvItemTitleDetail("Tagovi:"));
             this.items.add(new RvItemTagsDetail(response.tags));
         }
-        //4-5-6-7
+        //3-4-5-6
         this.items.add(new RvItemButtonPutComment());
         this.items.add(new RvItemTitleComment("Komentari", response));
         for (int i = 0; i < response.comments_top_n.size(); i++) {
             ResponseComment.Comment commentData = response.comments_top_n.get(i);
-            this.items.add(new RvItemComment(commentData));
+            this.items.add(new RvItemComment(commentData, commentListener));
         }
         this.items.add(new RvItemButtonAllComment(response));
-        //8-9
+        //7-8
         if (response.related_news.size() > 0) {
             this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
 

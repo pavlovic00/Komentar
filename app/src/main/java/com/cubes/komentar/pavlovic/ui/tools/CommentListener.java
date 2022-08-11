@@ -6,4 +6,8 @@ public interface CommentListener {
 
     void onNewsCLicked(ResponseComment.Comment comment);
 
+    void like(String commentId);
+
+    void dislike(String commentId);
+
 }

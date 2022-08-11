@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityNewsDetailBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
+import com.cubes.komentar.pavlovic.ui.comments.ReplyCommentActivity;
+import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
 public class NewsDetailActivity extends AppCompatActivity {
 
@@ -42,9 +46,48 @@ public class NewsDetailActivity extends AppCompatActivity {
     private void setupRecyclerView() {
 
         binding.recyclerViewDetail.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new DetailNewsAdapter();
-        binding.recyclerViewDetail.setAdapter(adapter);
+        adapter = new DetailNewsAdapter(new CommentListener() {
+            @Override
+            public void onNewsCLicked(ResponseComment.Comment comment) {
+                Intent replyIntent = new Intent(getApplicationContext(), ReplyCommentActivity.class);
+                replyIntent.putExtra("reply_id", comment.id);
+                replyIntent.putExtra("news", comment.news);
+                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(replyIntent);
+            }
 
+            @Override
+            public void like(String commentId) {
+                DataRepository.getInstance().voteComment(commentId, new DataRepository.VoteCommentListener() {
+                    @Override
+                    public void onResponse(ResponseComment response) {
+                        Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void dislike(String commentId) {
+                DataRepository.getInstance().unVoteComment(commentId, new DataRepository.VoteCommentListener() {
+                    @Override
+                    public void onResponse(ResponseComment response) {
+                        Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        binding.recyclerViewDetail.setAdapter(adapter);
     }
 
     public void loadDetailData() {
