@@ -1,5 +1,8 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +15,23 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.ui.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
+    private ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
     private CommentListener commentListener;
+    private Activity activity;
 
 
-    public CommentAdapter() {
-
+    public CommentAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     @NonNull
@@ -42,6 +50,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
 
+
+
         ResponseComment.Comment comment = allComments.get(position);
 
         RvItemCommentBinding binding = (RvItemCommentBinding) holder.binding;
@@ -53,10 +63,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         binding.dislike.setText(comment.negative_votes + "");
 
 
+
         binding.imageViewLike.setOnClickListener(view -> {
             if (comment.voted == 0) {
                 commentListener.like(comment.id);
                 like(comment, binding);
+
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -65,6 +77,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             if (comment.voted == 0) {
                 commentListener.dislike(comment.id);
                 dislike(comment, binding);
+
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -74,6 +87,28 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         if (!allComments.get(position).parent_comment.equals("0")) {
             setMargins(binding.rootLayout);
         }
+    }
+
+    public void saveData(){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(allComments);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+
+    public void loadData(){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<ResponseComment.Comment>>(){}.getType();
+        allComments = gson.fromJson(json, type);
+
+        if (allComments == null){
+            allComments = new ArrayList<>();
+        }
+
     }
 
     @Override

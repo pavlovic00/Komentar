@@ -46,7 +46,7 @@ public class AllCommentActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new CommentAdapter();
+        adapter = new CommentAdapter(this);
         binding.recyclerViewComments.setAdapter(adapter);
 
         adapter.setCommentListener(new CommentListener() {
