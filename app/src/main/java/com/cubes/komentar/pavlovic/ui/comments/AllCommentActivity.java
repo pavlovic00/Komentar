@@ -69,7 +69,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Došlo je do greške!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -84,7 +84,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Došlo je do greške!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

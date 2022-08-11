@@ -66,7 +66,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     bindingParent.imageViewLike.setImageResource(R.drawable.ic_like_vote);
                     bindingParent.likeCircle.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
                 }
             });
             bindingParent.imageViewDislike.setOnClickListener(view -> {
@@ -79,7 +79,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     bindingParent.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
                     bindingParent.dislikeCircle.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
                 }
             });
             bindingParent.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
@@ -104,7 +104,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     bindingChildren.likeCircle.setVisibility(View.VISIBLE);
                     Toast.makeText(view.getContext().getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
                 }
             });
             bindingChildren.imageViewDislike.setOnClickListener(view -> {
@@ -118,7 +118,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     bindingChildren.dislikeCircle.setVisibility(View.VISIBLE);
                     Toast.makeText(view.getContext().getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
                 }
             });
             bindingChildren.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
