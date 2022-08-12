@@ -120,24 +120,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         }
 
         if (votes != null) {
-            for (ResponseComment.Comment comment : allComments) {
-                for (Vote vote : votes) {
-                    if (comment.id.equals(vote.commentId)) {
-                        comment.vote = vote;
-                    }
-                    if (comment.children != null) {
-                        for (ResponseComment.Comment childComment : comment.children) {
-                            for (Vote vote1 : votes) {
-                                if (childComment.id.equals(vote1.commentId)) {
-                                    childComment.vote = vote1;
-                                }
-                            }
-                        }
-                    }
+            setVoteData(allComments, votes);
+        }
+        notifyDataSetChanged();
+    }
+
+    private void setVoteData(ArrayList<ResponseComment.Comment> allComments, ArrayList<Vote> votes) {
+
+        for (ResponseComment.Comment comment : allComments) {
+            for (Vote vote : votes) {
+                if (comment.id.equals(vote.commentId)) {
+                    comment.vote = vote;
+                }
+                if (comment.children != null) {
+                    setVoteData(comment.children, votes);
                 }
             }
         }
-        notifyDataSetChanged();
     }
 
     public void like(ResponseComment.Comment comment, RvItemCommentBinding binding) {
