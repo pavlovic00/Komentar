@@ -100,7 +100,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             binding.imageViewLike.setEnabled(false);
             binding.imageViewDislike.setEnabled(false);
         });
-        binding.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
+        binding.buttonReply.setOnClickListener(view -> commentListener.onCommentClicked(comment));
     }
 
     @Override

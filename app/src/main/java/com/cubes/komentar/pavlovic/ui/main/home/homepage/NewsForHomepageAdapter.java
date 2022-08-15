@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,18 +11,20 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepageAdapter.NewsViewHolder> {
 
-    public ArrayList<News> newsList;
+    private final ArrayList<News> newsList;
+    private final NewsListener newsListener;
 
 
-    public NewsForHomepageAdapter(ArrayList<News> newsList) {
+    public NewsForHomepageAdapter(ArrayList<News> newsList, NewsListener newsListener) {
         this.newsList = newsList;
+        this.newsListener = newsListener;
     }
 
     @NonNull
@@ -67,11 +68,7 @@ public class NewsForHomepageAdapter extends RecyclerView.Adapter<NewsForHomepage
             Picasso.get().load(news.image).into(bindingSmall.imageView);
         }
 
-        holder.itemView.setOnClickListener(view -> {
-            Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-            startDetailIntent.putExtra("id", news.id);
-            view.getContext().startActivity(startDetailIntent);
-        });
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
     }
 
     @Override

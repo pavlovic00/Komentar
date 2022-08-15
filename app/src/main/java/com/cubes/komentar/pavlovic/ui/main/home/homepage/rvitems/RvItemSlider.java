@@ -8,17 +8,20 @@ import com.cubes.komentar.databinding.RvItemHorizontalRvBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.SliderAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 
 import java.util.ArrayList;
 
 public class RvItemSlider implements RecyclerViewItemHomepage {
 
-    public ArrayList<News> sliderList;
-    PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+    private final ArrayList<News> sliderList;
+    private final PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+    private final NewsListener newsListener;
 
 
-    public RvItemSlider(ArrayList<News> sliderList) {
+    public RvItemSlider(ArrayList<News> sliderList, NewsListener newsListener) {
         this.sliderList = sliderList;
+        this.newsListener = newsListener;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class RvItemSlider implements RecyclerViewItemHomepage {
 
         binding.recyclerViewHorizontal.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                 RecyclerView.HORIZONTAL, false));
-        binding.recyclerViewHorizontal.setAdapter(new SliderAdapter(sliderList));
+        binding.recyclerViewHorizontal.setAdapter(new SliderAdapter(sliderList, newsListener));
 
         if (binding.recyclerViewHorizontal.getOnFlingListener() == null) {
             pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHorizontal);

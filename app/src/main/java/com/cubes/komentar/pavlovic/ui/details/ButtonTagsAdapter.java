@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.details;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,17 +9,19 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemButtonTagBinding;
 import com.cubes.komentar.pavlovic.data.model.Tags;
-import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
+import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 import java.util.ArrayList;
 
 public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.ButtonTagsHolder> {
 
     private final ArrayList<Tags> list;
+    private final NewsDetailListener tagListener;
 
 
-    public ButtonTagsAdapter(ArrayList<Tags> list) {
+    public ButtonTagsAdapter(ArrayList<Tags> list, NewsDetailListener tagListener) {
         this.list = list;
+        this.tagListener = tagListener;
     }
 
     @NonNull
@@ -37,19 +38,14 @@ public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.Bu
 
     @Override
     public void onBindViewHolder(@NonNull ButtonTagsHolder holder, int position) {
+
         Tags tags = list.get(position);
 
         RvItemButtonTagBinding bindingButton = (RvItemButtonTagBinding) holder.binding;
 
         bindingButton.button.setText(tags.title);
 
-        bindingButton.button.setOnClickListener(view -> {
-            Intent tagsIntent = new Intent(view.getContext(), TagsActivity.class);
-            tagsIntent.putExtra("id", tags.id);
-            tagsIntent.putExtra("title", tags.title);
-            tagsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            view.getContext().startActivity(tagsIntent);
-        });
+        bindingButton.button.setOnClickListener(view -> tagListener.onTagClicked(tags));
     }
 
     @Override

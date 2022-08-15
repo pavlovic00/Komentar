@@ -9,6 +9,7 @@ import com.cubes.komentar.databinding.RvItemButtonsHomepageBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.ButtonsAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 
 import java.util.ArrayList;
 
@@ -17,12 +18,14 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage {
     private final ArrayList<News> latest;
     private final ArrayList<News> most_comented;
     private final ArrayList<News> most_read;
+    private final NewsListener newsListener;
 
 
-    public RvItemButtonsNews(ArrayList<News> latest, ArrayList<News> most_comented, ArrayList<News> most_read) {
+    public RvItemButtonsNews(ArrayList<News> latest, ArrayList<News> most_comented, ArrayList<News> most_read, NewsListener newsListener) {
         this.latest = latest;
         this.most_comented = most_comented;
         this.most_read = most_read;
+        this.newsListener = newsListener;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage {
         //Default na najnovije.
         binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                 RecyclerView.VERTICAL, false));
-        binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(latest));
+        binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(latest, newsListener));
 
         binding.buttonKomentari.setTextColor(Color.parseColor("#88909D"));//Gray
         binding.buttonNajnovije.setTextColor(Color.parseColor("#FF000000"));//Black
@@ -48,7 +51,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage {
         binding.buttonNajnovije.setOnClickListener(view -> {
             binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                     RecyclerView.VERTICAL, false));
-            binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(latest));
+            binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(latest, newsListener));
 
             binding.buttonKomentari.setTextColor(Color.parseColor("#88909D"));//Gray
             binding.buttonNajnovije.setTextColor(Color.parseColor("#FF000000"));//Black
@@ -63,7 +66,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage {
         binding.buttonNajcitanije.setOnClickListener(view -> {
             binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                     RecyclerView.VERTICAL, false));
-            binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(most_read));
+            binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(most_read, newsListener));
 
             binding.buttonKomentari.setTextColor(Color.parseColor("#88909D"));//Gray
             binding.buttonNajnovije.setTextColor(Color.parseColor("#88909D"));//Gray
@@ -78,7 +81,7 @@ public class RvItemButtonsNews implements RecyclerViewItemHomepage {
         binding.buttonKomentari.setOnClickListener(view -> {
             binding.recyclerViewButtons.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                     RecyclerView.VERTICAL, false));
-            binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(most_comented));
+            binding.recyclerViewButtons.setAdapter(new ButtonsAdapter(most_comented, newsListener));
 
             binding.buttonKomentari.setTextColor(Color.parseColor("#FF000000"));//Black
             binding.buttonNajnovije.setTextColor(Color.parseColor("#88909D"));//Gray

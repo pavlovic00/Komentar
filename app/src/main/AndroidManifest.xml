@@ -24,7 +24,7 @@
             android:name=".pavlovic.ui.main.menu.WeatherActivity"
             android:exported="false" />
         <activity
-            android:name=".pavlovic.ui.main.home.category.CategoryActivity"
+            android:name=".pavlovic.ui.main.home.category.SubCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".pavlovic.ui.comments.AllCommentActivity"

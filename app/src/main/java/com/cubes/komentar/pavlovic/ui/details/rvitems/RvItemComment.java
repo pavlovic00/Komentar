@@ -14,6 +14,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
     private final ResponseComment.Comment comment;
     private final CommentListener commentListener;
 
+
     public RvItemComment(ResponseComment.Comment comment, CommentListener commentListener) {
         this.comment = comment;
         this.commentListener = commentListener;
@@ -62,6 +63,6 @@ public class RvItemComment implements RecyclerViewItemDetail {
                 Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
             }
         });
-        binding.buttonReply.setOnClickListener(view -> commentListener.onNewsCLicked(comment));
+        binding.buttonReply.setOnClickListener(view -> commentListener.onCommentClicked(comment));
     }
 }

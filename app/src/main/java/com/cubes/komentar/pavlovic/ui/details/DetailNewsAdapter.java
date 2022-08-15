@@ -30,6 +30,7 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebviewDetail;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 import java.util.ArrayList;
 
@@ -37,10 +38,12 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
 
     private final ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
     private final CommentListener commentListener;
+    private final NewsDetailListener newsDetailListener;
 
 
-    public DetailNewsAdapter(CommentListener commentListener) {
+    public DetailNewsAdapter(CommentListener commentListener, NewsDetailListener newsDetailListener) {
         this.commentListener = commentListener;
+        this.newsDetailListener = newsDetailListener;
     }
 
     @NonNull
@@ -108,16 +111,16 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
         //1-2
         if (response.tags.size() > 0) {
             this.items.add(new RvItemTitleDetail("Tagovi:"));
-            this.items.add(new RvItemTagsDetail(response.tags));
+            this.items.add(new RvItemTagsDetail(response.tags, newsDetailListener));
         }
         //3-4-5-6
-        this.items.add(new RvItemButtonPutComment(response));
+        this.items.add(new RvItemButtonPutComment(response, newsDetailListener));
         this.items.add(new RvItemTitleComment("Komentari", response));
         for (int i = 0; i < response.comments_top_n.size(); i++) {
             ResponseComment.Comment commentData = response.comments_top_n.get(i);
             this.items.add(new RvItemComment(commentData, commentListener));
         }
-        this.items.add(new RvItemButtonAllComment(response));
+        this.items.add(new RvItemButtonAllComment(response, newsDetailListener));
         //7-8
         if (response.related_news.size() > 0) {
             this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
@@ -125,7 +128,7 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.De
             for (int i = 0; i < response.related_news.size(); i++) {
                 News news = response.related_news.get(i);
 
-                this.items.add(new RvItemRelatedNews(news));
+                this.items.add(new RvItemRelatedNews(news, newsDetailListener));
             }
         }
         notifyDataSetChanged();

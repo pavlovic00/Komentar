@@ -11,12 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityNewsDetailBinding;
+import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.model.Tags;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
+import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 public class NewsDetailActivity extends AppCompatActivity {
 
@@ -47,7 +51,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         binding.recyclerViewDetail.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new DetailNewsAdapter(new CommentListener() {
             @Override
-            public void onNewsCLicked(ResponseComment.Comment comment) {
+            public void onCommentClicked(ResponseComment.Comment comment) {
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.id);
                 replyIntent.putExtra("news", comment.news);
@@ -83,6 +87,38 @@ public class NewsDetailActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Doslo je do greske!", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        }, new NewsDetailListener() {
+            @Override
+            public void onNewsCLicked(News news) {
+                Intent startDetailIntent = new Intent(getApplicationContext(), NewsDetailActivity.class);
+                startDetailIntent.putExtra("id", news.id);
+                startActivity(startDetailIntent);
+            }
+
+            @Override
+            public void onTagClicked(Tags tags) {
+                Intent tagsIntent = new Intent(getApplicationContext(), TagsActivity.class);
+                tagsIntent.putExtra("id", tags.id);
+                tagsIntent.putExtra("title", tags.title);
+                tagsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(tagsIntent);
+            }
+
+            @Override
+            public void onPutCommentClicked(ResponseDetail.ResponseDetailData data) {
+                Intent i = new Intent(getApplicationContext(), PostCommentActivity.class);
+                i.putExtra("id", data.id);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+
+            @Override
+            public void onAllCommentClicked(ResponseDetail.ResponseDetailData data) {
+                Intent commentIntent = new Intent(getApplicationContext(), AllCommentActivity.class);
+                commentIntent.putExtra("id", data.id);
+                commentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(commentIntent);
             }
         });
 

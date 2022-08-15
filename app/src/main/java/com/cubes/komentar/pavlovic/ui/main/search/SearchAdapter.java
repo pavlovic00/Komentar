@@ -74,7 +74,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 bindingSmall.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
                 Picasso.get().load(news.image).into(bindingSmall.imageView);
 
-                holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+                holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
             }
         }
     }

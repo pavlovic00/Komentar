@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 public class HomepageFragment extends Fragment {
 
     private FragmentHomepageBinding binding;
     public HomepageAdapter adapter;
 
-
-    public HomepageFragment() {
-        // Required empty public constructor
-    }
 
     public static HomepageFragment newInstance() {
         HomepageFragment fragment = new HomepageFragment();
@@ -56,9 +54,21 @@ public class HomepageFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new HomepageAdapter();
-        binding.recyclerViewHomepage.setAdapter(adapter);
+        adapter = new HomepageAdapter(news -> {
+            Intent newsIntent = new Intent(getContext(), NewsDetailActivity.class);
+            newsIntent.putExtra("id", news.id);
+            getContext().startActivity(newsIntent);
 
+        }, news -> {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_SEND);
+            i.putExtra(Intent.EXTRA_TEXT, news.url);
+            i.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(i, null);
+            getContext().startActivity(shareIntent);
+        });
+
+        binding.recyclerViewHomepage.setAdapter(adapter);
     }
 
     public void loadHomeData() {

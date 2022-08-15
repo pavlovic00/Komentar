@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,7 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemForHorizontalRvBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,10 +17,12 @@ import java.util.ArrayList;
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHolder> {
 
     private final ArrayList<News> list;
+    private final NewsListener newsListener;
 
 
-    public SliderAdapter(ArrayList<News> list) {
+    public SliderAdapter(ArrayList<News> list, NewsListener newsListener) {
         this.list = list;
+        this.newsListener = newsListener;
     }
 
     @NonNull
@@ -48,11 +49,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> {
-            Intent startDetailIntent = new Intent(view.getContext(), NewsDetailActivity.class);
-            startDetailIntent.putExtra("id", news.id);
-            view.getContext().startActivity(startDetailIntent);
-        });
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
     }
 
     @Override

@@ -17,22 +17,28 @@ import com.cubes.komentar.databinding.RvRecyclerviewVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RecyclerViewItemHomepage;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBox;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemButtonsNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemEditorChoise;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSlider;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBox;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTopNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideo;
+import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
 
 import java.util.ArrayList;
 
 public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.HomepageViewHolder> {
 
     private final ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
+    private final NewsListener newsListener;
+    private final VideoListener videoListener;
 
 
-    public HomepageAdapter() {
+    public HomepageAdapter(NewsListener newsListener, VideoListener videoListener) {
+        this.newsListener = newsListener;
+        this.videoListener = videoListener;
     }
 
     @NonNull
@@ -92,28 +98,28 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
 
     public void setDataItems(ResponseHomepage.ResponseHomepageData response) {
         //0
-        items.add(new RvItemSlider(response.slider));
+        items.add(new RvItemSlider(response.slider, newsListener));
         //1
         for (int i = 0; i < response.top.size(); i++) {
             News news = response.top.get(i);
-            items.add(new RvItemTopNews(news));
+            items.add(new RvItemTopNews(news, newsListener));
         }
         //2
-        items.add(new RvItemButtonsNews(response.latest, response.most_comented, response.most_read));
+        items.add(new RvItemButtonsNews(response.latest, response.most_comented, response.most_read, newsListener));
         //3-4
         if (response.editors_choice.size() > 0) {
             items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
-            items.add(new RvItemEditorChoise(response.editors_choice));
+            items.add(new RvItemEditorChoise(response.editors_choice, newsListener));
         }
         //5-6
         if (response.videos.size() > 0) {
             items.add(new RvItemTitle("Video", "#FF0000"));
-            items.add(new RvItemVideo(response.videos));
+            items.add(new RvItemVideo(response.videos, videoListener));
         }
         //7-8
         for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : response.category) {
             items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            items.add(new RvItemBox(categoryBox.title, categoryBox.news));
+            items.add(new RvItemBox(categoryBox.title, categoryBox.news, newsListener));
         }
         notifyDataSetChanged();
     }

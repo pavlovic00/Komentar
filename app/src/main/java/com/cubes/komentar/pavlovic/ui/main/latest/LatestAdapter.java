@@ -67,11 +67,9 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
                 bindingBig.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
                 Picasso.get().load(news.image).into(bindingBig.imageView);
-                holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+                holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
             }
         } else if (position > 0 & position < newsList.size()) {
-
-            newsList.size();
             News news = newsList.get(position);
 
             RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
@@ -82,7 +80,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
             bindingSmall.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
             Picasso.get().load(news.image).into(bindingSmall.imageView);
-            holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+            holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
         } else {
 
             RvItemLoadingBinding bindingLoading = (RvItemLoadingBinding) holder.binding;

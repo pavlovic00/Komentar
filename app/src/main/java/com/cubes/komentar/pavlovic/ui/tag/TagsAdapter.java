@@ -53,7 +53,6 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
             RvItemLoadingBinding bindingLoading = (RvItemLoadingBinding) holder.binding;
 
-
             if (isFinished) {
                 bindingLoading.progressBar.setVisibility(View.GONE);
                 bindingLoading.loading.setVisibility(View.GONE);
@@ -69,14 +68,13 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
                 RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
 
-
                 bindingSmall.textViewTitle.setText(news.title);
                 bindingSmall.date.setText(news.created_at);
                 bindingSmall.textViewCategory.setText(news.category.name);
                 bindingSmall.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
                 Picasso.get().load(news.image).into(bindingSmall.imageView);
 
-                holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+                holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
             }
         }
     }

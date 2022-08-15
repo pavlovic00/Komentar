@@ -1,7 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.home.category;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +12,19 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.ui.tools.SubCategoryListener;
 
 import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder> {
 
     private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
+    private final SubCategoryListener subCategoryListener;
 
 
-    public SubCategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list) {
+    public SubCategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list, SubCategoryListener subCategoryListener) {
         this.list = list;
+        this.subCategoryListener = subCategoryListener;
     }
 
     @NonNull
@@ -54,13 +56,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
 
-        bindingCategory.textViewCategory.setOnClickListener(view -> {
-            Intent categoryIntent = new Intent(view.getContext(), CategoryActivity.class);
-            categoryIntent.putExtra("id", list.get(position).id);
-            categoryIntent.putExtra("category", list.get(position).name);
-            view.getContext().startActivity(categoryIntent);
-        });
-
+        bindingCategory.textViewCategory.setOnClickListener(view -> subCategoryListener.onSubCategoryClicked(categories));
     }
 
     @Override

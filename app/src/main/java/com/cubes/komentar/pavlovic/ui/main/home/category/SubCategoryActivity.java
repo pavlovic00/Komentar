@@ -15,7 +15,7 @@ import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 
-public class CategoryActivity extends AppCompatActivity {
+public class SubCategoryActivity extends AppCompatActivity {
 
     private ActivityCategoryBinding binding;
     private LatestAdapter adapter;

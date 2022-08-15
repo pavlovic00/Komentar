@@ -4,7 +4,7 @@ import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 
 public interface CommentListener {
 
-    void onNewsCLicked(ResponseComment.Comment comment);
+    void onCommentClicked(ResponseComment.Comment comment);
 
     void like(String commentId);
 
