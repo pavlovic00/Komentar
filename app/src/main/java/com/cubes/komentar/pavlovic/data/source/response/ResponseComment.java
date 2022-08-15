@@ -1,5 +1,7 @@
 package com.cubes.komentar.pavlovic.data.source.response;
 
+import com.cubes.komentar.pavlovic.data.model.Vote;
+
 import java.util.ArrayList;
 
 public class ResponseComment extends ParentResponse{
@@ -20,6 +22,7 @@ public class ResponseComment extends ParentResponse{
         public ArrayList<Comment> children;
 
         public int voted = 0;
+        public Vote vote;
     }
 
 }

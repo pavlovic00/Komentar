@@ -24,6 +24,5 @@ public class RvItemWebviewDetail implements RecyclerViewItemDetail {
         RvItemWebviewBinding binding = (RvItemWebviewBinding) holder.binding;
 
         binding.webView.loadUrl("https://komentar.rs/wp-json/" + "api/newswebview?id=" + data.id + "&version=2");
-
     }
 }

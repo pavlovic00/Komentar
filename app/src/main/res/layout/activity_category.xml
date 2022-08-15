@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pavlovic.ui.main.home.category.CategoryActivity">
+    tools:context=".pavlovic.ui.main.home.category.SubCategoryActivity">
 
     <FrameLayout
         android:id="@+id/headerLayout"

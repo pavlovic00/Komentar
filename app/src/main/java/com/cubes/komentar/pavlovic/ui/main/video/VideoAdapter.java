@@ -14,7 +14,7 @@ import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,15 +24,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
     private boolean isFinished;
-    private NewsListener newsListener;
+    private final VideoListener videoListener;
     private LoadingNewsListener loadingNewsListener;
 
 
-    public VideoAdapter() {
+    public VideoAdapter(VideoListener videoListener) {
+        this.videoListener = videoListener;
     }
 
-    public VideoAdapter(ArrayList<News> newsList) {
+    public VideoAdapter(ArrayList<News> newsList, VideoListener newsListener) {
         this.newsList = newsList;
+        this.videoListener = newsListener;
     }
 
     @NonNull
@@ -78,10 +80,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 bindingVideo.textViewCategory.setTextColor(Color.parseColor(news.category.color));
                 Picasso.get().load(news.image).into(bindingVideo.imageView);
 
-                bindingVideo.imageViewPlay.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+                bindingVideo.imageViewPlay.setOnClickListener(view -> videoListener.onVideoClicked(news));
             }
         }
-
     }
 
     @Override
@@ -108,10 +109,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     public void setLoadingNewsListener(LoadingNewsListener loadingNewsListener) {
         this.loadingNewsListener = loadingNewsListener;
-    }
-
-    public void setNewsListener(NewsListener newsListener) {
-        this.newsListener = newsListener;
     }
 
     public void setFinished(boolean finished) {

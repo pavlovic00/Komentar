@@ -57,10 +57,7 @@ public class VideoFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new VideoAdapter();
-        binding.recyclerViewVideo.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
+        adapter = new VideoAdapter(news -> {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);
             i.putExtra(Intent.EXTRA_TEXT, news.url);
@@ -68,6 +65,8 @@ public class VideoFragment extends Fragment {
             Intent shareIntent = Intent.createChooser(i, null);
             getContext().startActivity(shareIntent);
         });
+
+        binding.recyclerViewVideo.setAdapter(adapter);
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override

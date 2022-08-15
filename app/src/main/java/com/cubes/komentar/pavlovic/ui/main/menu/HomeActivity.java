@@ -17,6 +17,7 @@ import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
+import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
@@ -85,19 +86,6 @@ public class HomeActivity extends AppCompatActivity {
         binding.imageRight.setOnClickListener(view19 -> {
             binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
-            DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
-                @Override
-                public void onResponse(ResponseCategories response) {
-                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    binding.recyclerView.setAdapter(new CategoryAdapter(response.data));
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-
-                }
-            });
-
             //Za ovo sam se najvise namucio :D
             binding.drawerLayout.openDrawer(Gravity.RIGHT);
 
@@ -159,7 +147,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResponseCategories response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerView.setAdapter(new CategoryAdapter(response.data));
+                binding.recyclerView.setAdapter(new CategoryAdapter(response.data, data -> {
+                    Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
+                    categoryIntent.putExtra("id", data.id);
+                    categoryIntent.putExtra("category", data.name);
+                    startActivity(categoryIntent);
+                }));
             }
 
             @Override

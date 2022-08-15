@@ -51,7 +51,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
         adapter.setCommentListener(new CommentListener() {
             @Override
-            public void onNewsCLicked(ResponseComment.Comment comment) {
+            public void onCommentClicked(ResponseComment.Comment comment){
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.id);
                 replyIntent.putExtra("news", comment.news);

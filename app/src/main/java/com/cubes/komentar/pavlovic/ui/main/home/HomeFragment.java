@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(ResponseCategories response) {
                 if (getActivity() != null) {
-                    //uvek koristi child ovde da bi se resio baga.
+                    //Uvek koristi child ovde da bi se resio baga.
                     binding.viewPagerHome.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), response.data));
                 }
                 binding.tabLayout.setupWithViewPager(binding.viewPagerHome);

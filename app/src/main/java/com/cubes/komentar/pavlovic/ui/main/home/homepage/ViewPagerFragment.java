@@ -28,10 +28,6 @@ public class ViewPagerFragment extends Fragment {
     private int nextPage = 1;
 
 
-    public ViewPagerFragment() {
-        // Required empty public constructor
-    }
-
     public static ViewPagerFragment newInstance(int categoryId) {
         ViewPagerFragment fragment = new ViewPagerFragment();
         Bundle args = new Bundle();
