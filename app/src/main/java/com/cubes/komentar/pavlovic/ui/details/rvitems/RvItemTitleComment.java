@@ -32,6 +32,5 @@ public class RvItemTitleComment implements RecyclerViewItemDetail {
         if (data.comments_top_n.size() == 0) {
             binding.upozorenje.setVisibility(View.VISIBLE);
         }
-
     }
 }

@@ -73,12 +73,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         binding.imageViewLike.setOnClickListener(view -> {
             if (comment.vote == null) {
                 Vote vote = new Vote(comment.id, true);
+
                 commentListener.like(comment.id);
+
                 like(comment, binding);
+
                 votes.add(vote);
-
                 PrefConfig.writeListInPref(activity, votes);
-
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -88,10 +89,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         binding.imageViewDislike.setOnClickListener(view -> {
             if (comment.vote == null) {
                 Vote vote = new Vote(comment.id, false);
-                commentListener.dislike(comment.id);
-                dislike(comment, binding);
-                votes.add(vote);
 
+                commentListener.dislike(comment.id);
+
+                dislike(comment, binding);
+
+                votes.add(vote);
                 PrefConfig.writeListInPref(activity, votes);
 
             } else {

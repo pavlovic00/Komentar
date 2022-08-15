@@ -86,9 +86,26 @@ public class HomeActivity extends AppCompatActivity {
         binding.imageRight.setOnClickListener(view19 -> {
             binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
+            DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+                @Override
+                public void onResponse(ResponseCategories response) {
+                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    binding.recyclerView.setAdapter(new CategoryAdapter(response.data, data -> {
+                        Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
+                        categoryIntent.putExtra("id", data.id);
+                        categoryIntent.putExtra("category", data.name);
+                        startActivity(categoryIntent);
+                    }));
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
+
             //Za ovo sam se najvise namucio :D
             binding.drawerLayout.openDrawer(Gravity.RIGHT);
-
         });
         //Close menu.
         binding.imageClose.setOnClickListener(view18 -> binding.drawerLayout.closeDrawer(Gravity.RIGHT));
@@ -143,6 +160,11 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
+        loadHomeData();
+    }
+
+    public void loadHomeData() {
+
         DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ResponseCategories response) {
@@ -161,5 +183,4 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
 }

@@ -19,7 +19,7 @@ import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RecyclerViewItemHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBox;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemButtonsNews;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemEditorChoise;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemEditorChoice;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSlider;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTopNews;
@@ -73,7 +73,6 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
                 binding = RvItemHorizontalTextViewBinding.inflate(inflater, parent, false);
         }
 
-
         return new HomepageViewHolder(binding);
     }
 
@@ -81,7 +80,6 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
     public void onBindViewHolder(@NonNull HomepageAdapter.HomepageViewHolder holder, int position) {
 
         this.items.get(position).bind(holder);
-
     }
 
     @Override
@@ -109,7 +107,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         //3-4
         if (response.editors_choice.size() > 0) {
             items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
-            items.add(new RvItemEditorChoise(response.editors_choice, newsListener));
+            items.add(new RvItemEditorChoice(response.editors_choice, newsListener));
         }
         //5-6
         if (response.videos.size() > 0) {

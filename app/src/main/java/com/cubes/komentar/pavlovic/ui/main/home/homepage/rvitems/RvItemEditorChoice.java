@@ -12,14 +12,14 @@ import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 
 import java.util.ArrayList;
 
-public class RvItemEditorChoise implements RecyclerViewItemHomepage {
+public class RvItemEditorChoice implements RecyclerViewItemHomepage {
 
     private final ArrayList<News> editorsChoiceList;
     private final PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
     private final NewsListener newsListener;
 
 
-    public RvItemEditorChoise(ArrayList<News> editorsChoiceList, NewsListener newsListener) {
+    public RvItemEditorChoice(ArrayList<News> editorsChoiceList, NewsListener newsListener) {
         this.editorsChoiceList = editorsChoiceList;
         this.newsListener = newsListener;
     }
