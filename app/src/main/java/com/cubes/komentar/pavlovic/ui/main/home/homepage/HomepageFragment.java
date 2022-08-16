@@ -25,8 +25,7 @@ public class HomepageFragment extends Fragment {
 
 
     public static HomepageFragment newInstance() {
-        HomepageFragment fragment = new HomepageFragment();
-        return fragment;
+        return new HomepageFragment();
     }
 
     @Override
@@ -57,7 +56,7 @@ public class HomepageFragment extends Fragment {
         adapter = new HomepageAdapter(news -> {
             Intent newsIntent = new Intent(getContext(), NewsDetailActivity.class);
             newsIntent.putExtra("id", news.id);
-            getContext().startActivity(newsIntent);
+            startActivity(newsIntent);
 
         }, news -> {
             Intent i = new Intent();
@@ -65,7 +64,7 @@ public class HomepageFragment extends Fragment {
             i.putExtra(Intent.EXTRA_TEXT, news.url);
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
-            getContext().startActivity(shareIntent);
+            startActivity(shareIntent);
         });
 
         binding.recyclerViewHomepage.setAdapter(adapter);

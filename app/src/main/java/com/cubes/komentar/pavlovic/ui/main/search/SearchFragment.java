@@ -32,8 +32,7 @@ public class SearchFragment extends Fragment {
 
 
     public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
-        return fragment;
+        return new SearchFragment();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class SearchFragment extends Fragment {
 
         binding.editTextSearch.post(() -> {
             binding.editTextSearch.requestFocus();
-            InputMethodManager i = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager i = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             i.showSoftInput(binding.editTextSearch, InputMethodManager.SHOW_IMPLICIT);
         });
 
@@ -99,7 +98,7 @@ public class SearchFragment extends Fragment {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(i);
+            startActivity(i);
         });
 
         adapter.setLoadingNewsListener(new LoadingNewsListener() {

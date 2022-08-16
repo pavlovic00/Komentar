@@ -1,6 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentBinding;
-import com.cubes.komentar.pavlovic.data.model.Vote;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
@@ -21,13 +19,11 @@ import java.util.ArrayList;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
-    private ArrayList<Vote> votes = new ArrayList<>();
     private CommentListener commentListener;
-    private final Activity activity;
 
 
-    public CommentAdapter(Activity activity) {
-        this.activity = activity;
+    public CommentAdapter() {
+
     }
 
     @NonNull
@@ -72,14 +68,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         binding.imageViewLike.setOnClickListener(view -> {
             if (comment.vote == null) {
-                Vote vote = new Vote(comment.id, true);
 
                 commentListener.like(comment.id);
 
-                like(comment, binding);
-
-                votes.add(vote);
-                PrefConfig.writeListInPref(activity, votes);
+                updateLike(comment, binding);
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -88,15 +80,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         });
         binding.imageViewDislike.setOnClickListener(view -> {
             if (comment.vote == null) {
-                Vote vote = new Vote(comment.id, false);
 
                 commentListener.dislike(comment.id);
 
-                dislike(comment, binding);
-
-                votes.add(vote);
-                PrefConfig.writeListInPref(activity, votes);
-
+                updateDislike(comment, binding);
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -111,44 +98,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return allComments.size();
     }
 
-    public void setDataComment(ArrayList<ResponseComment.Comment> commentData) {
-
-        if (PrefConfig.readListFromPref(activity) != null) {
-            votes = (ArrayList<Vote>) PrefConfig.readListFromPref(activity);
-        }
-
-        for (ResponseComment.Comment comment : commentData) {
-            allComments.add(comment);
-            addChildren(comment.children);
-        }
-
-        if (votes != null) {
-            setVoteData(allComments, votes);
-        }
+    public void updateList(ArrayList<ResponseComment.Comment> commentData) {
+        allComments.addAll(commentData);
         notifyDataSetChanged();
     }
 
-    private void setVoteData(ArrayList<ResponseComment.Comment> allComments, ArrayList<Vote> votes) {
-
-        for (ResponseComment.Comment comment : allComments) {
-            for (Vote vote : votes) {
-                if (comment.id.equals(vote.commentId)) {
-                    comment.vote = vote;
-                }
-                if (comment.children != null) {
-                    setVoteData(comment.children, votes);
-                }
-            }
-        }
-    }
-
-    public void like(ResponseComment.Comment comment, RvItemCommentBinding binding) {
+    public void updateLike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
         binding.like.setText(String.valueOf(comment.positive_votes + 1));
         binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
         binding.likeCircle.setVisibility(View.VISIBLE);
     }
 
-    public void dislike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
+    public void updateDislike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
         binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
         binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
         binding.dislikeCircle.setVisibility(View.VISIBLE);
@@ -158,15 +119,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         this.commentListener = commentListener;
     }
 
-    private void addChildren(ArrayList<ResponseComment.Comment> comments) {
-        if (comments != null && !comments.isEmpty()) {
-            for (ResponseComment.Comment comment : comments) {
-                allComments.add(comment);
-                addChildren(comment.children);
-            }
-        }
-    }
-
     private void setMargins(View view) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -174,7 +126,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             view.requestLayout();
         }
     }
-
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;

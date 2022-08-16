@@ -80,7 +80,7 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void replyComment(String name, String email, String content) {
 
-        DataRepository.getInstance().replyComment(news, reply_id, name, email, content, new DataRepository.PostResponseListener() {
+        DataRepository.getInstance().replyComment(news, reply_id, name, email, content, new DataRepository.PostRequestListener() {
             @Override
             public void onResponse(ResponseCommentSend.ResponseBody response) {
                 binding.name.setText("");
@@ -99,7 +99,7 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void postComment(String name, String email, String content) {
 
-        DataRepository.getInstance().postComment(news, name, email, content, new DataRepository.PostResponseListener() {
+        DataRepository.getInstance().postComment(news, name, email, content, new DataRepository.PostRequestListener() {
             @Override
             public void onResponse(ResponseCommentSend.ResponseBody response) {
                 binding.name.setText("");

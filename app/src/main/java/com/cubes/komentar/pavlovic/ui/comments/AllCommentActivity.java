@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityAllCommentBinding;
+import com.cubes.komentar.pavlovic.data.model.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
@@ -20,9 +21,12 @@ import java.util.ArrayList;
 
 public class AllCommentActivity extends AppCompatActivity {
 
+    private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
     private ActivityAllCommentBinding binding;
+    private ArrayList<Vote> votes = new ArrayList<>();
     private CommentAdapter adapter;
     private int id;
+    private ResponseComment.Comment comment;
 
 
     @Override
@@ -46,8 +50,12 @@ public class AllCommentActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new CommentAdapter(this);
+        adapter = new CommentAdapter();
         binding.recyclerViewComments.setAdapter(adapter);
+
+        if (SharedPrefs.readListFromPref(AllCommentActivity.this) != null) {
+            votes = (ArrayList<Vote>) SharedPrefs.readListFromPref(AllCommentActivity.this);
+        }
 
         adapter.setCommentListener(new CommentListener() {
             @Override
@@ -65,6 +73,12 @@ public class AllCommentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+
+                        Vote vote = new Vote(commentId, true);
+
+                        votes.add(vote);
+                        SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
+
                     }
 
                     @Override
@@ -80,6 +94,11 @@ public class AllCommentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
+
+                        Vote vote = new Vote(commentId, false);
+
+                        votes.add(vote);
+                        SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
                     }
 
                     @Override
@@ -101,7 +120,7 @@ public class AllCommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<ResponseComment.Comment> response) {
 
-                adapter.setDataComment(response);
+                setDataComment(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
@@ -115,6 +134,45 @@ public class AllCommentActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setDataComment(ArrayList<ResponseComment.Comment> commentData) {
+
+        ArrayList<ResponseComment.Comment> comments = commentData;
+
+        for (ResponseComment.Comment comment : comments) {
+            allComments.add(comment);
+            addChildren(comment.children);
+        }
+
+        if (votes != null) {
+            setVoteData(allComments, votes);
+        }
+
+        adapter.updateList(allComments);
+    }
+
+    private void setVoteData(ArrayList<ResponseComment.Comment> allComments, ArrayList<Vote> votes) {
+
+        for (ResponseComment.Comment comment : allComments) {
+            for (Vote vote : votes) {
+                if (comment.id.equals(vote.commentId)) {
+                    comment.vote = vote;
+                }
+                if (comment.children != null) {
+                    setVoteData(comment.children, votes);
+                }
+            }
+        }
+    }
+
+    private void addChildren(ArrayList<ResponseComment.Comment> comments) {
+        if (comments != null && !comments.isEmpty()) {
+            for (ResponseComment.Comment comment : comments) {
+                allComments.add(comment);
+                addChildren(comment.children);
+            }
+        }
     }
 
     public void refresh() {

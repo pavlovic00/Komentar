@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.menu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -29,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean click = true;
 
 
+    @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
                 .replace(R.id.homeLayout, HomeFragment.newInstance())
                 .commit();
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             Fragment selectedFragment = null;
 
@@ -73,15 +75,15 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             }
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.homeLayout, selectedFragment)
-                    .commit();
-
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.homeLayout, selectedFragment)
+                        .commit();
+            }
             return true;
         });
         //Lock drawer slide.
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         //Click menu.
         binding.imageRight.setOnClickListener(view19 -> {
             binding.logo.setImageResource(R.drawable.ic_komentar_logo);

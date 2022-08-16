@@ -1,7 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.cubes.komentar.pavlovic.data.model.Vote;
@@ -12,7 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrefConfig {
+public class SharedPrefs {
 
     private static final String LIST_KEY = "list_key";
 
@@ -20,14 +19,14 @@ public class PrefConfig {
         Gson gson = new Gson();
         String jsonString = gson.toJson(list);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
-        SharedPreferences.Editor editor = pref.edit();
+        android.content.SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        android.content.SharedPreferences.Editor editor = pref.edit();
         editor.putString(LIST_KEY, jsonString);
         editor.apply();
     }
 
     public static List<Vote> readListFromPref(Activity activity) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        android.content.SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
         String jsonString = pref.getString(LIST_KEY, "");
 
         Gson gson = new Gson();

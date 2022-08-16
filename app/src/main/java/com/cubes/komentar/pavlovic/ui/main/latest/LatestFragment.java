@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentLatestBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
@@ -26,9 +28,8 @@ public class LatestFragment extends Fragment {
 
 
     public static LatestFragment newInstance() {
-        LatestFragment fragment = new LatestFragment();
 
-        return fragment;
+        return new LatestFragment();
     }
 
     @Override
@@ -52,6 +53,13 @@ public class LatestFragment extends Fragment {
         setupRecyclerView();
         loadDataLatest();
         refresh();
+
+        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipeRefresh);
+        binding.swipeRefresh.setColorSchemeResources(R.color.blue_light);
+        pullToRefresh.setOnRefreshListener(() -> {
+            pullRefresh();
+            pullToRefresh.setRefreshing(false);
+        });
     }
 
     public void setupRecyclerView() {
@@ -64,7 +72,7 @@ public class LatestFragment extends Fragment {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(i);
+            startActivity(i);
         });
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
@@ -119,6 +127,21 @@ public class LatestFragment extends Fragment {
             setupRecyclerView();
             loadDataLatest();
             binding.progressBar.setVisibility(View.GONE);
+        });
+
+    }
+
+    public void pullRefresh(){
+
+        DataRepository.getInstance().loadLatestData(nextPage-1, new DataRepository.LatestResponseListener() {
+            @Override
+            public void onResponse(ResponseNewsList.ResponseData response) {
+                adapter.setData(response);
+            }
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
         });
 
     }

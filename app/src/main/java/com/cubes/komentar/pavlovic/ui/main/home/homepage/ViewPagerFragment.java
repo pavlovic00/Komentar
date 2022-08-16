@@ -70,7 +70,7 @@ public class ViewPagerFragment extends Fragment {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(i);
+            startActivity(i);
         });
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.NewsResponseListener() {

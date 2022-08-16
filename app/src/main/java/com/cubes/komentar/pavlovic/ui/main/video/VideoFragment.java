@@ -25,9 +25,7 @@ public class VideoFragment extends Fragment {
 
 
     public static VideoFragment newInstance() {
-        VideoFragment fragment = new VideoFragment();
-
-        return fragment;
+        return new VideoFragment();
     }
 
     @Override
@@ -63,7 +61,7 @@ public class VideoFragment extends Fragment {
             i.putExtra(Intent.EXTRA_TEXT, news.url);
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
-            getContext().startActivity(shareIntent);
+            startActivity(shareIntent);
         });
 
         binding.recyclerViewVideo.setAdapter(adapter);
