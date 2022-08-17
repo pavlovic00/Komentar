@@ -30,7 +30,7 @@ public class RvItemTitleComment implements RecyclerViewItemDetail {
         binding.commentCount.setText("(" + data.comments_count + ")");
 
         if (data.comments_top_n.size() == 0) {
-            binding.upozorenje.setVisibility(View.VISIBLE);
+            binding.obavestenje.setVisibility(View.VISIBLE);
         }
     }
 }

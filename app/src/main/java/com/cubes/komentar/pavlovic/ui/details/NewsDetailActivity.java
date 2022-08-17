@@ -10,22 +10,29 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityNewsDetailBinding;
+import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.model.Tags;
+import com.cubes.komentar.pavlovic.data.model.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
+import com.cubes.komentar.pavlovic.ui.comments.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+
+import java.util.ArrayList;
 
 public class NewsDetailActivity extends AppCompatActivity {
 
     private ActivityNewsDetailBinding binding;
     private int id;
+    private ArrayList<Vote> votes = new ArrayList<>();
     private DetailNewsAdapter adapter;
 
 
@@ -41,12 +48,22 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadDetailData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
+
         setupRecyclerView();
         loadDetailData();
         refresh();
     }
 
     private void setupRecyclerView() {
+
+        if (SharedPrefs.readListFromPref(NewsDetailActivity.this) != null) {
+            votes = (ArrayList<Vote>) SharedPrefs.readListFromPref(NewsDetailActivity.this);
+        }
 
         binding.recyclerViewDetail.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new DetailNewsAdapter(new CommentListener() {
@@ -60,11 +77,20 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void like(String commentId) {
-                DataRepository.getInstance().voteComment(commentId, new DataRepository.VoteCommentListener() {
+            public void like(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+                DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
+
+                        Vote vote = new Vote(comment.id, true);
+
+                        votes.add(vote);
+                        SharedPrefs.writeListInPref(NewsDetailActivity.this, votes);
+
+                        bindingComment.like.setText(String.valueOf(comment.positive_votes + 1));
+                        bindingComment.imageViewLike.setImageResource(R.drawable.ic_like_vote);
+                        bindingComment.likeCircle.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -75,11 +101,20 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void dislike(String commentId) {
-                DataRepository.getInstance().unVoteComment(commentId, new DataRepository.VoteCommentListener() {
+            public void dislike(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+                DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
+
+                        Vote vote = new Vote(comment.id, false);
+
+                        votes.add(vote);
+                        SharedPrefs.writeListInPref(NewsDetailActivity.this, votes);
+
+                        bindingComment.dislike.setText(String.valueOf(comment.negative_votes + 1));
+                        bindingComment.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+                        bindingComment.dislikeCircle.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -153,12 +188,14 @@ public class NewsDetailActivity extends AppCompatActivity {
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewDetail.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
     }

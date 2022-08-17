@@ -10,7 +10,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityAllCommentBinding;
+import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.model.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
@@ -26,7 +28,6 @@ public class AllCommentActivity extends AppCompatActivity {
     private ArrayList<Vote> votes = new ArrayList<>();
     private CommentAdapter adapter;
     private int id;
-    private ResponseComment.Comment comment;
 
 
     @Override
@@ -37,10 +38,15 @@ public class AllCommentActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
         id = getIntent().getExtras().getInt("id");
 
         binding.imageBack.setOnClickListener(view1 -> finish());
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadCommentData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
 
         setupRecyclerView();
         loadCommentData();
@@ -48,6 +54,8 @@ public class AllCommentActivity extends AppCompatActivity {
     }
 
     public void setupRecyclerView() {
+
+        allComments.clear();
 
         binding.recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new CommentAdapter();
@@ -68,17 +76,20 @@ public class AllCommentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void like(String commentId) {
-                DataRepository.getInstance().voteComment(commentId, new DataRepository.VoteCommentListener() {
+            public void like(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+                DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(commentId, true);
+                        Vote vote = new Vote(comment.id, true);
 
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
+                        bindingComment.like.setText(String.valueOf(comment.positive_votes + 1));
+                        bindingComment.imageViewLike.setImageResource(R.drawable.ic_like_vote);
+                        bindingComment.likeCircle.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -89,16 +100,20 @@ public class AllCommentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void dislike(String commentId) {
-                DataRepository.getInstance().unVoteComment(commentId, new DataRepository.VoteCommentListener() {
+            public void dislike(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+                DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(commentId, false);
+                        Vote vote = new Vote(comment.id, false);
 
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
+
+                        bindingComment.dislike.setText(String.valueOf(comment.negative_votes + 1));
+                        bindingComment.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+                        bindingComment.dislikeCircle.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -120,25 +135,29 @@ public class AllCommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<ResponseComment.Comment> response) {
 
+                if (response.equals(new ArrayList<>())) {
+                    binding.obavestenje.setVisibility(View.VISIBLE);
+                }
+
                 setDataComment(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewComments.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 
     }
 
-    public void setDataComment(ArrayList<ResponseComment.Comment> commentData) {
-
-        ArrayList<ResponseComment.Comment> comments = commentData;
+    public void setDataComment(ArrayList<ResponseComment.Comment> comments) {
 
         for (ResponseComment.Comment comment : comments) {
             allComments.add(comment);

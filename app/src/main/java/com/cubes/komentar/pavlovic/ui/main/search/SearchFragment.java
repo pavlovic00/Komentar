@@ -22,13 +22,13 @@ import com.cubes.komentar.databinding.FragmentSearchBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
-import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 
 
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
     private SearchAdapter adapter;
+    private int nextPage = 2;
 
 
     public static SearchFragment newInstance() {
@@ -63,10 +63,19 @@ public class SearchFragment extends Fragment {
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.recyclerViewSearch.setVisibility(View.INVISIBLE);
-                setupRecyclerView();
-                loadSearchData();
-                hideKeyboard(getActivity());
-                return true;
+                String term = binding.editTextSearch.getText().toString();
+                if (term.length() < 3) {
+                    Toast.makeText(getContext(),
+                            "Unesite karakter za pretragu!", Toast.LENGTH_SHORT).show();
+                    binding.progressBar.setVisibility(View.GONE);
+                } else {
+                    setupRecyclerView();
+                    loadSearchData();
+                    hideKeyboard(getActivity());
+                    binding.obavestenje.setVisibility(View.GONE);
+                    binding.imageViewObavestenje.setVisibility(View.GONE);
+                    return true;
+                }
             }
             return false;
         });
@@ -77,12 +86,30 @@ public class SearchFragment extends Fragment {
 
             if (term.length() < 3) {
                 Toast.makeText(getContext(),
-                        "Unesite neki karakter za pretragu!", Toast.LENGTH_SHORT).show();
+                        "Unesite karakter za pretragu!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                setupRecyclerView();
+                loadSearchData();
+                hideKeyboard(getActivity());
+                binding.obavestenje.setVisibility(View.GONE);
+                binding.imageViewObavestenje.setVisibility(View.GONE);
+            }
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            String term = binding.editTextSearch.getText().toString();
+
+            if (term.length() < 3) {
+                Toast.makeText(getContext(),
+                        "Unesite karakter za pretragu!", Toast.LENGTH_SHORT).show();
+                binding.swipeRefresh.setRefreshing(false);
                 return;
             }
             setupRecyclerView();
             loadSearchData();
-            hideKeyboard(getActivity());
+            binding.progressBar.setVisibility(View.GONE);
+            binding.swipeRefresh.setRefreshing(false);
         });
 
         refresh();
@@ -101,28 +128,20 @@ public class SearchFragment extends Fragment {
             startActivity(i);
         });
 
-        adapter.setLoadingNewsListener(new LoadingNewsListener() {
+        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
+            @Override
+            public void onResponse(ResponseNewsList.ResponseData responseData) {
+                adapter.addNewsList(responseData.news);
 
-            int nextPage = 2;
+                nextPage++;
+            }
 
             @Override
-            public void loadMoreNews() {
-                DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
-                    @Override
-                    public void onResponse(ResponseNewsList.ResponseData responseData) {
-                        adapter.addNewsList(responseData.news);
-
-                        nextPage++;
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        binding.recyclerViewSearch.setVisibility(View.GONE);
-                        binding.refresh.setVisibility(View.VISIBLE);
-                    }
-                });
+            public void onFailure(Throwable t) {
+                binding.recyclerViewSearch.setVisibility(View.GONE);
+                binding.refresh.setVisibility(View.VISIBLE);
             }
-        });
+        }));
 
 
     }
@@ -136,7 +155,11 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(ResponseNewsList.ResponseData responseData) {
 
+                setupRecyclerView();
+
                 adapter.setDataSearch(responseData);
+
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

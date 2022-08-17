@@ -19,7 +19,7 @@ public class TagsActivity extends AppCompatActivity {
     private ActivityTagsBinding binding;
     private int id;
     private TagsAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     @Override
@@ -36,6 +36,12 @@ public class TagsActivity extends AppCompatActivity {
         binding.textViewTag.setText(title);
 
         binding.imageBack.setOnClickListener(view1 -> finish());
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadTagData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
 
         setupRecyclerView();
         loadTagData();
@@ -77,22 +83,24 @@ public class TagsActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadTagData(id, nextPage, new DataRepository.TagResponseListener() {
+        DataRepository.getInstance().loadTagData(id, 0, new DataRepository.TagResponseListener() {
             @Override
             public void onResponse(ResponseNewsList responseNewsList) {
 
-                nextPage++;
+                nextPage = 2;
                 adapter.setDataTags(responseNewsList);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewTags.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 

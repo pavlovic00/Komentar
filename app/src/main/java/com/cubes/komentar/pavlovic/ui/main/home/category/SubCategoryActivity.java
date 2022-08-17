@@ -20,7 +20,7 @@ public class SubCategoryActivity extends AppCompatActivity {
     private ActivityCategoryBinding binding;
     private LatestAdapter adapter;
     private int id;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     @Override
@@ -37,6 +37,12 @@ public class SubCategoryActivity extends AppCompatActivity {
 
 
         binding.imageBack.setOnClickListener(view1 -> finish());
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadCategoryData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
 
         setupRecyclerView();
         loadCategoryData();
@@ -79,22 +85,24 @@ public class SubCategoryActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewCategory.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
+        DataRepository.getInstance().loadCategoryData(id, 1, new DataRepository.CategoryResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
 
-                nextPage++;
+                nextPage = 2;
                 adapter.setData(responseNewsList);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewCategory.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 

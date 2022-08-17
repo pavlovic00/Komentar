@@ -68,10 +68,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         binding.imageViewLike.setOnClickListener(view -> {
             if (comment.vote == null) {
+                commentListener.like(comment, binding);
 
-                commentListener.like(comment.id);
-
-                updateLike(comment, binding);
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -80,10 +78,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         });
         binding.imageViewDislike.setOnClickListener(view -> {
             if (comment.vote == null) {
+                commentListener.dislike(comment, binding);
 
-                commentListener.dislike(comment.id);
-
-                updateDislike(comment, binding);
             } else {
                 Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
@@ -98,21 +94,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return allComments.size();
     }
 
-    public void updateList(ArrayList<ResponseComment.Comment> commentData) {
-        allComments.addAll(commentData);
+    public void updateList(ArrayList<ResponseComment.Comment> comments) {
+        allComments.addAll(comments);
         notifyDataSetChanged();
-    }
-
-    public void updateLike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
-        binding.like.setText(String.valueOf(comment.positive_votes + 1));
-        binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-        binding.likeCircle.setVisibility(View.VISIBLE);
-    }
-
-    public void updateDislike(ResponseComment.Comment comment, RvItemCommentBinding binding) {
-        binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
-        binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-        binding.dislikeCircle.setVisibility(View.VISIBLE);
     }
 
     public void setCommentListener(CommentListener commentListener) {
@@ -126,6 +110,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             view.requestLayout();
         }
     }
+
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;

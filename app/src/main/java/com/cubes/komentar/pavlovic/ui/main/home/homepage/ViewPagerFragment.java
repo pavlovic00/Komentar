@@ -25,7 +25,7 @@ public class ViewPagerFragment extends Fragment {
     private static final String CATEGORY_ID = "categoryId";
     private int categoryId;
     private LatestAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     public static ViewPagerFragment newInstance(int categoryId) {
@@ -56,8 +56,14 @@ public class ViewPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadCategoriesHomeData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
+
         setupRecyclerView();
-        loadHomeData();
+        loadCategoriesHomeData();
         refresh();
     }
 
@@ -90,28 +96,30 @@ public class ViewPagerFragment extends Fragment {
 
     }
 
-    public void loadHomeData() {
+    public void loadCategoriesHomeData() {
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 1, new DataRepository.NewsResponseListener() {
+        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 0, new DataRepository.NewsResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
 
                 adapter.setData(response);
 
-                nextPage++;
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewPager.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -125,7 +133,7 @@ public class ViewPagerFragment extends Fragment {
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);
             setupRecyclerView();
-            loadHomeData();
+            loadCategoriesHomeData();
             binding.progressBar.setVisibility(View.GONE);
         });
     }

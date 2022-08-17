@@ -4,7 +4,7 @@ import com.cubes.komentar.pavlovic.data.model.Vote;
 
 import java.util.ArrayList;
 
-public class ResponseComment extends ParentResponse{
+public class ResponseComment extends ParentResponse {
 
     public ArrayList<Comment> data;
 
@@ -21,7 +21,6 @@ public class ResponseComment extends ParentResponse{
         public String content;
         public ArrayList<Comment> children;
 
-        public int voted = 0;
         public Vote vote;
     }
 

@@ -21,7 +21,7 @@ public class VideoFragment extends Fragment {
 
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     public static VideoFragment newInstance() {
@@ -46,6 +46,12 @@ public class VideoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadDataVideo();
+            binding.progressBar.setVisibility(View.GONE);
+        });
 
         setupRecyclerView();
         loadDataVideo();
@@ -88,22 +94,24 @@ public class VideoFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewVideo.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+        DataRepository.getInstance().loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
 
-                nextPage++;
+                nextPage = 2;
                 adapter.setData(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewVideo.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
     }

@@ -36,32 +36,35 @@ public class RvItemComment implements RecyclerViewItemDetail {
         binding.like.setText(comment.positive_votes + "");
         binding.dislike.setText(comment.negative_votes + "");
 
-
-        binding.imageViewLike.setOnClickListener(view -> {
-            if (comment.voted == 0) {
-
-                commentListener.like(comment.id);
-
-                binding.like.setText(String.valueOf(comment.positive_votes + 1));
-                comment.voted = 1;
+        if (comment.vote != null) {
+            if (comment.vote.vote) {
                 binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
                 binding.likeCircle.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+                binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
+                binding.dislikeCircle.setVisibility(View.VISIBLE);
             }
+        }
+
+        binding.imageViewLike.setOnClickListener(view -> {
+            if (comment.vote == null) {
+                commentListener.like(comment, binding);
+
+            } else {
+                Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
+            }
+            binding.imageViewLike.setEnabled(false);
+            binding.imageViewDislike.setEnabled(false);
         });
         binding.imageViewDislike.setOnClickListener(view -> {
-            if (comment.voted == 0) {
+            if (comment.vote == null) {
+                commentListener.dislike(comment, binding);
 
-                commentListener.dislike(comment.id);
-
-                binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
-                comment.voted = 1;
-                binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                binding.dislikeCircle.setVisibility(View.INVISIBLE);
             } else {
-                Toast.makeText(view.getContext().getApplicationContext(), "Vaš glas je već zabeležen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext().getApplicationContext(), "Već ste glasali!", Toast.LENGTH_SHORT).show();
             }
+            binding.imageViewLike.setEnabled(false);
+            binding.imageViewDislike.setEnabled(false);
         });
         binding.buttonReply.setOnClickListener(view -> commentListener.onCommentClicked(comment));
     }

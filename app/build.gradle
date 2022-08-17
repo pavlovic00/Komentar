@@ -52,5 +52,7 @@ dependencies {
     //Circle
     implementation 'me.relex:circleindicator:2.1.6'
     implementation 'me.relex:circleindicator:2.1.6'
+    //FlexBox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
 }

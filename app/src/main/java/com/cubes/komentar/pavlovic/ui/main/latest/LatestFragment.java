@@ -12,9 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentLatestBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
@@ -24,11 +22,10 @@ public class LatestFragment extends Fragment {
 
     private FragmentLatestBinding binding;
     private LatestAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     public static LatestFragment newInstance() {
-
         return new LatestFragment();
     }
 
@@ -50,16 +47,15 @@ public class LatestFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadDataLatest();
+            binding.progressBar.setVisibility(View.GONE);
+        });
+
         setupRecyclerView();
         loadDataLatest();
         refresh();
-
-        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.swipeRefresh);
-        binding.swipeRefresh.setColorSchemeResources(R.color.blue_light);
-        pullToRefresh.setOnRefreshListener(() -> {
-            pullRefresh();
-            pullToRefresh.setRefreshing(false);
-        });
     }
 
     public void setupRecyclerView() {
@@ -96,22 +92,24 @@ public class LatestFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewLatest.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
+        DataRepository.getInstance().loadLatestData(1, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ResponseNewsList.ResponseData response) {
 
-                nextPage++;
+                nextPage = 2;
                 adapter.setData(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewLatest.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -131,18 +129,4 @@ public class LatestFragment extends Fragment {
 
     }
 
-    public void pullRefresh(){
-
-        DataRepository.getInstance().loadLatestData(nextPage-1, new DataRepository.LatestResponseListener() {
-            @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                adapter.setData(response);
-            }
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
-    }
 }
