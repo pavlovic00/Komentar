@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHolder> {
+public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder> {
 
     private final ArrayList<News> list;
     private final NewsListener newsListener;
@@ -27,18 +27,18 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
 
     @NonNull
     @Override
-    public SliderAdapter.SliderHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         binding = RvItemForHorizontalRvBinding.inflate(inflater, parent, false);
 
-        return new SliderHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SliderAdapter.SliderHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         News news = list.get(position);
 
         RvItemForHorizontalRvBinding binding = (RvItemForHorizontalRvBinding) holder.binding;
@@ -57,11 +57,11 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderHold
         return list.size();
     }
 
-    public static class SliderHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public SliderHolder(@NonNull ViewBinding binding) {
+        public ViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

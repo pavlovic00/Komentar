@@ -1,7 +1,8 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewLongBinding;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 
 public class RvItemTitleDetail implements RecyclerViewItemDetail {
 
@@ -14,11 +15,11 @@ public class RvItemTitleDetail implements RecyclerViewItemDetail {
 
     @Override
     public int getType() {
-        return 1;
+        return R.layout.rv_item_horizontal_text_view_long;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(NewsDetailAdapter.ViewHolder holder) {
 
         RvItemHorizontalTextViewLongBinding binding = (RvItemHorizontalTextViewLongBinding) holder.binding;
         binding.textViewTitle.setText(title);

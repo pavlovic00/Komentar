@@ -2,9 +2,10 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import android.graphics.Color;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 import com.squareup.picasso.Picasso;
 
@@ -21,11 +22,11 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
     @Override
     public int getType() {
-        return 8;
+        return R.layout.rv_item_small;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(NewsDetailAdapter.ViewHolder holder) {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 

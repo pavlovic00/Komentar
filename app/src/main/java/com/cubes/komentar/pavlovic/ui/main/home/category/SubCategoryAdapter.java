@@ -16,7 +16,7 @@ import com.cubes.komentar.pavlovic.ui.tools.SubCategoryListener;
 
 import java.util.ArrayList;
 
-public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.SubCategoryViewHolder> {
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder> {
 
     private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
     private final SubCategoryListener subCategoryListener;
@@ -29,19 +29,19 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
     @NonNull
     @Override
-    public SubCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         binding = RvItemCategoryItemBinding.inflate(inflater, parent, false);
 
-        return new SubCategoryViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(@NonNull SubCategoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         ResponseCategories.ResponseCategoriesData categories = list.get(position);
 
@@ -64,11 +64,11 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         return list.size();
     }
 
-    public static class SubCategoryViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public SubCategoryViewHolder(@NonNull ViewBinding binding) {
+        public ViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

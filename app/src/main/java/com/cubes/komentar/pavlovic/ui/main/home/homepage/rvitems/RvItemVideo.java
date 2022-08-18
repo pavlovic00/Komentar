@@ -1,40 +1,41 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.graphics.Color;
 
-import com.cubes.komentar.databinding.RvRecyclerviewVideoBinding;
+import com.cubes.komentar.R;
+import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
-import com.cubes.komentar.pavlovic.ui.main.video.VideoAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
-
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
 
 public class RvItemVideo implements RecyclerViewItemHomepage {
 
-    private final ArrayList<News> videoList;
+    private final News video;
     private final VideoListener videoListener;
 
 
-    public RvItemVideo(ArrayList<News> videoList, VideoListener videoListener) {
-        this.videoList = videoList;
+    public RvItemVideo(News video, VideoListener videoListener) {
+        this.video = video;
         this.videoListener = videoListener;
     }
 
     @Override
     public int getType() {
-        return 6;
+        return R.layout.rv_item_video;
     }
 
     @Override
-    public void bind(HomepageAdapter.HomepageViewHolder holder) {
+    public void bind(HomepageAdapter.ViewHolder holder) {
 
-        RvRecyclerviewVideoBinding binding = (RvRecyclerviewVideoBinding) holder.binding;
+        RvItemVideoBinding bindingVideo = (RvItemVideoBinding) holder.binding;
 
-        binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
-                RecyclerView.VERTICAL, false));
-        VideoAdapter adapter = new VideoAdapter(videoList, videoListener);
-        binding.recyclerViewVideo.setAdapter(adapter);
+        bindingVideo.textViewTitle.setText(video.title);
+        bindingVideo.date.setText(video.created_at);
+        bindingVideo.textViewCategory.setText(video.category.name);
+        bindingVideo.textViewCategory.setTextColor(Color.parseColor(video.category.color));
+        Picasso.get().load(video.image).into(bindingVideo.imageView);
+
+        bindingVideo.imageViewPlay.setOnClickListener(view -> videoListener.onVideoClicked(video));
     }
 }

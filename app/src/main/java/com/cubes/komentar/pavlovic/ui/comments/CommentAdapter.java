@@ -16,19 +16,18 @@ import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
 import java.util.ArrayList;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
     private CommentListener commentListener;
 
 
     public CommentAdapter() {
-
     }
 
     @NonNull
     @Override
-    public CommentAdapter.CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -36,21 +35,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         binding = RvItemCommentBinding.inflate(inflater, parent, false);
 
-        return new CommentViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         ResponseComment.Comment comment = allComments.get(position);
 
         RvItemCommentBinding binding = (RvItemCommentBinding) holder.binding;
 
+        String like = comment.positive_votes + "";
+        String dislike = comment.negative_votes + "";
+
         binding.person.setText(comment.name);
         binding.date.setText(comment.created_at);
         binding.content.setText(comment.content);
-        binding.like.setText(comment.positive_votes + "");
-        binding.dislike.setText(comment.negative_votes + "");
+        binding.like.setText(like);
+        binding.dislike.setText(dislike);
 
         if (!allComments.get(position).parent_comment.equals("0")) {
             setMargins(binding.rootLayout);
@@ -59,10 +61,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         if (comment.vote != null) {
             if (comment.vote.vote) {
                 binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-                binding.likeCircle.setVisibility(View.VISIBLE);
+                binding.likeCircle.setBackgroundResource(R.drawable.button_circle_background_like);
             } else {
                 binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                binding.dislikeCircle.setVisibility(View.VISIBLE);
+                binding.dislikeCircle.setBackgroundResource(R.drawable.button_circle_background_dislike);
             }
         }
 
@@ -111,11 +113,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         }
     }
 
-    public static class CommentViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public CommentViewHolder(ViewBinding binding) {
+        public ViewHolder(ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

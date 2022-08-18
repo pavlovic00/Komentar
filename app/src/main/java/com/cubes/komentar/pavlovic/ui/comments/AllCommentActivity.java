@@ -20,7 +20,6 @@ import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
 import java.util.ArrayList;
 
-
 public class AllCommentActivity extends AppCompatActivity {
 
     private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
@@ -89,7 +88,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
                         bindingComment.like.setText(String.valueOf(comment.positive_votes + 1));
                         bindingComment.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-                        bindingComment.likeCircle.setVisibility(View.VISIBLE);
+                        bindingComment.likeCircle.setBackgroundResource(R.drawable.button_circle_background_like);
                     }
 
                     @Override
@@ -113,7 +112,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
                         bindingComment.dislike.setText(String.valueOf(comment.negative_votes + 1));
                         bindingComment.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                        bindingComment.dislikeCircle.setVisibility(View.VISIBLE);
+                        bindingComment.dislikeCircle.setBackgroundResource(R.drawable.button_circle_background_dislike);
                     }
 
                     @Override

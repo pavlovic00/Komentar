@@ -71,7 +71,7 @@ public class SearchFragment extends Fragment {
                 } else {
                     setupRecyclerView();
                     loadSearchData();
-                    hideKeyboard(getActivity());
+                    hideKeyboard(requireActivity());
                     binding.obavestenje.setVisibility(View.GONE);
                     binding.imageViewObavestenje.setVisibility(View.GONE);
                     return true;
@@ -91,7 +91,7 @@ public class SearchFragment extends Fragment {
             } else {
                 setupRecyclerView();
                 loadSearchData();
-                hideKeyboard(getActivity());
+                hideKeyboard(requireActivity());
                 binding.obavestenje.setVisibility(View.GONE);
                 binding.imageViewObavestenje.setVisibility(View.GONE);
             }

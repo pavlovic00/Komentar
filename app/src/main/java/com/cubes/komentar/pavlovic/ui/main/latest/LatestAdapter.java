@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestViewHolder> {
+public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder> {
 
     private ArrayList<News> newsList = new ArrayList<>();
     private boolean isLoading;
@@ -34,7 +34,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
 
     @NonNull
     @Override
-    public LatestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -47,12 +47,11 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
             binding = RvItemLoadingBinding.inflate(inflater, parent, false);
 
         }
-        return new LatestViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LatestViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (position == 0) {
 
@@ -147,11 +146,11 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.LatestView
         notifyDataSetChanged();
     }
 
-    public static class LatestViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public LatestViewHolder(@NonNull ViewBinding binding) {
+        public ViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

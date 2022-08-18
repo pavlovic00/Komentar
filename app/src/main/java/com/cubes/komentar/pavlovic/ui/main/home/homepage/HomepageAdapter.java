@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -7,29 +8,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.cubes.komentar.R;
+import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemButtonsHomepageBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalRv2Binding;
 import com.cubes.komentar.databinding.RvItemHorizontalRvBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
-import com.cubes.komentar.databinding.RvItemRvBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
-import com.cubes.komentar.databinding.RvRecyclerviewVideoBinding;
+import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RecyclerViewItemHomepage;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBox;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBig;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemButtonsNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemEditorChoice;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSlider;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSmall;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTopNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideo;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
 
 import java.util.ArrayList;
 
-public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.HomepageViewHolder> {
+public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHolder> {
 
     private final ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
     private final NewsListener newsListener;
@@ -41,43 +43,43 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         this.videoListener = videoListener;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @NonNull
     @Override
-    public HomepageAdapter.HomepageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch (viewType) {
-            case 0:
+            case R.layout.rv_item_horizontal_rv:
                 binding = RvItemHorizontalRvBinding.inflate(inflater, parent, false);
                 break;
-            case 1:
+            case R.layout.rv_item_small:
                 binding = RvItemSmallBinding.inflate(inflater, parent, false);
                 break;
-            case 2:
+            case R.layout.rv_item_buttons_homepage:
                 binding = RvItemButtonsHomepageBinding.inflate(inflater, parent, false);
                 break;
-            case 4:
+            case R.layout.rv_item_horizontal_rv2:
                 binding = RvItemHorizontalRv2Binding.inflate(inflater, parent, false);
                 break;
-            case 6:
-                binding = RvRecyclerviewVideoBinding.inflate(inflater, parent, false);
+            case R.layout.rv_item_video:
+                binding = RvItemVideoBinding.inflate(inflater, parent, false);
                 break;
-            case 8:
-                binding = RvItemRvBinding.inflate(inflater, parent, false);
+            case R.layout.rv_item_big:
+                binding = RvItemBigBinding.inflate(inflater, parent, false);
                 break;
-
             default:
                 binding = RvItemHorizontalTextViewBinding.inflate(inflater, parent, false);
         }
 
-        return new HomepageViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomepageAdapter.HomepageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         this.items.get(position).bind(holder);
     }
@@ -100,7 +102,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         //1
         for (int i = 0; i < response.top.size(); i++) {
             News news = response.top.get(i);
-            items.add(new RvItemTopNews(news, newsListener));
+            items.add(new RvItemSmall(news, newsListener));
         }
         //2
         items.add(new RvItemButtonsNews(response.latest, response.most_comented, response.most_read, newsListener));
@@ -112,21 +114,28 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         //5-6
         if (response.videos.size() > 0) {
             items.add(new RvItemTitle("Video", "#FF0000"));
-            items.add(new RvItemVideo(response.videos, videoListener));
+
+            for (News video : response.videos) {
+                items.add(new RvItemVideo(video, videoListener));
+            }
         }
-        //7-8
+        //7-8-9
         for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : response.category) {
             items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            items.add(new RvItemBox(categoryBox.title, categoryBox.news, newsListener));
+            items.add(new RvItemBig(categoryBox.news.get(0), newsListener));
+
+            for (int i = 1; i < 5; i++) {
+                items.add(new RvItemSmall(categoryBox.news.get(i), newsListener));
+            }
         }
         notifyDataSetChanged();
     }
 
-    public static class HomepageViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public HomepageViewHolder(ViewBinding binding) {
+        public ViewHolder(ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

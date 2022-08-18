@@ -1,8 +1,9 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 public class RvItemButtonAllComment implements RecyclerViewItemDetail {
@@ -18,15 +19,16 @@ public class RvItemButtonAllComment implements RecyclerViewItemDetail {
 
     @Override
     public int getType() {
-        return 6;
+        return R.layout.rv_item_button_all_comment;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(NewsDetailAdapter.ViewHolder holder) {
 
+        String count = data.comments_count + "";
 
         RvItemButtonAllCommentBinding binding = (RvItemButtonAllCommentBinding) holder.binding;
-        binding.commentCount.setText("" + data.comments_count);
+        binding.commentCount.setText(count);
 
         binding.buttonAllComment.setOnClickListener(view -> allCommentListener.onAllCommentClicked(data));
     }

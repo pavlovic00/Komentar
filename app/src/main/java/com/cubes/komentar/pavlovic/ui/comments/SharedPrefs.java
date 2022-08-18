@@ -32,8 +32,7 @@ public class SharedPrefs {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Vote>>() {
         }.getType();
-        List<Vote> list = gson.fromJson(jsonString, type);
-        return list;
+        return gson.fromJson(jsonString, type);
     }
 
 }

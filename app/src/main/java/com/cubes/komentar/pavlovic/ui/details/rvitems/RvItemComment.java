@@ -6,35 +6,38 @@ import android.widget.Toast;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 public class RvItemComment implements RecyclerViewItemDetail {
 
     private final ResponseComment.Comment comment;
-    private final CommentListener commentListener;
+    private final NewsDetailListener commentListener;
 
 
-    public RvItemComment(ResponseComment.Comment comment, CommentListener commentListener) {
+    public RvItemComment(ResponseComment.Comment comment, NewsDetailListener commentListener) {
         this.comment = comment;
         this.commentListener = commentListener;
     }
 
     @Override
     public int getType() {
-        return 5;
+        return R.layout.rv_item_comment;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(NewsDetailAdapter.ViewHolder holder) {
 
         RvItemCommentBinding binding = (RvItemCommentBinding) holder.binding;
+
+        String like = comment.positive_votes + "";
+        String dislike = comment.negative_votes + "";
 
         binding.person.setText(comment.name);
         binding.date.setText(comment.created_at);
         binding.content.setText(comment.content);
-        binding.like.setText(comment.positive_votes + "");
-        binding.dislike.setText(comment.negative_votes + "");
+        binding.like.setText(like);
+        binding.dislike.setText(dislike);
 
         if (comment.vote != null) {
             if (comment.vote.vote) {

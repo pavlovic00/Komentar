@@ -6,6 +6,6 @@ public interface RecyclerViewItemHomepage {
 
     int getType();
 
-    void bind(HomepageAdapter.HomepageViewHolder holder);
+    void bind(HomepageAdapter.ViewHolder holder);
 
 }

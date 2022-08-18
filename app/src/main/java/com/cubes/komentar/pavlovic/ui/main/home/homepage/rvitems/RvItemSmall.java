@@ -2,30 +2,31 @@ package com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems;
 
 import android.graphics.Color;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.squareup.picasso.Picasso;
 
-public class RvItemTopNews implements RecyclerViewItemHomepage {
+public class RvItemSmall implements RecyclerViewItemHomepage {
 
     private final News news;
     private final NewsListener newsListener;
 
 
-    public RvItemTopNews(News news, NewsListener newsListener) {
+    public RvItemSmall(News news, NewsListener newsListener) {
         this.news = news;
         this.newsListener = newsListener;
     }
 
     @Override
     public int getType() {
-        return 1;
+        return R.layout.rv_item_small;
     }
 
     @Override
-    public void bind(HomepageAdapter.HomepageViewHolder holder) {
+    public void bind(HomepageAdapter.ViewHolder holder) {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 

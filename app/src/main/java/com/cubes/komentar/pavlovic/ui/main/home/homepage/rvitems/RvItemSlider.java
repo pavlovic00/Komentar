@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemHorizontalRvBinding;
 import com.cubes.komentar.pavlovic.data.model.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
@@ -26,11 +27,11 @@ public class RvItemSlider implements RecyclerViewItemHomepage {
 
     @Override
     public int getType() {
-        return 0;
+        return R.layout.rv_item_horizontal_rv;
     }
 
     @Override
-    public void bind(HomepageAdapter.HomepageViewHolder holder) {
+    public void bind(HomepageAdapter.ViewHolder holder) {
 
         RvItemHorizontalRvBinding binding = (RvItemHorizontalRvBinding) holder.binding;
 

@@ -1,25 +1,26 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemWebviewBinding;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
+import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 
-public class RvItemWebviewDetail implements RecyclerViewItemDetail {
+public class RvItemWebViewDetail implements RecyclerViewItemDetail {
 
     private final ResponseDetail.ResponseDetailData data;
 
 
-    public RvItemWebviewDetail(ResponseDetail.ResponseDetailData data) {
+    public RvItemWebViewDetail(ResponseDetail.ResponseDetailData data) {
         this.data = data;
     }
 
     @Override
     public int getType() {
-        return 0;
+        return R.layout.rv_item_webview;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(NewsDetailAdapter.ViewHolder holder) {
 
         RvItemWebviewBinding binding = (RvItemWebviewBinding) holder.binding;
 
