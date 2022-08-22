@@ -11,8 +11,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.squareup.picasso.Picasso;
@@ -119,8 +118,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
-    public void setDataSearch(ResponseNewsList.ResponseData responseNewsList) {
-        this.newsList = responseNewsList.news;
+    public void setDataSearch(ArrayList<News> responseNewsList) {
+        this.newsList = responseNewsList;
         notifyDataSetChanged();
     }
 

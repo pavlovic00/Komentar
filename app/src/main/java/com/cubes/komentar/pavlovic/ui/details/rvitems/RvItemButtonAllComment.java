@@ -2,17 +2,17 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 public class RvItemButtonAllComment implements RecyclerViewItemDetail {
 
-    private final ResponseDetail.ResponseDetailData data;
+    private final NewsDetailApi data;
     private final NewsDetailListener allCommentListener;
 
 
-    public RvItemButtonAllComment(ResponseDetail.ResponseDetailData data, NewsDetailListener allCommentListener) {
+    public RvItemButtonAllComment(NewsDetailApi data, NewsDetailListener allCommentListener) {
         this.data = data;
         this.allCommentListener = allCommentListener;
     }

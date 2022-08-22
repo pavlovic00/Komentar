@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.ui.tools.SubCategoryListener;
 
 import java.util.ArrayList;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder> {
 
-    private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
+    private final ArrayList<Category> list;
     private final SubCategoryListener subCategoryListener;
 
 
-    public SubCategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list, SubCategoryListener subCategoryListener) {
+    public SubCategoryAdapter(ArrayList<Category> list, SubCategoryListener subCategoryListener) {
         this.list = list;
         this.subCategoryListener = subCategoryListener;
     }
@@ -43,7 +43,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ResponseCategories.ResponseCategoriesData categories = list.get(position);
+        Category categories = list.get(position);
 
         RvItemCategoryItemBinding bindingCategory = (RvItemCategoryItemBinding) holder.binding;
 
@@ -52,7 +52,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         bindingCategory.textViewCategory.setTextColor(Color.parseColor("#76FFFFFF"));
         bindingCategory.view.setVisibility(View.GONE);
 
-        if (list.get(position).subcategories.size() == 0) {
+        if (categories.subcategories.size() == 0) {
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
 

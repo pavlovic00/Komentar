@@ -1,9 +1,9 @@
 package com.cubes.komentar.pavlovic.ui.tools;
 
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 
 public interface SubCategoryListener {
 
-    void onSubCategoryClicked(ResponseCategories.ResponseCategoriesData data);
+    void onSubCategoryClicked(Category data);
 
 }

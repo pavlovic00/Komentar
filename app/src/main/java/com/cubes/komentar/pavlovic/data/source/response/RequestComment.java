@@ -1,11 +1,11 @@
 package com.cubes.komentar.pavlovic.data.source.response;
 
-public class ResponseCommentSend extends ParentResponse{
+public class RequestComment extends ParentResponse{
 
-    public ResponseBody data;
+    public RequestBody data;
 
 
-    public static class ResponseBody {
+    public static class RequestBody {
 
         private String news;
         private String reply_id;
@@ -13,7 +13,7 @@ public class ResponseCommentSend extends ParentResponse{
         private String email;
         private String content;
 
-        public ResponseBody(String news, String reply_id, String name, String email, String content) {
+        public RequestBody(String news, String reply_id, String name, String email, String content) {
             this.news = news;
             this.reply_id = reply_id;
             this.name = name;
@@ -21,11 +21,13 @@ public class ResponseCommentSend extends ParentResponse{
             this.content = content;
         }
 
-        public ResponseBody(String news, String name, String email, String content) {
+        public RequestBody(String news, String name, String email, String content) {
             this.name = name;
             this.email = email;
             this.content = content;
             this.news = news;
         }
+
     }
+
 }

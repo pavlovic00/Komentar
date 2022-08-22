@@ -11,8 +11,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
 import com.squareup.picasso.Picasso;
@@ -120,8 +119,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void setData(ResponseNewsList.ResponseData responseNewsList) {
-        this.newsList = responseNewsList.news;
+    public void setData(ArrayList<News> responseNewsList) {
+        this.newsList = responseNewsList;
         notifyDataSetChanged();
     }
 

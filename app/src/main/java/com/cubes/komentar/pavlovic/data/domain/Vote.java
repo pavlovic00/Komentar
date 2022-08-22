@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.data.model;
+package com.cubes.komentar.pavlovic.data.domain;
 
 public class Vote {
 

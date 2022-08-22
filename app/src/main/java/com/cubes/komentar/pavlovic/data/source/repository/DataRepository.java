@@ -4,10 +4,19 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cubes.komentar.pavlovic.data.domain.Category;
+import com.cubes.komentar.pavlovic.data.domain.CategoryBox;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.NewsList;
+import com.cubes.komentar.pavlovic.data.model.CategoryApi;
+import com.cubes.komentar.pavlovic.data.model.CategoryBoxApi;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.model.NewsApi;
+import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
 import com.cubes.komentar.pavlovic.data.source.networking.RetrofitService;
+import com.cubes.komentar.pavlovic.data.source.response.RequestComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
@@ -47,7 +56,7 @@ public class DataRepository {
 
     public interface VideoResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData response);
+        void onResponse(ArrayList<News> response);
 
         void onFailure(Throwable t);
     }
@@ -59,9 +68,8 @@ public class DataRepository {
 
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNewsResponse(response.body().data.news));
                 }
             }
 
@@ -74,7 +82,7 @@ public class DataRepository {
 
     public interface LatestResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData response);
+        void onResponse(ArrayList<News> response);
 
         void onFailure(Throwable t);
     }
@@ -87,7 +95,7 @@ public class DataRepository {
                         && response.isSuccessful()
                         && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNewsResponse(response.body().data.news));
                 }
             }
 
@@ -101,7 +109,7 @@ public class DataRepository {
 
     public interface SearchResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData responseNewsList);
+        void onResponse(ArrayList<News> responseNewsList);
 
         void onFailure(Throwable t);
     }
@@ -114,7 +122,7 @@ public class DataRepository {
                         && response.isSuccessful()
                         && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNewsResponse(response.body().data.news));
                 }
             }
 
@@ -128,7 +136,7 @@ public class DataRepository {
 
     public interface CategoryResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData responseNewsList);
+        void onResponse(ArrayList<News> responseNewsList);
 
         void onFailure(Throwable t);
     }
@@ -141,7 +149,7 @@ public class DataRepository {
                         && response.isSuccessful()
                         && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNewsResponse(response.body().data.news));
                 }
             }
 
@@ -155,7 +163,7 @@ public class DataRepository {
 
     public interface TagResponseListener {
 
-        void onResponse(ResponseNewsList responseNewsList);
+        void onResponse(ArrayList<News> responseNewsList);
 
         void onFailure(Throwable t);
     }
@@ -168,7 +176,7 @@ public class DataRepository {
                         && response.isSuccessful()
                         && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(mapNewsResponse(response.body().data.news));
                 }
             }
 
@@ -182,7 +190,7 @@ public class DataRepository {
 
     public interface HomeResponseListener {
 
-        void onResponse(ResponseHomepage.ResponseHomepageData response);
+        void onResponse(NewsList response);
 
         void onFailure(Throwable t);
     }
@@ -194,7 +202,35 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body().data);
+
+
+                    NewsList newsList = new NewsList();
+
+                    newsList.slider = mapNewsResponse(response.body().data.slider);
+                    newsList.videos = mapNewsResponse(response.body().data.videos);
+                    newsList.most_read = mapNewsResponse(response.body().data.most_read);
+                    newsList.most_commented = mapNewsResponse(response.body().data.most_comented);
+                    newsList.top = mapNewsResponse(response.body().data.top);
+                    newsList.editors_choice = mapNewsResponse(response.body().data.editors_choice);
+                    newsList.latest = mapNewsResponse(response.body().data.latest);
+
+                    ArrayList<CategoryBox> categoryBoxes = new ArrayList<>();
+
+                    for (CategoryBoxApi model : response.body().data.category) {
+
+                        CategoryBox categoryBox = new CategoryBox();
+
+                        categoryBox.news = mapNewsResponse(model.news);
+                        categoryBox.color = model.color;
+                        categoryBox.id = model.id;
+                        categoryBox.title = model.title;
+
+                        categoryBoxes.add(categoryBox);
+                    }
+
+                    newsList.category = categoryBoxes;
+
+                    listener.onResponse(newsList);
                 }
             }
 
@@ -208,7 +244,7 @@ public class DataRepository {
 
     public interface CategoriesResponseListener {
 
-        void onResponse(ResponseCategories response);
+        void onResponse(ArrayList<Category> response);
 
         void onFailure(Throwable t);
     }
@@ -220,7 +256,7 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(response.body().data);
                 }
             }
 
@@ -234,7 +270,7 @@ public class DataRepository {
 
     public interface CommentResponseListener {
 
-        void onResponse(ArrayList<ResponseComment.Comment> response);
+        void onResponse(ArrayList<CommentApi> response);
 
         void onFailure(Throwable t);
     }
@@ -260,7 +296,7 @@ public class DataRepository {
 
     public interface DetailResponseListener {
 
-        void onResponse(ResponseDetail.ResponseDetailData response);
+        void onResponse(NewsDetailApi response);
 
         void onFailure(Throwable t);
     }
@@ -286,7 +322,7 @@ public class DataRepository {
 
     public interface NewsResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData response);
+        void onResponse(ArrayList<News> response);
 
         void onFailure(Throwable t);
     }
@@ -298,7 +334,7 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNewsResponse(response.body().data.news));
                 }
             }
 
@@ -312,17 +348,17 @@ public class DataRepository {
 
     public interface PostRequestListener {
 
-        void onResponse(ResponseCommentSend.ResponseBody request);
+        void onResponse(RequestComment.RequestBody request);
 
         void onFailure(Throwable t);
     }
     public void postComment(String news, String name, String email, String content, PostRequestListener listener) {
 
-        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), name, email, content);
+        RequestComment.RequestBody data = new RequestComment.RequestBody(String.valueOf(news), name, email, content);
 
-        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
+        service.createPost(data).enqueue(new Callback<RequestComment.RequestBody>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> request) {
+            public void onResponse(@NonNull Call<RequestComment.RequestBody> call, @NonNull Response<RequestComment.RequestBody> request) {
                 if (request.body() != null
                         && request.isSuccessful()
                         && request.code() >= 200) {
@@ -333,18 +369,18 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<RequestComment.RequestBody> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
     }
     public void replyComment(String news, String reply_id, String name, String email, String content, PostRequestListener listener) {
 
-        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), String.valueOf(reply_id), name, email, content);
+        RequestComment.RequestBody data = new RequestComment.RequestBody(String.valueOf(news), String.valueOf(reply_id), name, email, content);
 
-        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
+        service.createPost(data).enqueue(new Callback<RequestComment.RequestBody>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> request) {
+            public void onResponse(@NonNull Call<RequestComment.RequestBody> call, @NonNull Response<RequestComment.RequestBody> request) {
                 if (request.body() != null
                         && request.isSuccessful()
                         && request.code() >= 200) {
@@ -355,7 +391,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<RequestComment.RequestBody> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -407,4 +443,55 @@ public class DataRepository {
             }
         });
     }
+
+
+    private ArrayList<News> mapNewsResponse(ArrayList<NewsApi> newsFromResponse) {
+
+        ArrayList<News> newsList = new ArrayList<>();
+
+        for (NewsApi newsItemApi : newsFromResponse) {
+
+            News news = new News();
+
+            news.id = newsItemApi.id;
+            news.image = newsItemApi.image;
+            news.title = newsItemApi.title;
+            news.created_at = newsItemApi.created_at;
+            news.url = newsItemApi.url;
+
+            Category category = new Category();
+
+            category.id = newsItemApi.category.id;
+            category.type = newsItemApi.category.type;
+            category.name = newsItemApi.category.name;
+            category.color = newsItemApi.category.color;
+
+            ArrayList<Category> subcategories = new ArrayList<>();
+
+            if (newsItemApi.category.subcategories != null && !newsItemApi.category.subcategories.isEmpty()) {
+
+                for (CategoryApi subcategoryApi : newsItemApi.category.subcategories) {
+
+                    Category subcategory = new Category();
+
+                    subcategory.id = subcategoryApi.id;
+                    subcategory.type = subcategoryApi.type;
+                    subcategory.name = subcategoryApi.name;
+                    subcategory.color = subcategoryApi.color;
+
+                    subcategories.add(subcategory);
+                }
+
+            }
+
+            category.subcategories = subcategories;
+
+            news.category = category;
+
+            newsList.add(news);
+        }
+
+        return newsList;
+    }
+
 }

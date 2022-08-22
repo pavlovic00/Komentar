@@ -10,15 +10,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityNewsDetailBinding;
-import com.cubes.komentar.databinding.RvItemCommentBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.model.Tags;
-import com.cubes.komentar.pavlovic.data.model.Vote;
+import com.cubes.komentar.pavlovic.data.domain.Vote;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.model.NewsApi;
+import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
+import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.SharedPrefs;
@@ -68,14 +67,14 @@ public class NewsDetailActivity extends AppCompatActivity {
         adapter = new NewsDetailAdapter(new NewsDetailListener() {
 
             @Override
-            public void onNewsCLicked(News news) {
+            public void onNewsCLicked(NewsApi news) {
                 Intent startDetailIntent = new Intent(getApplicationContext(), NewsDetailActivity.class);
                 startDetailIntent.putExtra("id", news.id);
                 startActivity(startDetailIntent);
             }
 
             @Override
-            public void onTagClicked(Tags tags) {
+            public void onTagClicked(TagsApi tags) {
                 Intent tagsIntent = new Intent(getApplicationContext(), TagsActivity.class);
                 tagsIntent.putExtra("id", tags.id);
                 tagsIntent.putExtra("title", tags.title);
@@ -84,7 +83,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPutCommentClicked(ResponseDetail.ResponseDetailData data) {
+            public void onPutCommentClicked(NewsDetailApi data) {
                 Intent i = new Intent(getApplicationContext(), PostCommentActivity.class);
                 i.putExtra("id", data.id);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -92,7 +91,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAllCommentClicked(ResponseDetail.ResponseDetailData data) {
+            public void onAllCommentClicked(NewsDetailApi data) {
                 Intent commentIntent = new Intent(getApplicationContext(), AllCommentActivity.class);
                 commentIntent.putExtra("id", data.id);
                 commentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -100,7 +99,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCommentClicked(ResponseComment.Comment comment) {
+            public void onCommentClicked(CommentApi comment) {
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.id);
                 replyIntent.putExtra("news", comment.news);
@@ -109,7 +108,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void like(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+            public void like(CommentApi comment) {
                 DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
@@ -120,9 +119,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                         votes.add(vote);
                         SharedPrefs.writeListInPref(NewsDetailActivity.this, votes);
 
-                        bindingComment.like.setText(String.valueOf(comment.positive_votes + 1));
-                        bindingComment.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-                        bindingComment.likeCircle.setVisibility(View.VISIBLE);
+                        adapter.setupLike(comment.id);
                     }
 
                     @Override
@@ -133,7 +130,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void dislike(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+            public void dislike(CommentApi comment) {
                 DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
@@ -144,9 +141,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                         votes.add(vote);
                         SharedPrefs.writeListInPref(NewsDetailActivity.this, votes);
 
-                        bindingComment.dislike.setText(String.valueOf(comment.negative_votes + 1));
-                        bindingComment.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                        bindingComment.dislikeCircle.setVisibility(View.VISIBLE);
+                        adapter.setupDislike(comment.id);
                     }
 
                     @Override
@@ -167,7 +162,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         DataRepository.getInstance().loadDetailData(id, new DataRepository.DetailResponseListener() {
             @Override
-            public void onResponse(ResponseDetail.ResponseDetailData response) {
+            public void onResponse(NewsDetailApi response) {
 
                 adapter.setDataItems(response);
 

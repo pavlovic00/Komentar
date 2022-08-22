@@ -14,10 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentViewPagerBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+
+import java.util.ArrayList;
 
 public class ViewPagerFragment extends Fragment {
 
@@ -81,8 +83,8 @@ public class ViewPagerFragment extends Fragment {
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.NewsResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                adapter.addNewsList(response.news);
+            public void onResponse(ArrayList<News> response) {
+                adapter.addNewsList(response);
 
                 nextPage++;
             }
@@ -103,7 +105,7 @@ public class ViewPagerFragment extends Fragment {
 
         DataRepository.getInstance().loadCategoriesNewsData(categoryId, 0, new DataRepository.NewsResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
+            public void onResponse(ArrayList<News> response) {
 
                 adapter.setData(response);
 

@@ -8,4 +8,14 @@ public interface RecyclerViewItemDetail {
 
     void bind(NewsDetailAdapter.ViewHolder holder);
 
+    default String getCommentsId() {
+        return null;
+    }
+
+    default void updateLike() {
+    }
+
+    default void updateDislike() {
+    }
+
 }

@@ -14,8 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentVideoBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
+
+import java.util.ArrayList;
 
 public class VideoFragment extends Fragment {
 
@@ -74,8 +76,8 @@ public class VideoFragment extends Fragment {
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                adapter.addNewsList(response.news);
+            public void onResponse(ArrayList<News> response) {
+                adapter.addNewsList(response);
 
                 nextPage++;
             }
@@ -96,7 +98,7 @@ public class VideoFragment extends Fragment {
 
         DataRepository.getInstance().loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
+            public void onResponse(ArrayList<News> response) {
 
                 nextPage = 2;
                 adapter.setData(response);

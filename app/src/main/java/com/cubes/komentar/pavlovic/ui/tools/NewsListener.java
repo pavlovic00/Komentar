@@ -1,6 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.tools;
 
-import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.domain.News;
 
 public interface NewsListener {
 

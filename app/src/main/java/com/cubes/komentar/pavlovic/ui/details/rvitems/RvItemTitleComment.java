@@ -4,16 +4,16 @@ import android.view.View;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 
 public class RvItemTitleComment implements RecyclerViewItemDetail {
 
     private final String title;
-    private final ResponseDetail.ResponseDetailData data;
+    private final NewsDetailApi data;
 
 
-    public RvItemTitleComment(String title, ResponseDetail.ResponseDetailData data) {
+    public RvItemTitleComment(String title, NewsDetailApi data) {
         this.title = title;
         this.data = data;
     }

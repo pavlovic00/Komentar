@@ -16,8 +16,9 @@ import com.cubes.komentar.databinding.RvItemHorizontalRvBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.domain.CategoryBox;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RecyclerViewItemHomepage;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBig;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemButtonsNews;
@@ -96,7 +97,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         return this.items.size();
     }
 
-    public void setDataItems(ResponseHomepage.ResponseHomepageData response) {
+    public void setDataItems(NewsList response) {
         //0
         items.add(new RvItemSlider(response.slider, newsListener));
         //1
@@ -105,7 +106,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             items.add(new RvItemSmall(news, newsListener));
         }
         //2
-        items.add(new RvItemButtonsNews(response.latest, response.most_comented, response.most_read, newsListener));
+        items.add(new RvItemButtonsNews(response.latest, response.most_commented, response.most_read, newsListener));
         //3-4
         if (response.editors_choice.size() > 0) {
             items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
@@ -120,7 +121,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             }
         }
         //7-8-9
-        for (ResponseHomepage.ResponseHomePageDataCategoryBox categoryBox : response.category) {
+        for (CategoryBox categoryBox : response.category) {
             items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
             items.add(new RvItemBig(categoryBox.news.get(0), newsListener));
 

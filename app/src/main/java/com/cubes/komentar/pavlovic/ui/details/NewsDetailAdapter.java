@@ -11,16 +11,16 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.databinding.RvItemButtonCommentBinding;
-import com.cubes.komentar.databinding.RvItemCommentBinding;
+import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewLongBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.databinding.RvItemWebviewBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.model.NewsApi;
+import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RecyclerViewItemDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonAllComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonPutComment;
@@ -70,8 +70,8 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
             case R.layout.rv_item_button_comment:
                 binding = RvItemButtonCommentBinding.inflate(inflater, parent, false);
                 break;
-            case R.layout.rv_item_comment:
-                binding = RvItemCommentBinding.inflate(inflater, parent, false);
+            case R.layout.rv_item_comment_parent:
+                binding = RvItemCommentParentBinding.inflate(inflater, parent, false);
                 break;
             case R.layout.rv_item_button_all_comment:
                 binding = RvItemButtonAllCommentBinding.inflate(inflater, parent, false);
@@ -106,7 +106,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         return this.items.size();
     }
 
-    public void setDataItems(ResponseDetail.ResponseDetailData response) {
+    public void setDataItems(NewsDetailApi response) {
         //0
         this.items.add(new RvItemWebViewDetail(response));
         //1-2
@@ -120,7 +120,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         this.items.add(new RvItemTitleComment("Komentari", response));
         //5
         for (int i = 0; i < response.comments_top_n.size(); i++) {
-            ResponseComment.Comment commentData = response.comments_top_n.get(i);
+            CommentApi commentData = response.comments_top_n.get(i);
             this.items.add(new RvItemComment(commentData, newsDetailListener));
         }
         //6
@@ -130,12 +130,30 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
             this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
 
             for (int i = 0; i < response.related_news.size(); i++) {
-                News news = response.related_news.get(i);
+                NewsApi news = response.related_news.get(i);
 
                 this.items.add(new RvItemRelatedNews(news, newsDetailListener));
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void setupLike(String commentId) {
+        for (RecyclerViewItemDetail comment : items) {
+            if (comment.getCommentsId().equals(commentId)) {
+                comment.updateLike();
+                break;
+            }
+        }
+    }
+
+    public void setupDislike(String commentId) {
+        for (RecyclerViewItemDetail comment : items) {
+            if (comment.getCommentsId().equals(commentId)) {
+                comment.updateDislike();
+                break;
+            }
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

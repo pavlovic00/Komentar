@@ -2,7 +2,7 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
-import com.cubes.komentar.pavlovic.data.model.Tags;
+import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.ui.details.ButtonTagsAdapter;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 public class RvItemTagsDetail implements RecyclerViewItemDetail {
 
-    private final ArrayList<Tags> tagsList;
+    private final ArrayList<TagsApi> tagsList;
     private final NewsDetailListener tagListener;
 
 
-    public RvItemTagsDetail(ArrayList<Tags> tagsList, NewsDetailListener tagListener) {
+    public RvItemTagsDetail(ArrayList<TagsApi> tagsList, NewsDetailListener tagListener) {
         this.tagsList = tagsList;
         this.tagListener = tagListener;
     }

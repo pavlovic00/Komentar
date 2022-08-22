@@ -10,10 +10,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityAllCommentBinding;
-import com.cubes.komentar.databinding.RvItemCommentBinding;
-import com.cubes.komentar.pavlovic.data.model.Vote;
+import com.cubes.komentar.pavlovic.data.domain.Vote;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 
 public class AllCommentActivity extends AppCompatActivity {
 
-    private final ArrayList<ResponseComment.Comment> allComments = new ArrayList<>();
+    private final ArrayList<CommentApi> allComments = new ArrayList<>();
     private ActivityAllCommentBinding binding;
     private ArrayList<Vote> votes = new ArrayList<>();
     private CommentAdapter adapter;
@@ -66,7 +65,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
         adapter.setCommentListener(new CommentListener() {
             @Override
-            public void onCommentClicked(ResponseComment.Comment comment) {
+            public void onCommentClicked(CommentApi comment) {
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.id);
                 replyIntent.putExtra("news", comment.news);
@@ -75,7 +74,7 @@ public class AllCommentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void like(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+            public void like(CommentApi comment) {
                 DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
@@ -86,9 +85,7 @@ public class AllCommentActivity extends AppCompatActivity {
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
-                        bindingComment.like.setText(String.valueOf(comment.positive_votes + 1));
-                        bindingComment.imageViewLike.setImageResource(R.drawable.ic_like_vote);
-                        bindingComment.likeCircle.setBackgroundResource(R.drawable.button_circle_background_like);
+                        adapter.setupLike(comment.id);
                     }
 
                     @Override
@@ -99,7 +96,7 @@ public class AllCommentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void dislike(ResponseComment.Comment comment, RvItemCommentBinding bindingComment) {
+            public void dislike(CommentApi comment) {
                 DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
@@ -110,9 +107,7 @@ public class AllCommentActivity extends AppCompatActivity {
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
-                        bindingComment.dislike.setText(String.valueOf(comment.negative_votes + 1));
-                        bindingComment.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
-                        bindingComment.dislikeCircle.setBackgroundResource(R.drawable.button_circle_background_dislike);
+                        adapter.setupDislike(comment.id);
                     }
 
                     @Override
@@ -132,7 +127,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
         DataRepository.getInstance().loadCommentData(id, new DataRepository.CommentResponseListener() {
             @Override
-            public void onResponse(ArrayList<ResponseComment.Comment> response) {
+            public void onResponse(ArrayList<CommentApi> response) {
 
                 if (response.equals(new ArrayList<>())) {
                     binding.obavestenje.setVisibility(View.VISIBLE);
@@ -156,9 +151,9 @@ public class AllCommentActivity extends AppCompatActivity {
 
     }
 
-    public void setDataComment(ArrayList<ResponseComment.Comment> comments) {
+    public void setDataComment(ArrayList<CommentApi> comments) {
 
-        for (ResponseComment.Comment comment : comments) {
+        for (CommentApi comment : comments) {
             allComments.add(comment);
             addChildren(comment.children);
         }
@@ -170,9 +165,9 @@ public class AllCommentActivity extends AppCompatActivity {
         adapter.updateList(allComments);
     }
 
-    private void setVoteData(ArrayList<ResponseComment.Comment> allComments, ArrayList<Vote> votes) {
+    private void setVoteData(ArrayList<CommentApi> allComments, ArrayList<Vote> votes) {
 
-        for (ResponseComment.Comment comment : allComments) {
+        for (CommentApi comment : allComments) {
             for (Vote vote : votes) {
                 if (comment.id.equals(vote.commentId)) {
                     comment.vote = vote;
@@ -184,9 +179,9 @@ public class AllCommentActivity extends AppCompatActivity {
         }
     }
 
-    private void addChildren(ArrayList<ResponseComment.Comment> comments) {
+    private void addChildren(ArrayList<CommentApi> comments) {
         if (comments != null && !comments.isEmpty()) {
-            for (ResponseComment.Comment comment : comments) {
+            for (CommentApi comment : comments) {
                 allComments.add(comment);
                 addChildren(comment.children);
             }

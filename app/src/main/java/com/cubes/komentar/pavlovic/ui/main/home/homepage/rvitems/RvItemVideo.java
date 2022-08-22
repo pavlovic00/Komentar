@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
 import com.squareup.picasso.Picasso;

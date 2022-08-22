@@ -8,18 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemButtonTagBinding;
-import com.cubes.komentar.pavlovic.data.model.Tags;
+import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 import java.util.ArrayList;
 
 public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.ViewHolder> {
 
-    private final ArrayList<Tags> list;
+    private final ArrayList<TagsApi> list;
     private final NewsDetailListener tagListener;
 
 
-    public ButtonTagsAdapter(ArrayList<Tags> list, NewsDetailListener tagListener) {
+    public ButtonTagsAdapter(ArrayList<TagsApi> list, NewsDetailListener tagListener) {
         this.list = list;
         this.tagListener = tagListener;
     }
@@ -39,7 +39,7 @@ public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Tags tags = list.get(position);
+        TagsApi tags = list.get(position);
 
         RvItemButtonTagBinding bindingButton = (RvItemButtonTagBinding) holder.binding;
 

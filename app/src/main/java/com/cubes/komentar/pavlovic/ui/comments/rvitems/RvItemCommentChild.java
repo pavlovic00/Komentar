@@ -1,34 +1,34 @@
-package com.cubes.komentar.pavlovic.ui.details.rvitems;
+package com.cubes.komentar.pavlovic.ui.comments.rvitems;
 
 import android.widget.Toast;
 
 import com.cubes.komentar.R;
-import com.cubes.komentar.databinding.RvItemCommentParentBinding;
+import com.cubes.komentar.databinding.RvItemCommentChildBinding;
 import com.cubes.komentar.pavlovic.data.model.CommentApi;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.comments.CommentAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
-public class RvItemComment implements RecyclerViewItemDetail {
+public class RvItemCommentChild implements RecyclerViewItemComment {
 
     private final CommentApi comment;
-    private final NewsDetailListener commentListener;
-    private RvItemCommentParentBinding binding;
+    private final CommentListener commentListener;
+    private RvItemCommentChildBinding binding;
 
 
-    public RvItemComment(CommentApi comment, NewsDetailListener commentListener) {
+    public RvItemCommentChild(CommentApi comment, CommentListener commentListener) {
         this.comment = comment;
         this.commentListener = commentListener;
     }
 
     @Override
     public int getType() {
-        return R.layout.rv_item_comment_parent;
+        return R.layout.rv_item_comment_child;
     }
 
     @Override
-    public void bind(NewsDetailAdapter.ViewHolder holder) {
+    public void bind(CommentAdapter.ViewHolder holder) {
 
-        binding = (RvItemCommentParentBinding) holder.binding;
+        binding = (RvItemCommentChildBinding) holder.binding;
 
         String like = comment.positive_votes + "";
         String dislike = comment.negative_votes + "";

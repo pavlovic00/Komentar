@@ -12,8 +12,7 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.tools.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 import com.squareup.picasso.Picasso;
@@ -141,8 +140,8 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
-    public void setData(ResponseNewsList.ResponseData responseNewsList) {
-        this.newsList = responseNewsList.news;
+    public void setData(ArrayList<News> responseNewsList) {
+        this.newsList = responseNewsList;
         notifyDataSetChanged();
     }
 

@@ -1,8 +1,8 @@
 package com.cubes.komentar.pavlovic.data.source.networking;
 
+import com.cubes.komentar.pavlovic.data.source.response.RequestComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
@@ -50,5 +50,5 @@ public interface RetrofitService {
     Call<ResponseComment> postDislike(@Query("comment") int id, @Query("downvote") boolean vote);
 
     @POST("api/commentinsert")
-    Call<ResponseCommentSend.ResponseBody> createPost(@Body ResponseCommentSend.ResponseBody body);
+    Call<RequestComment.RequestBody> createPost(@Body RequestComment.RequestBody body);
 }

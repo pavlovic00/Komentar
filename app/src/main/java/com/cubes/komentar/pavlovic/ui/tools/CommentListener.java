@@ -1,14 +1,13 @@
 package com.cubes.komentar.pavlovic.ui.tools;
 
-import com.cubes.komentar.databinding.RvItemCommentBinding;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
 
 public interface CommentListener {
 
-    void onCommentClicked(ResponseComment.Comment comment);
+    void onCommentClicked(CommentApi comment);
 
-    void like(ResponseComment.Comment comment, RvItemCommentBinding bindingComment);
+    void like(CommentApi comment);
 
-    void dislike(ResponseComment.Comment comment, RvItemCommentBinding bindingComment);
+    void dislike(CommentApi comment);
 
 }

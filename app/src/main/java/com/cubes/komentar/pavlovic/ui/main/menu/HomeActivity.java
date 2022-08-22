@@ -14,14 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
+
+import java.util.ArrayList;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -90,9 +92,9 @@ public class HomeActivity extends AppCompatActivity {
 
             DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
                 @Override
-                public void onResponse(ResponseCategories response) {
+                public void onResponse(ArrayList<Category> response) {
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    binding.recyclerView.setAdapter(new CategoryAdapter(response.data, data -> {
+                    binding.recyclerView.setAdapter(new CategoryAdapter(response, data -> {
                         Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
                         categoryIntent.putExtra("id", data.id);
                         categoryIntent.putExtra("category", data.name);
@@ -169,9 +171,9 @@ public class HomeActivity extends AppCompatActivity {
 
         DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
-            public void onResponse(ResponseCategories response) {
+            public void onResponse(ArrayList<Category> response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerView.setAdapter(new CategoryAdapter(response.data, data -> {
+                binding.recyclerView.setAdapter(new CategoryAdapter(response, data -> {
                     Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
                     categoryIntent.putExtra("id", data.id);
                     categoryIntent.putExtra("category", data.name);

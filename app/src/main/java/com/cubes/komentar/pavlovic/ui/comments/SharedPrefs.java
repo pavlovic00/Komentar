@@ -3,7 +3,7 @@ package com.cubes.komentar.pavlovic.ui.comments;
 import android.app.Activity;
 import android.preference.PreferenceManager;
 
-import com.cubes.komentar.pavlovic.data.model.Vote;
+import com.cubes.komentar.pavlovic.data.domain.Vote;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

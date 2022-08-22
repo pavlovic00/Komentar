@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
+import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 
 public class HomepageFragment extends Fragment {
@@ -83,7 +83,7 @@ public class HomepageFragment extends Fragment {
 
         DataRepository.getInstance().loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
-            public void onResponse(ResponseHomepage.ResponseHomepageData response) {
+            public void onResponse(NewsList response) {
 
                 adapter.setDataItems(response);
 

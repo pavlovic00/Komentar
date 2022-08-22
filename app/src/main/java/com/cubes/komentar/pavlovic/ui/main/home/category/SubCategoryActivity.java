@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityCategoryBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+
+import java.util.ArrayList;
 
 public class SubCategoryActivity extends AppCompatActivity {
 
@@ -64,8 +66,8 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
-                adapter.addNewsList(responseNewsList.news);
+            public void onResponse(ArrayList<News> responseNewsList) {
+                adapter.addNewsList(responseNewsList);
 
                 nextPage++;
             }
@@ -87,7 +89,7 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         DataRepository.getInstance().loadCategoryData(id, 1, new DataRepository.CategoryResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData responseNewsList) {
+            public void onResponse(ArrayList<News> responseNewsList) {
 
                 nextPage = 2;
                 adapter.setData(responseNewsList);

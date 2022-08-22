@@ -15,7 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
 import com.cubes.komentar.pavlovic.ui.tools.SubCategoryListener;
 
@@ -23,11 +23,11 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
+    private final ArrayList<Category> list;
     private final SubCategoryListener subCategoryListener;
 
 
-    public CategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list, SubCategoryListener subCategoryListener) {
+    public CategoryAdapter(ArrayList<Category> list, SubCategoryListener subCategoryListener) {
         this.list = list;
         this.subCategoryListener = subCategoryListener;
     }
@@ -48,7 +48,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ResponseCategories.ResponseCategoriesData categories = list.get(position);
+        Category categories = list.get(position);
 
         RvItemCategoryItemBinding bindingCategory = (RvItemCategoryItemBinding) holder.binding;
 

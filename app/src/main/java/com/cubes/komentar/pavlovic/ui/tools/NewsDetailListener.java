@@ -1,25 +1,24 @@
 package com.cubes.komentar.pavlovic.ui.tools;
 
-import com.cubes.komentar.databinding.RvItemCommentBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.data.model.Tags;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.model.NewsApi;
+import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
+import com.cubes.komentar.pavlovic.data.model.TagsApi;
 
 public interface NewsDetailListener {
 
-    void onNewsCLicked(News news);
+    void onNewsCLicked(NewsApi news);
 
-    void onTagClicked(Tags tags);
+    void onTagClicked(TagsApi tags);
 
-    void onPutCommentClicked(ResponseDetail.ResponseDetailData data);
+    void onPutCommentClicked(NewsDetailApi data);
 
-    void onAllCommentClicked(ResponseDetail.ResponseDetailData data);
+    void onAllCommentClicked(NewsDetailApi data);
 
-    void onCommentClicked(ResponseComment.Comment comment);
+    void onCommentClicked(CommentApi comment);
 
-    void like(ResponseComment.Comment comment, RvItemCommentBinding bindingComment);
+    void like(CommentApi comment);
 
-    void dislike(ResponseComment.Comment comment, RvItemCommentBinding bindingComment);
+    void dislike(CommentApi comment);
 
 }

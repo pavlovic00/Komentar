@@ -19,9 +19,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentSearchBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+
+import java.util.ArrayList;
 
 
 public class SearchFragment extends Fragment {
@@ -130,8 +132,8 @@ public class SearchFragment extends Fragment {
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData responseData) {
-                adapter.addNewsList(responseData.news);
+            public void onResponse(ArrayList<News> responseData) {
+                adapter.addNewsList(responseData);
 
                 nextPage++;
             }
@@ -153,7 +155,7 @@ public class SearchFragment extends Fragment {
 
         DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), 1, new DataRepository.SearchResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData responseData) {
+            public void onResponse(ArrayList<News> responseData) {
 
                 setupRecyclerView();
 

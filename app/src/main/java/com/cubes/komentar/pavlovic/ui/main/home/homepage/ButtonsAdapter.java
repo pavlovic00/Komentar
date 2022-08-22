@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemTextForNewsHomepageBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
 
 import java.util.ArrayList;

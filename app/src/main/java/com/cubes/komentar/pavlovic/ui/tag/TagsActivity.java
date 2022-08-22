@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityTagsBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+
+import java.util.ArrayList;
 
 public class TagsActivity extends AppCompatActivity {
 
@@ -63,8 +65,8 @@ public class TagsActivity extends AppCompatActivity {
 
         adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadTagData(id, nextPage, new DataRepository.TagResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList responseNewsList) {
-                adapter.addNewsList(responseNewsList.data.news);
+            public void onResponse(ArrayList<News> responseNewsList) {
+                adapter.addNewsList(responseNewsList);
 
                 nextPage++;
             }
@@ -85,7 +87,7 @@ public class TagsActivity extends AppCompatActivity {
 
         DataRepository.getInstance().loadTagData(id, 0, new DataRepository.TagResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList responseNewsList) {
+            public void onResponse(ArrayList<News> responseNewsList) {
 
                 nextPage = 2;
                 adapter.setDataTags(responseNewsList);

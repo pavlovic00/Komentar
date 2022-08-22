@@ -1,21 +1,21 @@
-package com.cubes.komentar.pavlovic.ui.details.rvitems;
+package com.cubes.komentar.pavlovic.ui.comments.rvitems;
 
 import android.widget.Toast;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.pavlovic.data.model.CommentApi;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.comments.CommentAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
 
-public class RvItemComment implements RecyclerViewItemDetail {
+public class RvItemCommentParent implements RecyclerViewItemComment {
 
     private final CommentApi comment;
-    private final NewsDetailListener commentListener;
+    private final CommentListener commentListener;
     private RvItemCommentParentBinding binding;
 
 
-    public RvItemComment(CommentApi comment, NewsDetailListener commentListener) {
+    public RvItemCommentParent(CommentApi comment, CommentListener commentListener) {
         this.comment = comment;
         this.commentListener = commentListener;
     }
@@ -26,7 +26,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(NewsDetailAdapter.ViewHolder holder) {
+    public void bind(CommentAdapter.ViewHolder holder) {
 
         binding = (RvItemCommentParentBinding) holder.binding;
 
