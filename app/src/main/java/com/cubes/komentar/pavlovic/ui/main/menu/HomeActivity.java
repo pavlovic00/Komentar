@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
     private boolean click = true;
-    private FirebaseAnalytics mFirebaseAnalytics;
+    FirebaseAnalytics analytics;
 
 
     @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
@@ -42,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        analytics = FirebaseAnalytics.getInstance(this);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.homeLayout, HomeFragment.newInstance())
@@ -100,6 +102,13 @@ public class HomeActivity extends AppCompatActivity {
                         Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
                         categoryIntent.putExtra("id", data.id);
                         categoryIntent.putExtra("category", data.name);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, data.id);
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, data.name);
+                        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "subcategory");
+                        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                         startActivity(categoryIntent);
                     }));
                 }
@@ -167,9 +176,6 @@ public class HomeActivity extends AppCompatActivity {
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
         loadHomeData();
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
     }
 
     public void loadHomeData() {

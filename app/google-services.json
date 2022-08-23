@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "582518865557",
-    "project_id": "komentar-16cf7",
-    "storage_bucket": "komentar-16cf7.appspot.com"
+    "project_number": "709401669080",
+    "project_id": "komentar-9a29a",
+    "storage_bucket": "komentar-9a29a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:582518865557:android:261ac451f0a37664abe59c",
+        "mobilesdk_app_id": "1:709401669080:android:70059d46d250ab5f8cd6ad",
         "android_client_info": {
           "package_name": "com.cubes.komentar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "582518865557-bm1v9afbsdes0ffnha0q6f1plrnqer7j.apps.googleusercontent.com",
+          "client_id": "709401669080-u3ikamj8gnomhs7j72ude9m53t00sohe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBJAirChdZ_MMk3GJbjvAH3AtDeDqCLdlE"
+          "current_key": "AIzaSyDPgkethtUxu6BYxHgcuSsJdb-tZLieg28"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "582518865557-bm1v9afbsdes0ffnha0q6f1plrnqer7j.apps.googleusercontent.com",
+              "client_id": "709401669080-u3ikamj8gnomhs7j72ude9m53t00sohe.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
