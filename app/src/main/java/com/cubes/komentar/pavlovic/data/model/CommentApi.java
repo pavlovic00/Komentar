@@ -1,7 +1,5 @@
 package com.cubes.komentar.pavlovic.data.model;
 
-import com.cubes.komentar.pavlovic.data.domain.Vote;
-
 import java.util.ArrayList;
 
 public class CommentApi {
@@ -15,6 +13,4 @@ public class CommentApi {
     public String id;
     public String content;
     public ArrayList<CommentApi> children;
-
-    public Vote vote;
 }

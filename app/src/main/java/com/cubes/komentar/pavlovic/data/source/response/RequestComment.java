@@ -1,6 +1,6 @@
 package com.cubes.komentar.pavlovic.data.source.response;
 
-public class RequestComment extends ParentResponse{
+public class RequestComment extends ParentResponse {
 
     public RequestBody data;
 

@@ -4,18 +4,18 @@ import android.widget.Toast;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
-import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 
 public class RvItemComment implements RecyclerViewItemDetail {
 
-    private final CommentApi comment;
+    private final Comment comment;
     private final NewsDetailListener commentListener;
     private RvItemCommentParentBinding binding;
 
 
-    public RvItemComment(CommentApi comment, NewsDetailListener commentListener) {
+    public RvItemComment(Comment comment, NewsDetailListener commentListener) {
         this.comment = comment;
         this.commentListener = commentListener;
     }
@@ -30,11 +30,11 @@ public class RvItemComment implements RecyclerViewItemDetail {
 
         binding = (RvItemCommentParentBinding) holder.binding;
 
-        String like = comment.positive_votes + "";
-        String dislike = comment.negative_votes + "";
+        String like = comment.dislikes + "";
+        String dislike = comment.likes + "";
 
         binding.person.setText(comment.name);
-        binding.date.setText(comment.created_at);
+        binding.date.setText(comment.createdAt);
         binding.content.setText(comment.content);
         binding.like.setText(like);
         binding.dislike.setText(dislike);
@@ -79,14 +79,14 @@ public class RvItemComment implements RecyclerViewItemDetail {
 
     @Override
     public void updateLike() {
-        binding.like.setText(String.valueOf(comment.positive_votes + 1));
+        binding.like.setText(String.valueOf(comment.dislikes + 1));
         binding.imageViewLike.setImageResource(R.drawable.ic_like_vote);
         binding.likeCircle.setBackgroundResource(R.drawable.button_circle_background_like);
     }
 
     @Override
     public void updateDislike() {
-        binding.dislike.setText(String.valueOf(comment.negative_votes + 1));
+        binding.dislike.setText(String.valueOf(comment.likes + 1));
         binding.imageViewDislike.setImageResource(R.drawable.ic_dislike_vote);
         binding.dislikeCircle.setBackgroundResource(R.drawable.button_circle_background_dislike);
     }

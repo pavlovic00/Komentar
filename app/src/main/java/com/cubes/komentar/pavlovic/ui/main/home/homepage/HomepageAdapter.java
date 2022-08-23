@@ -106,11 +106,11 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             items.add(new RvItemSmall(news, newsListener));
         }
         //2
-        items.add(new RvItemButtonsNews(response.latest, response.most_commented, response.most_read, newsListener));
+        items.add(new RvItemButtonsNews(response.latest, response.mostCommented, response.mostRead, newsListener));
         //3-4
-        if (response.editors_choice.size() > 0) {
+        if (response.editorsChoice.size() > 0) {
             items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
-            items.add(new RvItemEditorChoice(response.editors_choice, newsListener));
+            items.add(new RvItemEditorChoice(response.editorsChoice, newsListener));
         }
         //5-6
         if (response.videos.size() > 0) {

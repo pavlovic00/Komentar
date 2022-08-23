@@ -23,12 +23,12 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    private final ArrayList<Category> list;
+    private final ArrayList<Category> categoryList;
     private final SubCategoryListener subCategoryListener;
 
 
-    public CategoryAdapter(ArrayList<Category> list, SubCategoryListener subCategoryListener) {
-        this.list = list;
+    public CategoryAdapter(ArrayList<Category> categoryList, SubCategoryListener subCategoryListener) {
+        this.categoryList = categoryList;
         this.subCategoryListener = subCategoryListener;
     }
 
@@ -48,25 +48,25 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Category categories = list.get(position);
+        Category category = categoryList.get(position);
 
         RvItemCategoryItemBinding bindingCategory = (RvItemCategoryItemBinding) holder.binding;
 
-        bindingCategory.textViewCategory.setText(categories.name);
-        bindingCategory.view.setBackgroundColor(Color.parseColor(categories.color));
+        bindingCategory.textViewCategory.setText(category.name);
+        bindingCategory.view.setBackgroundColor(Color.parseColor(category.color));
         bindingCategory.submenuarrow.setRotation(270);
 
-        if (list.get(position).subcategories.size() == 0) {
+        if (categoryList.get(position).subcategories.size() == 0) {
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
         bindingCategory.submenuarrow.setOnClickListener(view -> {
 
             //Jako bitno mora biti na pocetku.
-            categories.open = !categories.open;
+            category.open = !category.open;
 
-            if (categories.open) {
+            if (category.open) {
                 bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(categories.subcategories, subCategoryListener));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(category.subcategories, subCategoryListener));
 
                 bindingCategory.submenuarrow.setRotation(90);
             } else {
@@ -88,7 +88,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return categoryList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -7,15 +7,12 @@ import java.util.ArrayList;
 
 public class ResponseNewsList extends ParentResponse {
 
-    public ResponseData data;
+    public ResponseNewsListData data;
 
-
-    public static class ResponseData {
+    public static class ResponseNewsListData {
 
         public PaginationApi pagination;
         public ArrayList<NewsApi> news;
+
     }
-
 }
-
-

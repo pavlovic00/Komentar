@@ -31,7 +31,7 @@ public class RvItemVideo implements RecyclerViewItemHomepage {
         RvItemVideoBinding bindingVideo = (RvItemVideoBinding) holder.binding;
 
         bindingVideo.textViewTitle.setText(video.title);
-        bindingVideo.date.setText(video.created_at);
+        bindingVideo.date.setText(video.createdAt);
         bindingVideo.textViewCategory.setText(video.category.name);
         bindingVideo.textViewCategory.setTextColor(Color.parseColor(video.category.color));
         Picasso.get().load(video.image).into(bindingVideo.imageView);

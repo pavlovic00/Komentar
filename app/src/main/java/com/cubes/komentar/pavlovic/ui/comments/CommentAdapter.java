@@ -10,7 +10,7 @@ import androidx.viewbinding.ViewBinding;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentChildBinding;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
-import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.ui.comments.rvitems.RecyclerViewItemComment;
 import com.cubes.komentar.pavlovic.ui.comments.rvitems.RvItemCommentChild;
 import com.cubes.komentar.pavlovic.ui.comments.rvitems.RvItemCommentParent;
@@ -57,10 +57,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return items.get(position).getType();
     }
 
-    public void updateList(ArrayList<CommentApi> comments) {
-        for (CommentApi comment : comments) {
+    public void updateList(ArrayList<Comment> comments) {
+        for (Comment comment : comments) {
 
-            if (comment.parent_comment.equals("0")) {
+            if (comment.parentComment.equals("0")) {
                 items.add(new RvItemCommentParent(comment, commentListener));
             } else {
                 items.add(new RvItemCommentChild(comment, commentListener));

@@ -4,16 +4,16 @@ import android.view.View;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
-import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
+import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 
 public class RvItemTitleComment implements RecyclerViewItemDetail {
 
     private final String title;
-    private final NewsDetailApi data;
+    private final NewsDetail data;
 
 
-    public RvItemTitleComment(String title, NewsDetailApi data) {
+    public RvItemTitleComment(String title, NewsDetail data) {
         this.title = title;
         this.data = data;
     }
@@ -26,13 +26,13 @@ public class RvItemTitleComment implements RecyclerViewItemDetail {
     @Override
     public void bind(NewsDetailAdapter.ViewHolder holder) {
 
-        String count = "(" + data.comments_count + ")";
+        String count = "(" + data.commentsCount + ")";
 
         RvItemHorizontalTextViewCommentBinding binding = (RvItemHorizontalTextViewCommentBinding) holder.binding;
         binding.textViewTitle.setText(title);
         binding.commentCount.setText(count);
 
-        if (data.comments_top_n.size() == 0) {
+        if (data.topComments.size() == 0) {
             binding.obavestenje.setVisibility(View.VISIBLE);
         }
     }

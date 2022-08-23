@@ -64,7 +64,7 @@ public class SubCategoryActivity extends AppCompatActivity {
             getApplicationContext().startActivity(i);
         });
 
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoryData(id, nextPage, new DataRepository.CategoryResponseListener() {
+        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoryNewsData(id, nextPage, new DataRepository.CategoryNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
@@ -87,7 +87,7 @@ public class SubCategoryActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewCategory.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoryData(id, 1, new DataRepository.CategoryResponseListener() {
+        DataRepository.getInstance().loadCategoryNewsData(id, 1, new DataRepository.CategoryNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
 

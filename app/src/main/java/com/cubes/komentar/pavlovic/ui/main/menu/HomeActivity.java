@@ -22,6 +22,7 @@ import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
     private boolean click = true;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
@@ -165,6 +167,9 @@ public class HomeActivity extends AppCompatActivity {
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
         loadHomeData();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
     }
 
     public void loadHomeData() {

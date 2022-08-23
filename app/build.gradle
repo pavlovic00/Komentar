@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -54,5 +56,9 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.6'
     //FlexBox
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    //Firebase
+    implementation 'com.google.firebase:firebase-bom:30.3.2'
+    implementation 'com.google.firebase:firebase-analytics:21.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.12'
 
 }

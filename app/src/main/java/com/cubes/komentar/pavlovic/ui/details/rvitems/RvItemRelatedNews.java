@@ -4,18 +4,18 @@ import android.graphics.Color;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
-import com.cubes.komentar.pavlovic.data.model.NewsApi;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
 import com.squareup.picasso.Picasso;
 
 public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
-    private final NewsApi news;
+    private final News news;
     private final NewsDetailListener newsListener;
 
 
-    public RvItemRelatedNews(NewsApi news, NewsDetailListener newsListener) {
+    public RvItemRelatedNews(News news, NewsDetailListener newsListener) {
         this.news = news;
         this.newsListener = newsListener;
     }
@@ -31,7 +31,7 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
         binding.textViewTitle.setText(news.title);
-        binding.date.setText(news.created_at);
+        binding.date.setText(news.createdAt);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 

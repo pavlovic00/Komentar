@@ -81,7 +81,7 @@ public class ViewPagerFragment extends Fragment {
             startActivity(i);
         });
 
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.NewsResponseListener() {
+        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -103,7 +103,7 @@ public class ViewPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 0, new DataRepository.NewsResponseListener() {
+        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 

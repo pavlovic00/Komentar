@@ -11,5 +11,4 @@ public class CategoryApi {
     public String description;
     public CategoryApi subcategory;
     public ArrayList<CategoryApi> subcategories;
-    public boolean open;
 }

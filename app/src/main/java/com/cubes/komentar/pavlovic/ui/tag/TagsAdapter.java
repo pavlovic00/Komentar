@@ -68,7 +68,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
                 RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
 
                 bindingSmall.textViewTitle.setText(news.title);
-                bindingSmall.date.setText(news.created_at);
+                bindingSmall.date.setText(news.createdAt);
                 bindingSmall.textViewCategory.setText(news.category.name);
                 bindingSmall.textViewCategory.setTextColor((Color.parseColor(news.category.color)));
                 Picasso.get().load(news.image).into(bindingSmall.imageView);

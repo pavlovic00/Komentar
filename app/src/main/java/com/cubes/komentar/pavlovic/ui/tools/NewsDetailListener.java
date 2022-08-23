@@ -1,24 +1,24 @@
 package com.cubes.komentar.pavlovic.ui.tools;
 
-import com.cubes.komentar.pavlovic.data.model.CommentApi;
-import com.cubes.komentar.pavlovic.data.model.NewsApi;
-import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
-import com.cubes.komentar.pavlovic.data.model.TagsApi;
+import com.cubes.komentar.pavlovic.data.domain.Comment;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
+import com.cubes.komentar.pavlovic.data.domain.Tags;
 
 public interface NewsDetailListener {
 
-    void onNewsCLicked(NewsApi news);
+    void onNewsCLicked(News news);
 
-    void onTagClicked(TagsApi tags);
+    void onTagClicked(Tags tags);
 
-    void onPutCommentClicked(NewsDetailApi data);
+    void onPutCommentClicked(NewsDetail data);
 
-    void onAllCommentClicked(NewsDetailApi data);
+    void onAllCommentClicked(NewsDetail data);
 
-    void onCommentClicked(CommentApi comment);
+    void onCommentClicked(Comment comment);
 
-    void like(CommentApi comment);
+    void like(Comment comment);
 
-    void dislike(CommentApi comment);
+    void dislike(Comment comment);
 
 }

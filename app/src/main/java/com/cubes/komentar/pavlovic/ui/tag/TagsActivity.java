@@ -63,7 +63,7 @@ public class TagsActivity extends AppCompatActivity {
             getApplicationContext().startActivity(i);
         });
 
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadTagData(id, nextPage, new DataRepository.TagResponseListener() {
+        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
@@ -85,7 +85,7 @@ public class TagsActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadTagData(id, 0, new DataRepository.TagResponseListener() {
+        DataRepository.getInstance().loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
 

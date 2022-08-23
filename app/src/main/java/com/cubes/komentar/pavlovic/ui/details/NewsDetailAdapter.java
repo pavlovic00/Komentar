@@ -18,9 +18,9 @@ import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewLongBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.databinding.RvItemWebviewBinding;
-import com.cubes.komentar.pavlovic.data.model.CommentApi;
-import com.cubes.komentar.pavlovic.data.model.NewsApi;
-import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
+import com.cubes.komentar.pavlovic.data.domain.Comment;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RecyclerViewItemDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonAllComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonPutComment;
@@ -106,7 +106,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         return this.items.size();
     }
 
-    public void setDataItems(NewsDetailApi response) {
+    public void setDataItems(NewsDetail response) {
         //0
         this.items.add(new RvItemWebViewDetail(response));
         //1-2
@@ -119,18 +119,18 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         //4
         this.items.add(new RvItemTitleComment("Komentari", response));
         //5
-        for (int i = 0; i < response.comments_top_n.size(); i++) {
-            CommentApi commentData = response.comments_top_n.get(i);
+        for (int i = 0; i < response.topComments.size(); i++) {
+            Comment commentData = response.topComments.get(i);
             this.items.add(new RvItemComment(commentData, newsDetailListener));
         }
         //6
         this.items.add(new RvItemButtonAllComment(response, newsDetailListener));
         //7-8
-        if (response.related_news.size() > 0) {
+        if (response.relatedNews.size() > 0) {
             this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
 
-            for (int i = 0; i < response.related_news.size(); i++) {
-                NewsApi news = response.related_news.get(i);
+            for (int i = 0; i < response.relatedNews.size(); i++) {
+                News news = response.relatedNews.get(i);
 
                 this.items.add(new RvItemRelatedNews(news, newsDetailListener));
             }

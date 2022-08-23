@@ -31,7 +31,7 @@ public class RvItemBig implements RecyclerViewItemHomepage {
         RvItemBigBinding binding = (RvItemBigBinding) holder.binding;
 
         binding.textViewTitle.setText(news.title);
-        binding.date.setText(news.created_at);
+        binding.date.setText(news.createdAt);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 

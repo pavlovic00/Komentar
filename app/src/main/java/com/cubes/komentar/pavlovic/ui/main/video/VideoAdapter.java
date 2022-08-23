@@ -69,7 +69,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
                 RvItemVideoBinding bindingVideo = (RvItemVideoBinding) holder.binding;
 
                 bindingVideo.textViewTitle.setText(news.title);
-                bindingVideo.date.setText(news.created_at);
+                bindingVideo.date.setText(news.createdAt);
                 bindingVideo.textViewCategory.setText(news.category.name);
                 bindingVideo.textViewCategory.setTextColor(Color.parseColor(news.category.color));
                 Picasso.get().load(news.image).into(bindingVideo.imageView);

@@ -6,10 +6,10 @@ public class NewsList {
 
     public ArrayList<News> slider;
     public ArrayList<News> top;
-    public ArrayList<News> editors_choice;
+    public ArrayList<News> editorsChoice;
     public ArrayList<CategoryBox> category;
     public ArrayList<News> latest;
-    public ArrayList<News> most_read;
-    public ArrayList<News> most_commented;
+    public ArrayList<News> mostRead;
+    public ArrayList<News> mostCommented;
     public ArrayList<News> videos;
 }

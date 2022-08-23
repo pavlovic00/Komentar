@@ -60,7 +60,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                 RvItemBigBinding bindingBig = (RvItemBigBinding) holder.binding;
 
                 bindingBig.textViewTitle.setText(news.title);
-                bindingBig.date.setText(news.created_at);
+                bindingBig.date.setText(news.createdAt);
                 bindingBig.textViewCategory.setText(news.category.name);
                 bindingBig.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
@@ -73,7 +73,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
             RvItemSmallBinding bindingSmall = (RvItemSmallBinding) holder.binding;
 
             bindingSmall.textViewTitle.setText(news.title);
-            bindingSmall.date.setText(news.created_at);
+            bindingSmall.date.setText(news.createdAt);
             bindingSmall.textViewCategory.setText(news.category.name);
             bindingSmall.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 

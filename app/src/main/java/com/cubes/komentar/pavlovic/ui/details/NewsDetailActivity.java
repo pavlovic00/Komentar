@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityNewsDetailBinding;
+import com.cubes.komentar.pavlovic.data.domain.Comment;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
+import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
-import com.cubes.komentar.pavlovic.data.model.CommentApi;
-import com.cubes.komentar.pavlovic.data.model.NewsApi;
-import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
-import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
@@ -67,14 +67,14 @@ public class NewsDetailActivity extends AppCompatActivity {
         adapter = new NewsDetailAdapter(new NewsDetailListener() {
 
             @Override
-            public void onNewsCLicked(NewsApi news) {
+            public void onNewsCLicked(News news) {
                 Intent startDetailIntent = new Intent(getApplicationContext(), NewsDetailActivity.class);
                 startDetailIntent.putExtra("id", news.id);
                 startActivity(startDetailIntent);
             }
 
             @Override
-            public void onTagClicked(TagsApi tags) {
+            public void onTagClicked(Tags tags) {
                 Intent tagsIntent = new Intent(getApplicationContext(), TagsActivity.class);
                 tagsIntent.putExtra("id", tags.id);
                 tagsIntent.putExtra("title", tags.title);
@@ -83,7 +83,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPutCommentClicked(NewsDetailApi data) {
+            public void onPutCommentClicked(NewsDetail data) {
                 Intent i = new Intent(getApplicationContext(), PostCommentActivity.class);
                 i.putExtra("id", data.id);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -91,7 +91,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAllCommentClicked(NewsDetailApi data) {
+            public void onAllCommentClicked(NewsDetail data) {
                 Intent commentIntent = new Intent(getApplicationContext(), AllCommentActivity.class);
                 commentIntent.putExtra("id", data.id);
                 commentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -99,7 +99,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCommentClicked(CommentApi comment) {
+            public void onCommentClicked(Comment comment) {
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.id);
                 replyIntent.putExtra("news", comment.news);
@@ -108,7 +108,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void like(CommentApi comment) {
+            public void like(Comment comment) {
                 DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
@@ -130,7 +130,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void dislike(CommentApi comment) {
+            public void dislike(Comment comment) {
                 DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
@@ -162,7 +162,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         DataRepository.getInstance().loadDetailData(id, new DataRepository.DetailResponseListener() {
             @Override
-            public void onResponse(NewsDetailApi response) {
+            public void onResponse(NewsDetail response) {
 
                 adapter.setDataItems(response);
 

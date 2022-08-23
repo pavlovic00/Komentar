@@ -45,7 +45,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
 
         binding.textViewTitle.setText(news.title);
         binding.textViewCategory.setText(news.category.name);
-        binding.date.setText(news.created_at);
+        binding.date.setText(news.createdAt);
 
         Picasso.get().load(news.image).into(binding.imageView);
 

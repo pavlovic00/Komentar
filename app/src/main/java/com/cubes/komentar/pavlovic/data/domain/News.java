@@ -7,6 +7,6 @@ public class News {
     public String source;
     public Category category;
     public String title;
-    public String created_at;
+    public String createdAt;
     public String url;
 }

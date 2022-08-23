@@ -2,15 +2,15 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemWebviewBinding;
-import com.cubes.komentar.pavlovic.data.model.NewsDetailApi;
+import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
 
 public class RvItemWebViewDetail implements RecyclerViewItemDetail {
 
-    private final NewsDetailApi data;
+    private final NewsDetail data;
 
 
-    public RvItemWebViewDetail(NewsDetailApi data) {
+    public RvItemWebViewDetail(NewsDetail data) {
         this.data = data;
     }
 
