@@ -62,12 +62,14 @@ public class HomepageFragment extends Fragment {
         adapter = new HomepageAdapter(news -> {
             Intent newsIntent = new Intent(getContext(), NewsDetailActivity.class);
             newsIntent.putExtra("id", news.id);
+            newsIntent.putExtra("title", news.title);
             startActivity(newsIntent);
 
         }, news -> {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);
             i.putExtra(Intent.EXTRA_TEXT, news.url);
+            i.putExtra("title", news.title);
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
             startActivity(shareIntent);

@@ -1,6 +1,7 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.cubes.komentar.pavlovic.data.domain.Vote;
@@ -14,6 +15,7 @@ import java.util.List;
 public class SharedPrefs {
 
     private static final String LIST_KEY = "list_key";
+    private static final String NOTIFICATION_KEY = "notification_key";
 
     public static void writeListInPref(Activity activity, List<Vote> list) {
         Gson gson = new Gson();
@@ -33,6 +35,16 @@ public class SharedPrefs {
         Type type = new TypeToken<ArrayList<Vote>>() {
         }.getType();
         return gson.fromJson(jsonString, type);
+    }
+
+    public static void setNotificationStatus(Activity activity, boolean isOn) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        pref.edit().putBoolean(NOTIFICATION_KEY, isOn).apply();
+    }
+
+    public static boolean isNotificationOn(Activity activity) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        return pref.getBoolean(NOTIFICATION_KEY, false);
     }
 
 }

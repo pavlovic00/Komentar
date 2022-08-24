@@ -18,6 +18,7 @@ import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -25,15 +26,19 @@ public class ViewPagerFragment extends Fragment {
 
     private FragmentViewPagerBinding binding;
     private static final String CATEGORY_ID = "categoryId";
+    private static final String CATEGORY_NAME = "categoryName";
     private int categoryId;
+    private String categoryName;
     private LatestAdapter adapter;
     private int nextPage = 2;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
-    public static ViewPagerFragment newInstance(int categoryId) {
+    public static ViewPagerFragment newInstance(int categoryId, String categoryName) {
         ViewPagerFragment fragment = new ViewPagerFragment();
         Bundle args = new Bundle();
         args.putInt(CATEGORY_ID, categoryId);
+        args.putString(CATEGORY_NAME, categoryName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,6 +48,7 @@ public class ViewPagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             categoryId = getArguments().getInt(CATEGORY_ID);
+            categoryName = getArguments().getString(CATEGORY_NAME);
         }
     }
 
@@ -50,6 +56,8 @@ public class ViewPagerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentViewPagerBinding.inflate(inflater, container, false);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
 
         return binding.getRoot();
     }
@@ -77,6 +85,7 @@ public class ViewPagerFragment extends Fragment {
         adapter.setNewsListener(news -> {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
+            i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         });
@@ -99,6 +108,10 @@ public class ViewPagerFragment extends Fragment {
     }
 
     public void loadCategoriesHomeData() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("category", categoryName);
+        mFirebaseAnalytics.logEvent("selected_category", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager.setVisibility(View.GONE);

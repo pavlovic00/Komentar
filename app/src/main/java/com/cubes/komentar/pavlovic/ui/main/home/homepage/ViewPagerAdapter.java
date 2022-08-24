@@ -29,7 +29,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         } else {
             Category categoriesData = categoriesList.get(position - 1);
 
-            return ViewPagerFragment.newInstance(categoriesData.id);
+            return ViewPagerFragment.newInstance(categoriesData.id, categoriesData.name);
         }
     }
 

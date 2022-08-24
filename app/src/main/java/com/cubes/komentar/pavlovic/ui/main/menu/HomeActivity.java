@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,13 +15,14 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.ui.comments.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -30,8 +30,6 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
-    private boolean click = true;
-    FirebaseAnalytics analytics;
 
 
     @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
@@ -43,7 +41,9 @@ public class HomeActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        analytics = FirebaseAnalytics.getInstance(this);
+        boolean isOn = SharedPrefs.isNotificationOn(HomeActivity.this);
+
+        binding.switchNotification.setChecked(isOn);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.homeLayout, HomeFragment.newInstance())
@@ -102,13 +102,6 @@ public class HomeActivity extends AppCompatActivity {
                         Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
                         categoryIntent.putExtra("id", data.id);
                         categoryIntent.putExtra("category", data.name);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, data.id);
-                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, data.name);
-                        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "subcategory");
-                        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-
                         startActivity(categoryIntent);
                     }));
                 }
@@ -137,14 +130,13 @@ public class HomeActivity extends AppCompatActivity {
             //Novi activity.
             HoroscopeActivity.start(HomeActivity.this);
         });
-        binding.pushNotifikacije.setOnClickListener(view14 -> {
+        binding.switchNotification.setOnCheckedChangeListener((compoundButton, b) -> {
+            SharedPrefs.setNotificationStatus(HomeActivity.this, b);
 
-            if (click) {
-                Toast.makeText(view14.getContext().getApplicationContext(), "Push notifikacije su uključene!", Toast.LENGTH_SHORT).show();
-                click = false;
+            if (b) {
+                FirebaseMessaging.getInstance().subscribeToTopic("main");
             } else {
-                Toast.makeText(view14.getContext().getApplicationContext(), "Push notifikacije su isključene!", Toast.LENGTH_SHORT).show();
-                click = true;
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("main");
             }
 
         });

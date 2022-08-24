@@ -22,6 +22,7 @@ import com.cubes.komentar.databinding.FragmentSearchBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class SearchFragment extends Fragment {
     private FragmentSearchBinding binding;
     private SearchAdapter adapter;
     private int nextPage = 2;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     public static SearchFragment newInstance() {
@@ -47,6 +49,8 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
 
         return binding.getRoot();
     }
@@ -126,6 +130,7 @@ public class SearchFragment extends Fragment {
         adapter.setNewsListener(news -> {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
+            i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         });
@@ -149,6 +154,10 @@ public class SearchFragment extends Fragment {
     }
 
     public void loadSearchData() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SEARCH_TERM, String.valueOf(binding.editTextSearch.getText()));
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewSearch.setVisibility(View.GONE);

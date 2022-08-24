@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,18 +55,6 @@ public class LatestFragment extends Fragment {
             binding.progressBar.setVisibility(View.GONE);
         });
 
-        //Test Crashlytics
-        Button crashButton = new Button(getContext());
-        crashButton.setText("Test Crash");
-        crashButton.setOnClickListener(view1 -> {
-            throw new RuntimeException("Test Crash"); // Force a crash
-        });
-
-        getActivity().addContentView(crashButton, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
         setupRecyclerView();
         loadDataLatest();
         refresh();
@@ -82,6 +69,7 @@ public class LatestFragment extends Fragment {
         adapter.setNewsListener(news -> {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
+            i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         });

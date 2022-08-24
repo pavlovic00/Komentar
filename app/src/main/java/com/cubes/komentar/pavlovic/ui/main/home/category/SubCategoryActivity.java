@@ -14,6 +14,7 @@ import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,8 @@ public class SubCategoryActivity extends AppCompatActivity {
     private LatestAdapter adapter;
     private int id;
     private int nextPage = 2;
+    private String category;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -32,11 +35,12 @@ public class SubCategoryActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        String category = getIntent().getExtras().getString("category");
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        category = getIntent().getExtras().getString("category");
         id = getIntent().getExtras().getInt("id");
 
         binding.textViewTag.setText(category);
-
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 
@@ -60,6 +64,7 @@ public class SubCategoryActivity extends AppCompatActivity {
         adapter.setNewsListener(news -> {
             Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
+            i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(i);
         });
@@ -83,6 +88,10 @@ public class SubCategoryActivity extends AppCompatActivity {
     }
 
     public void loadCategoryData() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("subcategory", category);
+        mFirebaseAnalytics.logEvent("selected_subcategory", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewCategory.setVisibility(View.GONE);

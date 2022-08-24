@@ -23,6 +23,7 @@ import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -30,8 +31,10 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     private ActivityNewsDetailBinding binding;
     private int id;
+    private String title;
     private ArrayList<Vote> votes = new ArrayList<>();
     private NewsDetailAdapter adapter;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -42,7 +45,11 @@ public class NewsDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         id = getIntent().getExtras().getInt("id");
+        title = getIntent().getExtras().getString("title");
+
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 
@@ -70,6 +77,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             public void onNewsCLicked(News news) {
                 Intent startDetailIntent = new Intent(getApplicationContext(), NewsDetailActivity.class);
                 startDetailIntent.putExtra("id", news.id);
+                startDetailIntent.putExtra("title", news.title);
                 startActivity(startDetailIntent);
             }
 
@@ -156,6 +164,10 @@ public class NewsDetailActivity extends AppCompatActivity {
     }
 
     public void loadDetailData() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("news", title);
+        mFirebaseAnalytics.logEvent("selected_news", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewDetail.setVisibility(View.GONE);

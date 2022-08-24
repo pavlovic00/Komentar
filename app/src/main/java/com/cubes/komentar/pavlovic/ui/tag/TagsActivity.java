@@ -13,6 +13,7 @@ import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,8 @@ public class TagsActivity extends AppCompatActivity {
     private int id;
     private TagsAdapter adapter;
     private int nextPage = 2;
+    private String title;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -32,8 +35,10 @@ public class TagsActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         id = getIntent().getExtras().getInt("id");
-        String title = getIntent().getExtras().getString("title");
+        title = getIntent().getExtras().getString("title");
 
         binding.textViewTag.setText(title);
 
@@ -59,6 +64,7 @@ public class TagsActivity extends AppCompatActivity {
         adapter.setNewsListener(news -> {
             Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
+            i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(i);
         });
@@ -81,6 +87,10 @@ public class TagsActivity extends AppCompatActivity {
     }
 
     public void loadTagData() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("tags", title);
+        mFirebaseAnalytics.logEvent("selected_tags", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);

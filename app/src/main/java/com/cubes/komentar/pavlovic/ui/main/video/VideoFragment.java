@@ -67,6 +67,7 @@ public class VideoFragment extends Fragment {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);
             i.putExtra(Intent.EXTRA_TEXT, news.url);
+            i.putExtra("title", news.title);
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
             startActivity(shareIntent);

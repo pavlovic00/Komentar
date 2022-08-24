@@ -177,6 +177,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view2" />
 
+                <Switch
+                    android:id="@+id/switchNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_main"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/push_notifikacije"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
                 <TextView
                     android:id="@+id/marketing"
                     android:layout_width="wrap_content"
