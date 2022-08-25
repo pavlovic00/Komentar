@@ -6,7 +6,7 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.ui.comments.CommentAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.CommentListener;
 
 public class RvItemCommentParent implements RecyclerViewItemComment {
 

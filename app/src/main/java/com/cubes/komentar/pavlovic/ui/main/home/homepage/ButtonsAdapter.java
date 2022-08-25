@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemTextForNewsHomepageBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 
 import java.util.ArrayList;
 

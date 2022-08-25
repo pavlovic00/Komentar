@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.ui.tools;
+package com.cubes.komentar.pavlovic.ui.tools.listener;
 
 public interface LoadingNewsListener {
 

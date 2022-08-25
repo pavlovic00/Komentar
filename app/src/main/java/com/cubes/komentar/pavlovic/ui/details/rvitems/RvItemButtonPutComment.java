@@ -4,7 +4,7 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemButtonCommentBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 public class RvItemButtonPutComment implements RecyclerViewItemDetail {
 

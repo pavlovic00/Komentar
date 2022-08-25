@@ -6,7 +6,7 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 
 public class RvItemBig implements RecyclerViewItemHomepage {

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.R;
+import com.cubes.komentar.databinding.RvItemAdsViewBinding;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.databinding.RvItemButtonsHomepageBinding;
 import com.cubes.komentar.databinding.RvItemHorizontalRv2Binding;
@@ -20,15 +21,16 @@ import com.cubes.komentar.pavlovic.data.domain.CategoryBox;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RecyclerViewItemHomepage;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemAds;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemBig;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemButtonsNews;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemEditorChoice;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSlider;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSmall;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideo;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
-import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideoHome;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
 
 import java.util.ArrayList;
 
@@ -72,6 +74,9 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             case R.layout.rv_item_big:
                 binding = RvItemBigBinding.inflate(inflater, parent, false);
                 break;
+            case R.layout.rv_item_ads_view:
+                binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+                break;
             default:
                 binding = RvItemHorizontalTextViewBinding.inflate(inflater, parent, false);
         }
@@ -100,6 +105,8 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
     public void setDataItems(NewsList response) {
         //0
         items.add(new RvItemSlider(response.slider, newsListener));
+        //Reklama
+        items.add(new RvItemAds());
         //1
         for (int i = 0; i < response.top.size(); i++) {
             News news = response.top.get(i);
@@ -114,12 +121,16 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         }
         //5-6
         if (response.videos.size() > 0) {
+            //Reklama
+            items.add(new RvItemAds());
             items.add(new RvItemTitle("Video", "#FF0000"));
 
             for (News video : response.videos) {
-                items.add(new RvItemVideo(video, videoListener));
+                items.add(new RvItemVideoHome(video, videoListener));
             }
         }
+        //Reklama
+        items.add(new RvItemAds());
         //7-8-9
         for (CategoryBox categoryBox : response.category) {
             items.add(new RvItemTitle(categoryBox.title, categoryBox.color));

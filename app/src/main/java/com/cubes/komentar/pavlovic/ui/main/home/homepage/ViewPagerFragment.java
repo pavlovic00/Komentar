@@ -79,18 +79,13 @@ public class ViewPagerFragment extends Fragment {
 
     public void setupRecyclerView() {
         binding.recyclerViewPager.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter();
-        binding.recyclerViewPager.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
+        adapter = new LatestAdapter(news -> {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
+        }, () -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -105,6 +100,7 @@ public class ViewPagerFragment extends Fragment {
             }
         }));
 
+        binding.recyclerViewPager.setAdapter(adapter);
     }
 
     public void loadCategoriesHomeData() {

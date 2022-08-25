@@ -71,11 +71,7 @@ public class VideoFragment extends Fragment {
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
             startActivity(shareIntent);
-        });
-
-        binding.recyclerViewVideo.setAdapter(adapter);
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+        }, () -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -90,6 +86,7 @@ public class VideoFragment extends Fragment {
             }
         }));
 
+        binding.recyclerViewVideo.setAdapter(adapter);
     }
 
     public void loadDataVideo() {

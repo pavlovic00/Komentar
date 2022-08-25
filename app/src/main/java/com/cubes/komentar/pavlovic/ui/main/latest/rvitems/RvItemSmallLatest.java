@@ -1,21 +1,21 @@
-package com.cubes.komentar.pavlovic.ui.details.rvitems;
+package com.cubes.komentar.pavlovic.ui.main.latest.rvitems;
 
 import android.graphics.Color;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 
-public class RvItemRelatedNews implements RecyclerViewItemDetail {
+public class RvItemSmallLatest implements RecyclerViewItemLatest {
 
     private final News news;
-    private final NewsDetailListener newsListener;
+    private final NewsListener newsListener;
 
 
-    public RvItemRelatedNews(News news, NewsDetailListener newsListener) {
+    public RvItemSmallLatest(News news, NewsListener newsListener) {
         this.news = news;
         this.newsListener = newsListener;
     }
@@ -26,7 +26,7 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(NewsDetailAdapter.ViewHolder holder) {
+    public void bind(LatestAdapter.ViewHolder holder) {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
@@ -37,6 +37,6 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
     }
 }

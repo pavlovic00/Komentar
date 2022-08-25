@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemForHorizontalRvBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

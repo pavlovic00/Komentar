@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic;
+package com.cubes.komentar.pavlovic.ui.tools;
 
 import android.content.Intent;
 import android.net.Uri;

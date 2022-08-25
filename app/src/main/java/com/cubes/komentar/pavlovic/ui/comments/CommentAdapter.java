@@ -14,7 +14,7 @@ import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.ui.comments.rvitems.RecyclerViewItemComment;
 import com.cubes.komentar.pavlovic.ui.comments.rvitems.RvItemCommentChild;
 import com.cubes.komentar.pavlovic.ui.comments.rvitems.RvItemCommentParent;
-import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.CommentListener;
 
 import java.util.ArrayList;
 

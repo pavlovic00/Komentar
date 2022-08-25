@@ -15,7 +15,8 @@ import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.ui.tools.CommentListener;
+import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.cubes.komentar.pavlovic.ui.tools.listener.CommentListener;
 
 import java.util.ArrayList;
 

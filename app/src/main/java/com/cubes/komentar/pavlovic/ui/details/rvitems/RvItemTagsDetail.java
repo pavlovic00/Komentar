@@ -5,7 +5,7 @@ import com.cubes.komentar.databinding.RvItemGridRvBinding;
 import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.ui.details.ButtonTagsAdapter;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.ArrayList;

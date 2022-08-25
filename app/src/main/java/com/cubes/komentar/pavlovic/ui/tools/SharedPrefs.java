@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.ui.comments;
+package com.cubes.komentar.pavlovic.ui.tools;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

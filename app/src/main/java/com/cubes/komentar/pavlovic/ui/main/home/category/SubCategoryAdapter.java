@@ -12,7 +12,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
-import com.cubes.komentar.pavlovic.ui.tools.SubCategoryListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.SubCategoryListener;
 
 import java.util.ArrayList;
 

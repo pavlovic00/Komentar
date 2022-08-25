@@ -9,7 +9,7 @@ import com.cubes.komentar.databinding.RvItemHorizontalRv2Binding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.SliderAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 
 import java.util.ArrayList;
 

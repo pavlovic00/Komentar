@@ -6,16 +6,16 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.VideoListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
 import com.squareup.picasso.Picasso;
 
-public class RvItemVideo implements RecyclerViewItemHomepage {
+public class RvItemVideoHome implements RecyclerViewItemHomepage {
 
     private final News video;
     private final VideoListener videoListener;
 
 
-    public RvItemVideo(News video, VideoListener videoListener) {
+    public RvItemVideoHome(News video, VideoListener videoListener) {
         this.video = video;
         this.videoListener = videoListener;
     }

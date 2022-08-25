@@ -58,18 +58,13 @@ public class TagsActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new TagsAdapter();
-        binding.recyclerViewTags.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
+        adapter = new TagsAdapter(news -> {
             Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
+        }, () -> DataRepository.getInstance().loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
@@ -84,6 +79,7 @@ public class TagsActivity extends AppCompatActivity {
             }
         }));
 
+        binding.recyclerViewTags.setAdapter(adapter);
     }
 
     public void loadTagData() {
@@ -100,7 +96,7 @@ public class TagsActivity extends AppCompatActivity {
             public void onResponse(ArrayList<News> responseNewsList) {
 
                 nextPage = 2;
-                adapter.setDataTags(responseNewsList);
+                adapter.setTagData(responseNewsList);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

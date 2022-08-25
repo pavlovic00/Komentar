@@ -15,13 +15,15 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.ui.comments.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
+import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -40,6 +42,25 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        binding.adsView.loadAd(adRequest);
+
+        binding.adsView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+
+                binding.closeAbs.setVisibility(View.VISIBLE);
+                binding.adsView.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        binding.closeAbs.setOnClickListener(view14 -> {
+            binding.adsView.setVisibility(View.GONE);
+            binding.closeAbs.setVisibility(View.GONE);
+        });
 
         boolean isOn = SharedPrefs.isNotificationOn(HomeActivity.this);
 

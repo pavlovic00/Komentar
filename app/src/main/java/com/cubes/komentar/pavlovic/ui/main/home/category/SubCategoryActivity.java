@@ -58,18 +58,13 @@ public class SubCategoryActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewCategory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new LatestAdapter();
-        binding.recyclerViewCategory.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
+        adapter = new LatestAdapter(news -> {
             Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadCategoryNewsData(id, nextPage, new DataRepository.CategoryNewsResponseListener() {
+        }, () -> DataRepository.getInstance().loadCategoryNewsData(id, nextPage, new DataRepository.CategoryNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
@@ -85,6 +80,7 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         }));
 
+        binding.recyclerViewCategory.setAdapter(adapter);
     }
 
     public void loadCategoryData() {

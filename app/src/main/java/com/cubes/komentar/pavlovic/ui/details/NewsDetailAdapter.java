@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.R;
+import com.cubes.komentar.databinding.RvItemAdsViewBinding;
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.databinding.RvItemButtonCommentBinding;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
@@ -25,13 +26,14 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RecyclerViewItemDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonAllComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonPutComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemComment;
+import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemAdsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTagsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebViewDetail;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 import java.util.ArrayList;
 
@@ -82,6 +84,9 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
             case R.layout.rv_item_small:
                 binding = RvItemSmallBinding.inflate(inflater, parent, false);
                 break;
+            case R.layout.rv_item_ads_view:
+                binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+                break;
         }
 
         assert binding != null;
@@ -107,9 +112,13 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
     }
 
     public void setDataItems(NewsDetail response) {
+        //Reklama
+        this.items.add(new RvItemAdsDetail());
         //0
         this.items.add(new RvItemWebViewDetail(response));
         //1-2
+        //Reklama
+        this.items.add(new RvItemAdsDetail());
         if (response.tags.size() > 0) {
             this.items.add(new RvItemTitleDetail("Tagovi:"));
             this.items.add(new RvItemTagsDetail(response.tags, newsDetailListener));
@@ -127,6 +136,8 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         this.items.add(new RvItemButtonAllComment(response, newsDetailListener));
         //7-8
         if (response.relatedNews.size() > 0) {
+            //Reklama
+            this.items.add(new RvItemAdsDetail());
             this.items.add(new RvItemTitleRelatedNews("Povezane vesti"));
 
             for (int i = 0; i < response.relatedNews.size(); i++) {

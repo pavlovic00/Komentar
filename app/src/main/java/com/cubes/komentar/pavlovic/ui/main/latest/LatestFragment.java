@@ -63,18 +63,13 @@ public class LatestFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewLatest.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter();
-        binding.recyclerViewLatest.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
+        adapter = new LatestAdapter(news -> {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
+        }, () -> DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -88,6 +83,8 @@ public class LatestFragment extends Fragment {
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         }));
+
+        binding.recyclerViewLatest.setAdapter(adapter);
     }
 
     public void loadDataLatest() {
