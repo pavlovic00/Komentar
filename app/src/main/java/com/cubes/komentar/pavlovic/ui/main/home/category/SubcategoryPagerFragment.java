@@ -1,4 +1,4 @@
-package com.cubes.komentar.pavlovic.ui.main.home.homepage;
+package com.cubes.komentar.pavlovic.ui.main.home.category;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.cubes.komentar.databinding.FragmentViewPagerCategoryBinding;
+import com.cubes.komentar.databinding.FragmentViewPagerSubcategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
@@ -22,40 +22,45 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
-public class ViewPagerFragment extends Fragment {
+public class SubcategoryPagerFragment extends Fragment {
 
-    private FragmentViewPagerCategoryBinding binding;
-    private static final String CATEGORY_ID = "categoryId";
-    private static final String CATEGORY_NAME = "categoryName";
-    private int categoryId;
-    private String categoryName;
+    private static final String ARG_CATEGORY_ID = "category_id";
+    private static final String SUBCATEGORY_NAME = "subcategoryName";
+    private FragmentViewPagerSubcategoryBinding binding;
+    private int mCategoryId;
     private LatestAdapter adapter;
+    private String subcategoryName;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
-    public static ViewPagerFragment newInstance(int categoryId, String categoryName) {
-        ViewPagerFragment fragment = new ViewPagerFragment();
+    public SubcategoryPagerFragment() {
+    }
+
+    public static SubcategoryPagerFragment newInstance(String subcategoryName, int categoryId) {
+        SubcategoryPagerFragment fragment = new SubcategoryPagerFragment();
         Bundle args = new Bundle();
-        args.putInt(CATEGORY_ID, categoryId);
-        args.putString(CATEGORY_NAME, categoryName);
+        args.putInt(ARG_CATEGORY_ID, categoryId);
+        args.putString(SUBCATEGORY_NAME, subcategoryName);
         fragment.setArguments(args);
+
+        fragment.mCategoryId = categoryId;
         return fragment;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryId = getArguments().getInt(CATEGORY_ID);
-            categoryName = getArguments().getString(CATEGORY_NAME);
+            mCategoryId = getArguments().getInt(ARG_CATEGORY_ID);
+            subcategoryName = getArguments().getString(SUBCATEGORY_NAME);
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentViewPagerCategoryBinding.inflate(inflater, container, false);
+        binding = FragmentViewPagerSubcategoryBinding.inflate(inflater, container, false);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
 
@@ -85,7 +90,7 @@ public class ViewPagerFragment extends Fragment {
             i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
-        }, () -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
+        }, () -> DataRepository.getInstance().loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -106,13 +111,13 @@ public class ViewPagerFragment extends Fragment {
     public void loadCategoriesHomeData() {
 
         Bundle bundle = new Bundle();
-        bundle.putString("category", categoryName);
-        mFirebaseAnalytics.logEvent("selected_category", bundle);
+        bundle.putString("subcategory", subcategoryName);
+        mFirebaseAnalytics.logEvent("selected_subcategory", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
+        DataRepository.getInstance().loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 

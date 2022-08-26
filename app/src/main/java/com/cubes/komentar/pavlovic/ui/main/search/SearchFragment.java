@@ -123,19 +123,13 @@ public class SearchFragment extends Fragment {
 
     public void setupRecyclerView() {
         binding.recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new SearchAdapter();
-        binding.recyclerViewSearch.setAdapter(adapter);
-
-
-        adapter.setNewsListener(news -> {
+        adapter = new SearchAdapter(news -> {
             Intent i = new Intent(getContext(), NewsDetailActivity.class);
             i.putExtra("id", news.id);
             i.putExtra("title", news.title);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
+        }, () -> DataRepository.getInstance().loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseData) {
                 adapter.addNewsList(responseData);
@@ -150,7 +144,7 @@ public class SearchFragment extends Fragment {
             }
         }));
 
-
+        binding.recyclerViewSearch.setAdapter(adapter);
     }
 
     public void loadSearchData() {
@@ -168,7 +162,7 @@ public class SearchFragment extends Fragment {
 
                 setupRecyclerView();
 
-                adapter.setDataSearch(responseData);
+                adapter.setSearchData(responseData);
 
                 nextPage = 2;
 

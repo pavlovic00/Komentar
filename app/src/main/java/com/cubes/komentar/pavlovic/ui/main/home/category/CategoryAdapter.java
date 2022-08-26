@@ -17,17 +17,17 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
-import com.cubes.komentar.pavlovic.ui.tools.listener.SubCategoryListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.SubcategoryListener;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private final ArrayList<Category> categoryList;
-    private final SubCategoryListener subCategoryListener;
+    private final SubcategoryListener subCategoryListener;
 
 
-    public CategoryAdapter(ArrayList<Category> categoryList, SubCategoryListener subCategoryListener) {
+    public CategoryAdapter(ArrayList<Category> categoryList, SubcategoryListener subCategoryListener) {
         this.categoryList = categoryList;
         this.subCategoryListener = subCategoryListener;
     }
@@ -66,12 +66,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             if (category.open) {
                 bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(category.subcategories, subCategoryListener));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubcategoryAdapter(category, subCategoryListener));
 
                 bindingCategory.submenuarrow.setRotation(90);
             } else {
                 bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(new ArrayList<>(), subCategoryListener));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubcategoryAdapter(new ArrayList<>(), subCategoryListener));
 
                 bindingCategory.submenuarrow.setRotation(-90);
             }

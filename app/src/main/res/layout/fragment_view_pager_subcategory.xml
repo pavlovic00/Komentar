@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".pavlovic.ui.main.home.homepage.ViewPagerFragment">
+    tools:context=".pavlovic.ui.main.home.category.SubcategoryPagerFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewPager"
+            android:id="@+id/recyclerViewPager2"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

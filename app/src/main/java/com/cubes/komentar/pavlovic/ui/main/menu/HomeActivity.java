@@ -17,7 +17,7 @@ import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
-import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
+import com.cubes.komentar.pavlovic.ui.main.home.category.SubcategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
@@ -45,18 +45,14 @@ public class HomeActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adsView.loadAd(adRequest);
-
         binding.adsView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-
                 binding.closeAbs.setVisibility(View.VISIBLE);
                 binding.adsView.setVisibility(View.VISIBLE);
             }
         });
-
-
         binding.closeAbs.setOnClickListener(view14 -> {
             binding.adsView.setVisibility(View.GONE);
             binding.closeAbs.setVisibility(View.GONE);
@@ -119,11 +115,11 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(ArrayList<Category> response) {
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    binding.recyclerView.setAdapter(new CategoryAdapter(response, data -> {
-                        Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
-                        categoryIntent.putExtra("id", data.id);
-                        categoryIntent.putExtra("category", data.name);
-                        startActivity(categoryIntent);
+                    binding.recyclerView.setAdapter(new CategoryAdapter(response, (categoryId, subcategoryId) -> {
+                        Intent i = new Intent(getApplicationContext(), SubcategoryActivity.class);
+                        i.putExtra("category_id", categoryId);
+                        i.putExtra("subcategory_id", subcategoryId);
+                        startActivity(i);
                     }));
                 }
 
@@ -197,11 +193,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<Category> response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerView.setAdapter(new CategoryAdapter(response, data -> {
-                    Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
-                    categoryIntent.putExtra("id", data.id);
-                    categoryIntent.putExtra("category", data.name);
-                    startActivity(categoryIntent);
+                binding.recyclerView.setAdapter(new CategoryAdapter(response, (categoryId, subcategoryId) -> {
+                    Intent i = new Intent(getApplicationContext(), SubcategoryActivity.class);
+                    i.putExtra("category_id", categoryId);
+                    i.putExtra("subcategory_id", subcategoryId);
+                    startActivity(i);
                 }));
             }
 
