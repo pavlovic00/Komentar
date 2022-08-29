@@ -5,8 +5,8 @@ import android.graphics.Color;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tag.TagsAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +42,6 @@ public class RvItemSmallTag implements RecyclerViewItemTag {
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, news.url, newsListId));
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsListId));
     }
 }

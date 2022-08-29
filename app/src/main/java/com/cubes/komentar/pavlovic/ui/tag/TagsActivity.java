@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -25,6 +27,7 @@ public class TagsActivity extends AppCompatActivity {
     private int nextPage = 2;
     private String title;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AppContainer appContainer;
 
 
     @Override
@@ -50,6 +53,8 @@ public class TagsActivity extends AppCompatActivity {
             binding.progressBar.setVisibility(View.GONE);
         });
 
+        appContainer = ((MyApplication) getApplication()).appContainer;
+
         setupRecyclerView();
         loadTagData();
         refresh();
@@ -58,13 +63,12 @@ public class TagsActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new TagsAdapter((newsId, newsUrl, newsIdList) -> {
+        adapter = new TagsAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_url", newsUrl);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> DataRepository.getInstance().loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
+        }, () -> appContainer.dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
@@ -91,7 +95,7 @@ public class TagsActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
+        appContainer.dataRepository.loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
 

@@ -15,6 +15,8 @@ import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.tools.listener.CommentListener;
 
@@ -27,6 +29,7 @@ public class AllCommentActivity extends AppCompatActivity {
     private ArrayList<Vote> votes = new ArrayList<>();
     private CommentAdapter adapter;
     private int id;
+    private AppContainer appContainer;
 
 
     @Override
@@ -46,6 +49,8 @@ public class AllCommentActivity extends AppCompatActivity {
             loadCommentData();
             binding.progressBar.setVisibility(View.GONE);
         });
+
+        appContainer = ((MyApplication) getApplication()).appContainer;
 
         setupRecyclerView();
         loadCommentData();
@@ -76,7 +81,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
             @Override
             public void like(Comment comment) {
-                DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                appContainer.dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
@@ -98,7 +103,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
             @Override
             public void dislike(Comment comment) {
-                DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                appContainer.dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
@@ -126,7 +131,7 @@ public class AllCommentActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewComments.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCommentData(id, new DataRepository.CommentResponseListener() {
+        appContainer.dataRepository.loadCommentData(id, new DataRepository.CommentResponseListener() {
             @Override
             public void onResponse(ArrayList<Comment> response) {
 

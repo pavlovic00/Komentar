@@ -5,14 +5,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.cubes.komentar.pavlovic.ui.details.DetailsFragment;
-
-public class DetailsViewPagerAdapter extends FragmentStateAdapter {
+public class DetailsPagerAdapter extends FragmentStateAdapter {
 
     private final int[] newsListId;
 
 
-    public DetailsViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, int[] newsListId) {
+    public DetailsPagerAdapter(@NonNull FragmentActivity fragmentActivity, int[] newsListId) {
         super(fragmentActivity);
         this.newsListId = newsListId;
     }
@@ -20,7 +18,7 @@ public class DetailsViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return DetailsFragment.newInstance(newsListId[position]);
+        return DetailsPagerFragment.newInstance(newsListId[position]);
     }
 
     @Override

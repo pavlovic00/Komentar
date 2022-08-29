@@ -6,7 +6,7 @@ import com.cubes.komentar.pavlovic.data.domain.Tags;
 
 public interface NewsDetailListener {
 
-    void onNewsClickedVP(int newsId, String newsUrl, int[] newsIdList);
+    void onNewsClickedVP(int newsId, int[] newsIdList);
 
     void onTagClicked(Tags tags);
 

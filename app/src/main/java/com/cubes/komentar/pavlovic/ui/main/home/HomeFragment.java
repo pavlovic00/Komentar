@@ -14,13 +14,16 @@ import androidx.fragment.app.Fragment;
 import com.cubes.komentar.databinding.FragmentHomeBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.ui.main.home.homepage.ViewPagerAdapter;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
+import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomePagerAdapter;
 
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private AppContainer appContainer;
 
 
     public static HomeFragment newInstance() {
@@ -30,6 +33,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
     }
 
     @Override
@@ -51,12 +56,12 @@ public class HomeFragment extends Fragment {
 
     public void loadCategoriesData() {
 
-        DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        appContainer.dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> response) {
                 if (getActivity() != null) {
                     //Uvek koristi child ovde da bi se resio baga.
-                    binding.viewPagerHome.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), response));
+                    binding.viewPagerHome.setAdapter(new HomePagerAdapter(getChildFragmentManager(), response));
                 }
                 binding.tabLayout.setupWithViewPager(binding.viewPagerHome);
 

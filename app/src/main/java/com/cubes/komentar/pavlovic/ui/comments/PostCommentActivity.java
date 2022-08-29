@@ -13,12 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cubes.komentar.databinding.ActivityPostCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.RequestComment;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 
 public class PostCommentActivity extends AppCompatActivity {
 
     private ActivityPostCommentBinding binding;
     private String news;
     private String reply_id;
+    private AppContainer appContainer;
 
 
     @Override
@@ -35,6 +38,8 @@ public class PostCommentActivity extends AppCompatActivity {
         String name = binding.name.getText().toString();
         String email = binding.mail.getText().toString();
         String content = binding.content.getText().toString();
+
+        appContainer = ((MyApplication) getApplication()).appContainer;
 
         if (reply_id == null) {
             binding.commentSend.setText("Postavi komentar");
@@ -80,7 +85,7 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void replyComment(String name, String email, String content) {
 
-        DataRepository.getInstance().replyComment(news, reply_id, name, email, content, new DataRepository.PostRequestListener() {
+        appContainer.dataRepository.replyComment(news, reply_id, name, email, content, new DataRepository.PostRequestListener() {
             @Override
             public void onResponse(RequestComment.RequestBody response) {
                 binding.name.setText("");
@@ -99,7 +104,7 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void postComment(String name, String email, String content) {
 
-        DataRepository.getInstance().postComment(news, name, email, content, new DataRepository.PostRequestListener() {
+        appContainer.dataRepository.postComment(news, name, email, content, new DataRepository.PostRequestListener() {
             @Override
             public void onResponse(RequestComment.RequestBody response) {
                 binding.name.setText("");

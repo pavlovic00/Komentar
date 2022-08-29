@@ -37,13 +37,13 @@ import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 import java.util.ArrayList;
 
-public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder> {
+public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHolder> {
 
     private final ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
     private final NewsDetailListener newsDetailListener;
 
 
-    public DetailAdapter(NewsDetailListener newsDetailListener) {
+    public DetailsAdapter(NewsDetailListener newsDetailListener) {
         this.newsDetailListener = newsDetailListener;
     }
 

@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentViewPagerSubcategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -32,6 +34,7 @@ public class SubcategoryPagerFragment extends Fragment {
     private String subcategoryName;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AppContainer appContainer;
 
 
     public SubcategoryPagerFragment() {
@@ -55,14 +58,15 @@ public class SubcategoryPagerFragment extends Fragment {
             mCategoryId = getArguments().getInt(ARG_CATEGORY_ID);
             subcategoryName = getArguments().getString(SUBCATEGORY_NAME);
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
+        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentViewPagerSubcategoryBinding.inflate(inflater, container, false);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
 
         return binding.getRoot();
     }
@@ -84,13 +88,12 @@ public class SubcategoryPagerFragment extends Fragment {
 
     public void setupRecyclerView() {
         binding.recyclerViewPager2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter((newsId, newsUrl, newsIdList) -> {
+        adapter = new LatestAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_url", newsUrl);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> DataRepository.getInstance().loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
+        }, () -> appContainer.dataRepository.loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -117,7 +120,7 @@ public class SubcategoryPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
+        appContainer.dataRepository.loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 

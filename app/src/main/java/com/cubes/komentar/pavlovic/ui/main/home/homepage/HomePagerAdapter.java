@@ -10,12 +10,12 @@ import com.cubes.komentar.pavlovic.data.domain.Category;
 
 import java.util.ArrayList;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class HomePagerAdapter extends FragmentPagerAdapter {
 
     private final ArrayList<Category> categoriesList;
 
 
-    public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<Category> list) {
+    public HomePagerAdapter(@NonNull FragmentManager fm, ArrayList<Category> list) {
         super(fm);
         this.categoriesList = list;
     }
@@ -29,7 +29,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         } else {
             Category categoriesData = categoriesList.get(position - 1);
 
-            return ViewPagerFragment.newInstance(categoriesData.id, categoriesData.name);
+            return HomePagerFragment.newInstance(categoriesData.id, categoriesData.name);
         }
     }
 

@@ -48,7 +48,7 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ViewHold
         binding.textViewTitle.setText(news.title);
         binding.date.setText(news.createdAt);
 
-        holder.itemView.setOnClickListener(view -> buttonsListener.onNewsClickedVP(news.id, news.url, newsListId));
+        holder.itemView.setOnClickListener(view -> buttonsListener.onNewsClickedVP(news.id, newsListId));
     }
 
     @Override

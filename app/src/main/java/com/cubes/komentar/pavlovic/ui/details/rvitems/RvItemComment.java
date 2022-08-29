@@ -5,7 +5,7 @@ import android.widget.Toast;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
-import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 public class RvItemComment implements RecyclerViewItemDetail {
@@ -26,7 +26,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(DetailAdapter.ViewHolder holder) {
+    public void bind(DetailsAdapter.ViewHolder holder) {
 
         binding = (RvItemCommentParentBinding) holder.binding;
 

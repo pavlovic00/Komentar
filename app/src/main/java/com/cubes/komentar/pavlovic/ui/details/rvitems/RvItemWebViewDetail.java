@@ -3,7 +3,7 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemWebviewBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
-import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
 
 public class RvItemWebViewDetail implements RecyclerViewItemDetail {
 
@@ -20,7 +20,7 @@ public class RvItemWebViewDetail implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(DetailAdapter.ViewHolder holder) {
+    public void bind(DetailsAdapter.ViewHolder holder) {
 
         RvItemWebviewBinding binding = (RvItemWebviewBinding) holder.binding;
 

@@ -5,7 +5,7 @@ import android.view.View;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewCommentBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
-import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
 
 public class RvItemTitleComment implements RecyclerViewItemDetail {
 
@@ -24,7 +24,7 @@ public class RvItemTitleComment implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(DetailAdapter.ViewHolder holder) {
+    public void bind(DetailsAdapter.ViewHolder holder) {
 
         String count = "(" + data.commentsCount + ")";
 

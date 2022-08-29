@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cubes.komentar.databinding.ActivitySubcategoryNewsBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class SubcategoryActivity extends AppCompatActivity {
     private Category mCategory = new Category();
     private int mCategoryId;
     private int mSubcategoryId;
+    private AppContainer appContainer;
 
 
     @Override
@@ -33,6 +36,7 @@ public class SubcategoryActivity extends AppCompatActivity {
 
         binding.imageViewBack.setOnClickListener(view -> finish());
         binding.imageViewRefresh.setOnClickListener(view -> getAllCategories(mCategoryId, mSubcategoryId));
+        appContainer = ((MyApplication) getApplication()).appContainer;
     }
 
     private void getAllCategories(int mCategoryId, int mSubcategoryId) {
@@ -40,7 +44,7 @@ public class SubcategoryActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.imageViewRefresh.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        appContainer.dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> categories) {
 
@@ -77,9 +81,7 @@ public class SubcategoryActivity extends AppCompatActivity {
                 new TabLayoutMediator(
                         binding.tabLayout,
                         binding.viewPager,
-                        (tab, position) -> {
-                            tab.setText(mCategory.subcategories.get(position).name);
-                        }
+                        (tab, position) -> tab.setText(mCategory.subcategories.get(position).name)
                 ).attach();
 
                 binding.viewPager.setCurrentItem(currentSubcategoryPosition);

@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentVideoBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class VideoFragment extends Fragment {
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
     private int nextPage = 2;
+    private AppContainer appContainer;
 
 
     public static VideoFragment newInstance() {
@@ -34,6 +37,7 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
     }
 
     @Override
@@ -71,7 +75,7 @@ public class VideoFragment extends Fragment {
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
             startActivity(shareIntent);
-        }, () -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+        }, () -> appContainer.dataRepository.loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -94,7 +98,7 @@ public class VideoFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewVideo.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadVideoData(0, new DataRepository.VideoResponseListener() {
+        appContainer.dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 
