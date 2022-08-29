@@ -15,63 +15,63 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCategoryItemBinding;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
-import com.cubes.komentar.pavlovic.ui.tools.SubCategoryListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.SubcategoryListener;
 
 import java.util.ArrayList;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    private final ArrayList<ResponseCategories.ResponseCategoriesData> list;
-    private final SubCategoryListener subCategoryListener;
+    private final ArrayList<Category> categoryList;
+    private final SubcategoryListener subCategoryListener;
 
 
-    public CategoryAdapter(ArrayList<ResponseCategories.ResponseCategoriesData> list, SubCategoryListener subCategoryListener) {
-        this.list = list;
+    public CategoryAdapter(ArrayList<Category> categoryList, SubcategoryListener subCategoryListener) {
+        this.categoryList = categoryList;
         this.subCategoryListener = subCategoryListener;
     }
 
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         binding = RvItemCategoryItemBinding.inflate(inflater, parent, false);
 
-        return new CategoryViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ResponseCategories.ResponseCategoriesData categories = list.get(position);
+        Category category = categoryList.get(position);
 
         RvItemCategoryItemBinding bindingCategory = (RvItemCategoryItemBinding) holder.binding;
 
-        bindingCategory.textViewCategory.setText(categories.name);
-        bindingCategory.view.setBackgroundColor(Color.parseColor(categories.color));
+        bindingCategory.textViewCategory.setText(category.name);
+        bindingCategory.view.setBackgroundColor(Color.parseColor(category.color));
         bindingCategory.submenuarrow.setRotation(270);
 
-        if (list.get(position).subcategories.size() == 0) {
+        if (categoryList.get(position).subcategories.size() == 0) {
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
         bindingCategory.submenuarrow.setOnClickListener(view -> {
 
             //Jako bitno mora biti na pocetku.
-            categories.open = !categories.open;
+            category.open = !category.open;
 
-            if (categories.open) {
+            if (category.open) {
                 bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(categories.subcategories, subCategoryListener));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubcategoryAdapter(category, subCategoryListener));
 
                 bindingCategory.submenuarrow.setRotation(90);
             } else {
                 bindingCategory.recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                bindingCategory.recyclerViewSubCategory.setAdapter(new SubCategoryAdapter(new ArrayList<>(), subCategoryListener));
+                bindingCategory.recyclerViewSubCategory.setAdapter(new SubcategoryAdapter(new ArrayList<>(), subCategoryListener));
 
                 bindingCategory.submenuarrow.setRotation(-90);
             }
@@ -88,14 +88,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return categoryList.size();
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public CategoryViewHolder(@NonNull ViewBinding binding) {
+        public ViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

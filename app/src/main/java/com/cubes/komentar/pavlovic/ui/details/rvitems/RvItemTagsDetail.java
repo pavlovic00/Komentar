@@ -1,13 +1,12 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
-import com.cubes.komentar.pavlovic.data.model.Tags;
+import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.ui.details.ButtonTagsAdapter;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.ArrayList;
 
@@ -22,19 +21,18 @@ public class RvItemTagsDetail implements RecyclerViewItemDetail {
         this.tagListener = tagListener;
     }
 
-
     @Override
     public int getType() {
-        return 2;
+        return R.layout.rv_item_grid_rv;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(DetailAdapter.ViewHolder holder) {
 
         RvItemGridRvBinding binding = (RvItemGridRvBinding) holder.binding;
 
-        StaggeredGridLayoutManager grid = new StaggeredGridLayoutManager(3, LinearLayoutManager.HORIZONTAL);
-        binding.recyclerViewGrid.setLayoutManager(grid);
+        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(binding.getRoot().getContext());
+        binding.recyclerViewGrid.setLayoutManager(flexboxLayoutManager);
         binding.recyclerViewGrid.setAdapter(new ButtonTagsAdapter(tagsList, tagListener));
     }
 }

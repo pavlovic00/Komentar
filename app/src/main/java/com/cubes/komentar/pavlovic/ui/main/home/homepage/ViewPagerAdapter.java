@@ -6,16 +6,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private final ArrayList<ResponseCategories.ResponseCategoriesData> categoriesList;
+    private final ArrayList<Category> categoriesList;
 
 
-    public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<ResponseCategories.ResponseCategoriesData> list) {
+    public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<Category> list) {
         super(fm);
         this.categoriesList = list;
     }
@@ -27,9 +27,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return HomepageFragment.newInstance();
         } else {
-            ResponseCategories.ResponseCategoriesData categoriesData = categoriesList.get(position - 1);
+            Category categoriesData = categoriesList.get(position - 1);
 
-            return ViewPagerFragment.newInstance(categoriesData.id);
+            return ViewPagerFragment.newInstance(categoriesData.id, categoriesData.name);
         }
     }
 
@@ -45,7 +45,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return "Naslovna";
         } else {
-            ResponseCategories.ResponseCategoriesData category = categoriesList.get(position - 1);
+            Category category = categoriesList.get(position - 1);
             return category.name;
         }
     }

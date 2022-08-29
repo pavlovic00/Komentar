@@ -14,20 +14,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentVideoBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
+
+import java.util.ArrayList;
 
 public class VideoFragment extends Fragment {
 
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     public static VideoFragment newInstance() {
-        VideoFragment fragment = new VideoFragment();
-
-        return fragment;
+        return new VideoFragment();
     }
 
     @Override
@@ -49,6 +49,12 @@ public class VideoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadDataVideo();
+            binding.progressBar.setVisibility(View.GONE);
+        });
+
         setupRecyclerView();
         loadDataVideo();
         refresh();
@@ -61,17 +67,14 @@ public class VideoFragment extends Fragment {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);
             i.putExtra(Intent.EXTRA_TEXT, news.url);
+            i.putExtra("title", news.title);
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
-            getContext().startActivity(shareIntent);
-        });
-
-        binding.recyclerViewVideo.setAdapter(adapter);
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+            startActivity(shareIntent);
+        }, () -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                adapter.addNewsList(response.news);
+            public void onResponse(ArrayList<News> response) {
+                adapter.addNewsList(response);
 
                 nextPage++;
             }
@@ -83,6 +86,7 @@ public class VideoFragment extends Fragment {
             }
         }));
 
+        binding.recyclerViewVideo.setAdapter(adapter);
     }
 
     public void loadDataVideo() {
@@ -90,22 +94,24 @@ public class VideoFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewVideo.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+        DataRepository.getInstance().loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
+            public void onResponse(ArrayList<News> response) {
 
-                nextPage++;
+                nextPage = 2;
                 adapter.setData(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewVideo.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
     }

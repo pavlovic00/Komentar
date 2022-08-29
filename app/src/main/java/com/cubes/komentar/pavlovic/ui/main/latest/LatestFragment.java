@@ -14,21 +14,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentLatestBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
+
+import java.util.ArrayList;
 
 public class LatestFragment extends Fragment {
 
     private FragmentLatestBinding binding;
     private LatestAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
 
 
     public static LatestFragment newInstance() {
-        LatestFragment fragment = new LatestFragment();
-
-        return fragment;
+        return new LatestFragment();
     }
 
     @Override
@@ -49,6 +49,12 @@ public class LatestFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadDataLatest();
+            binding.progressBar.setVisibility(View.GONE);
+        });
+
         setupRecyclerView();
         loadDataLatest();
         refresh();
@@ -57,20 +63,16 @@ public class LatestFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewLatest.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter();
-        binding.recyclerViewLatest.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
-            Intent i = new Intent(getContext(), NewsDetailActivity.class);
-            i.putExtra("id", news.id);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
+        adapter = new LatestAdapter((newsId, newsUrl, newsIdList) -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_url", newsUrl);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
+        }, () -> DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
-                adapter.addNewsList(response.news);
+            public void onResponse(ArrayList<News> response) {
+                adapter.addNewsList(response);
 
                 nextPage++;
             }
@@ -81,6 +83,8 @@ public class LatestFragment extends Fragment {
                 binding.refresh.setVisibility(View.VISIBLE);
             }
         }));
+
+        binding.recyclerViewLatest.setAdapter(adapter);
     }
 
     public void loadDataLatest() {
@@ -88,22 +92,24 @@ public class LatestFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewLatest.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
+        DataRepository.getInstance().loadLatestData(1, new DataRepository.LatestResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList.ResponseData response) {
+            public void onResponse(ArrayList<News> response) {
 
-                nextPage++;
+                nextPage = 2;
                 adapter.setData(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewLatest.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -122,4 +128,5 @@ public class LatestFragment extends Fragment {
         });
 
     }
+
 }

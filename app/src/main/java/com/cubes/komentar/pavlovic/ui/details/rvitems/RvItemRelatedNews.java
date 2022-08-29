@@ -2,40 +2,46 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import android.graphics.Color;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
-import com.cubes.komentar.pavlovic.data.model.News;
-import com.cubes.komentar.pavlovic.ui.details.DetailNewsAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
     private final News news;
     private final NewsDetailListener newsListener;
+    private final int[] newsListId;
 
 
-    public RvItemRelatedNews(News news, NewsDetailListener newsListener) {
+    public RvItemRelatedNews(News news, NewsDetailListener newsListener, ArrayList<News> newsList) {
         this.news = news;
         this.newsListener = newsListener;
+        this.newsListId = MyMethodsClass.initNewsIdList(newsList);
     }
 
     @Override
     public int getType() {
-        return 8;
+        return R.layout.rv_item_small;
     }
 
     @Override
-    public void bind(DetailNewsAdapter.DetailNewsViewHolder holder) {
+    public void bind(DetailAdapter.ViewHolder holder) {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
         binding.textViewTitle.setText(news.title);
-        binding.date.setText(news.created_at);
+        binding.date.setText(news.createdAt);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> newsListener.onNewsCLicked(news));
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, news.url, newsListId));
     }
 }

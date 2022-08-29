@@ -4,10 +4,22 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cubes.komentar.pavlovic.data.domain.Category;
+import com.cubes.komentar.pavlovic.data.domain.CategoryBox;
+import com.cubes.komentar.pavlovic.data.domain.Comment;
+import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
+import com.cubes.komentar.pavlovic.data.domain.NewsList;
+import com.cubes.komentar.pavlovic.data.domain.Tags;
+import com.cubes.komentar.pavlovic.data.model.CategoryApi;
+import com.cubes.komentar.pavlovic.data.model.CategoryBoxApi;
+import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.model.NewsApi;
+import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.data.source.networking.RetrofitService;
+import com.cubes.komentar.pavlovic.data.source.response.RequestComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
@@ -47,11 +59,10 @@ public class DataRepository {
 
     public interface VideoResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData response);
+        void onResponse(ArrayList<News> response);
 
         void onFailure(Throwable t);
     }
-
     public void loadVideoData(int page, VideoResponseListener listener) {
 
         service.getVideo(page).enqueue(new Callback<ResponseNewsList>() {
@@ -60,9 +71,8 @@ public class DataRepository {
 
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNews(response.body().data.news));
                 }
             }
 
@@ -75,11 +85,10 @@ public class DataRepository {
 
     public interface LatestResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData response);
+        void onResponse(ArrayList<News> response);
 
         void onFailure(Throwable t);
     }
-
     public void loadLatestData(int page, LatestResponseListener listener) {
 
         service.getLatestNews(page).enqueue(new Callback<ResponseNewsList>() {
@@ -87,9 +96,8 @@ public class DataRepository {
             public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNews(response.body().data.news));
                 }
             }
 
@@ -103,11 +111,10 @@ public class DataRepository {
 
     public interface SearchResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData responseNewsList);
+        void onResponse(ArrayList<News> responseNewsList);
 
         void onFailure(Throwable t);
     }
-
     public void loadSearchData(String term, int page, SearchResponseListener listener) {
 
         service.getSearch(term, page).enqueue(new Callback<ResponseNewsList>() {
@@ -115,9 +122,8 @@ public class DataRepository {
             public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNews(response.body().data.news));
                 }
             }
 
@@ -129,23 +135,21 @@ public class DataRepository {
 
     }
 
-    public interface CategoryResponseListener {
+    public interface CategoryNewsResponseListener {
 
-        void onResponse(ResponseNewsList.ResponseData responseNewsList);
+        void onResponse(ArrayList<News> responseNewsList);
 
         void onFailure(Throwable t);
     }
-
-    public void loadCategoryData(int id, int page, CategoryResponseListener listener) {
+    public void loadCategoryNewsData(int id, int page, CategoryNewsResponseListener listener) {
 
         service.getAllNews(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
             public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body().data);
+                    listener.onResponse(mapNews(response.body().data.news));
                 }
             }
 
@@ -157,23 +161,21 @@ public class DataRepository {
 
     }
 
-    public interface TagResponseListener {
+    public interface TagNewsResponseListener {
 
-        void onResponse(ResponseNewsList responseNewsList);
+        void onResponse(ArrayList<News> responseNewsList);
 
         void onFailure(Throwable t);
     }
-
-    public void loadTagData(int id, int page, TagResponseListener listener) {
+    public void loadTagNewsData(int id, int page, TagNewsResponseListener listener) {
 
         service.getTag(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
             public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.body().data != null
                         && !response.body().data.news.isEmpty()) {
-                    listener.onResponse(response.body());
+                    listener.onResponse(mapNews(response.body().data.news));
                 }
             }
 
@@ -187,11 +189,10 @@ public class DataRepository {
 
     public interface HomeResponseListener {
 
-        void onResponse(ResponseHomepage.ResponseHomepageData response);
+        void onResponse(NewsList response);
 
         void onFailure(Throwable t);
     }
-
     public void loadHomeData(HomeResponseListener listener) {
 
         service.getHomepage().enqueue(new Callback<ResponseHomepage>() {
@@ -200,7 +201,35 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body().data);
+
+
+                    NewsList newsList = new NewsList();
+
+                    newsList.slider = mapNews(response.body().data.slider);
+                    newsList.videos = mapNews(response.body().data.videos);
+                    newsList.mostRead = mapNews(response.body().data.most_read);
+                    newsList.mostCommented = mapNews(response.body().data.most_comented);
+                    newsList.top = mapNews(response.body().data.top);
+                    newsList.editorsChoice = mapNews(response.body().data.editors_choice);
+                    newsList.latest = mapNews(response.body().data.latest);
+
+                    ArrayList<CategoryBox> categoryBoxes = new ArrayList<>();
+
+                    for (CategoryBoxApi model : response.body().data.category) {
+
+                        CategoryBox categoryBox = new CategoryBox();
+
+                        categoryBox.news = mapNews(model.news);
+                        categoryBox.color = model.color;
+                        categoryBox.id = model.id;
+                        categoryBox.title = model.title;
+
+                        categoryBoxes.add(categoryBox);
+                    }
+
+                    newsList.category = categoryBoxes;
+
+                    listener.onResponse(newsList);
                 }
             }
 
@@ -214,11 +243,10 @@ public class DataRepository {
 
     public interface CategoriesResponseListener {
 
-        void onResponse(ResponseCategories response);
+        void onResponse(ArrayList<Category> response);
 
         void onFailure(Throwable t);
     }
-
     public void loadCategoriesData(CategoriesResponseListener listener) {
 
         service.getCategoryNews().enqueue(new Callback<ResponseCategories>() {
@@ -227,7 +255,18 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-                    listener.onResponse(response.body());
+
+                    ArrayList<Category> categories = new ArrayList<>();
+
+                    for (CategoryApi categoryApi : response.body().data) {
+
+                        Category category = mapCategory(categoryApi);
+
+                        categories.add(category);
+
+                    }
+
+                    listener.onResponse(categories);
                 }
             }
 
@@ -239,76 +278,20 @@ public class DataRepository {
 
     }
 
-    public interface CommentResponseListener {
+    public interface CategoriesNewsResponseListener {
 
-        void onResponse(ArrayList<ResponseComment.Comment> response);
-
-        void onFailure(Throwable t);
-    }
-
-    public void loadCommentData(int id, CommentResponseListener listener) {
-
-        service.getComment(id).enqueue(new Callback<ResponseComment>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull retrofit2.Response<ResponseComment> response) {
-                if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body().data != null) {
-                    listener.onResponse(response.body().data);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
-                listener.onFailure(t);
-            }
-        });
-
-    }
-
-    public interface DetailResponseListener {
-
-        void onResponse(ResponseDetail.ResponseDetailData response);
+        void onResponse(ArrayList<News> response);
 
         void onFailure(Throwable t);
     }
-
-    public void loadDetailData(int id, DetailResponseListener listener) {
-
-        service.getNewsDetail(id).enqueue(new Callback<ResponseDetail>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseDetail> call, @NonNull retrofit2.Response<ResponseDetail> response) {
-                if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body().data != null) {
-                    listener.onResponse(response.body().data);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseDetail> call, @NonNull Throwable t) {
-                listener.onFailure(t);
-            }
-        });
-
-    }
-
-    public interface NewsResponseListener {
-
-        void onResponse(ResponseNewsList.ResponseData response);
-
-        void onFailure(Throwable t);
-    }
-
-    public void loadCategoriesNewsData(int id, int page, NewsResponseListener listener) {
+    public void loadCategoriesNewsData(int id, int page, CategoriesNewsResponseListener listener) {
 
         service.getAllNews(id, page).enqueue(new Callback<ResponseNewsList>() {
             @Override
             public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body().data != null) {
-                    listener.onResponse(response.body().data);
+                        && response.isSuccessful()) {
+                    listener.onResponse(mapNews(response.body().data.news));
                 }
             }
 
@@ -320,54 +303,127 @@ public class DataRepository {
 
     }
 
-    public interface PostResponseListener {
+    public interface DetailResponseListener {
 
-        void onResponse(ResponseCommentSend.ResponseBody response);
+        void onResponse(NewsDetail response);
 
         void onFailure(Throwable t);
     }
+    public void loadDetailData(int id, DetailResponseListener listener) {
 
-    public void postComment(String news, String name, String email, String content, PostResponseListener listener) {
-
-        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), name, email, content);
-
-        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
+        service.getNewsDetail(id).enqueue(new Callback<ResponseDetail>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseDetail> call, @NonNull retrofit2.Response<ResponseDetail> response) {
                 if (response.body() != null
                         && response.isSuccessful()
-                        && response.code() >= 200) {
-                    listener.onResponse(response.body());
+                        && response.body().data != null) {
 
-                    Log.d("COMMENTPOST", "" + response.code());
+                    NewsDetail newsDetail = new NewsDetail();
+                    ArrayList<Tags> tags = new ArrayList<>();
+
+                    for (TagsApi tagsApi : response.body().data.tags){
+                        Tags tag = new Tags();
+
+                        tag.id = tagsApi.id;
+                        tag.title = tagsApi.title;
+
+                        tags.add(tag);
+                    }
+
+                    newsDetail.tags = tags;
+
+                    newsDetail.id = response.body().data.id;
+                    newsDetail.commentEnabled = response.body().data.comment_enabled == 1;
+                    newsDetail.commentsCount = response.body().data.comments_count;
+                    newsDetail.relatedNews = mapNews(response.body().data.related_news);
+                    newsDetail.topComments = mapComment(response.body().data.comments_top_n);
+                    newsDetail.url = response.body().data.url;
+
+                    listener.onResponse(newsDetail);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ResponseDetail> call, @NonNull Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+
+    }
+
+    public interface CommentResponseListener {
+
+        void onResponse(ArrayList<Comment> response);
+
+        void onFailure(Throwable t);
+    }
+    public void loadCommentData(int id, CommentResponseListener listener) {
+
+        service.getComment(id).enqueue(new Callback<ResponseComment>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull retrofit2.Response<ResponseComment> response) {
+                if (response.body() != null
+                        && response.isSuccessful()
+                        && response.body().data != null) {
+
+                    listener.onResponse(mapComment(response.body().data));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+
+    }
+
+    public interface PostRequestListener {
+
+        void onResponse(RequestComment.RequestBody request);
+
+        void onFailure(Throwable t);
+    }
+    public void postComment(String news, String name, String email, String content, PostRequestListener listener) {
+
+        RequestComment.RequestBody data = new RequestComment.RequestBody(String.valueOf(news), name, email, content);
+
+        service.createPost(data).enqueue(new Callback<RequestComment.RequestBody>() {
+            @Override
+            public void onResponse(@NonNull Call<RequestComment.RequestBody> call, @NonNull Response<RequestComment.RequestBody> request) {
+                if (request.body() != null
+                        && request.isSuccessful()
+                        && request.code() >= 200) {
+                    listener.onResponse(request.body());
+
+                    Log.d("COMMENTPOST", "" + request.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RequestComment.RequestBody> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
     }
+    public void replyComment(String news, String reply_id, String name, String email, String content, PostRequestListener listener) {
 
-    public void replyComment(String news, String reply_id, String name, String email, String content, PostResponseListener listener) {
+        RequestComment.RequestBody data = new RequestComment.RequestBody(String.valueOf(news), String.valueOf(reply_id), name, email, content);
 
-        ResponseCommentSend.ResponseBody data = new ResponseCommentSend.ResponseBody(String.valueOf(news), String.valueOf(reply_id), name, email, content);
-
-        service.createPost(data).enqueue(new Callback<ResponseCommentSend.ResponseBody>() {
+        service.createPost(data).enqueue(new Callback<RequestComment.RequestBody>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Response<ResponseCommentSend.ResponseBody> response) {
-                if (response.body() != null
-                        && response.isSuccessful()
-                        && response.code() >= 200) {
-                    listener.onResponse(response.body());
+            public void onResponse(@NonNull Call<RequestComment.RequestBody> call, @NonNull Response<RequestComment.RequestBody> request) {
+                if (request.body() != null
+                        && request.isSuccessful()
+                        && request.code() >= 200) {
+                    listener.onResponse(request.body());
 
-                    Log.d("COMMENTPOST", "" + response.code());
+                    Log.d("COMMENTPOST", "" + request.code());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseCommentSend.ResponseBody> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<RequestComment.RequestBody> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });
@@ -375,22 +431,41 @@ public class DataRepository {
 
     public interface VoteCommentListener {
 
-        void onResponse(ResponseComment response);
+        void onResponse(ResponseComment request);
 
         void onFailure(Throwable t);
     }
-
     public void voteComment(String id, VoteCommentListener listener) {
 
         service.postLike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> response) {
-                if (response.body() != null
-                        && response.isSuccessful()
-                        && response.code() >= 200
-                        && response.body().data != null) {
-                    listener.onResponse(response.body());
-                    Log.d("LIKE", "" + response.code());
+            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> request) {
+                if (request.body() != null
+                        && request.isSuccessful()
+                        && request.code() >= 200
+                        && request.body().data != null) {
+                    listener.onResponse(request.body());
+                    Log.d("LIKE", "" + request.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
+    public void unVoteComment(String id, VoteCommentListener listener) {
+
+        service.postDislike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> request) {
+                if (request.body() != null
+                        && request.isSuccessful()
+                        && request.code() >= 200
+                        && request.body().data != null) {
+                    listener.onResponse(request.body());
+                    Log.d("DISLIKE", "" + request.code());
                 }
             }
 
@@ -401,24 +476,83 @@ public class DataRepository {
         });
     }
 
-    public void unVoteComment(String id, VoteCommentListener listener) {
 
-        service.postDislike(Integer.parseInt(id), true).enqueue(new Callback<ResponseComment>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseComment> call, @NonNull Response<ResponseComment> response) {
-                if (response.body() != null
-                        && response.isSuccessful()
-                        && response.code() >= 200
-                        && response.body().data != null) {
-                    listener.onResponse(response.body());
-                    Log.d("DISLIKE", "" + response.code());
-                }
+    private ArrayList<News> mapNews(ArrayList<NewsApi> newsFromResponse) {
+
+        ArrayList<News> newsList = new ArrayList<>();
+
+        for (NewsApi newsItemApi : newsFromResponse) {
+
+            News news = new News();
+
+            news.id = newsItemApi.id;
+            news.image = newsItemApi.image;
+            news.title = newsItemApi.title;
+            news.createdAt = newsItemApi.created_at;
+            news.url = newsItemApi.url;
+
+            news.category = mapCategory(newsItemApi.category);
+
+            newsList.add(news);
+
+        }
+
+        return newsList;
+    }
+    private Category mapCategory(CategoryApi categoryApi) {
+
+        Category category = new Category();
+
+        category.id = categoryApi.id;
+        category.type = categoryApi.type;
+        category.name = categoryApi.name;
+        category.color = categoryApi.color;
+
+        ArrayList<Category> subcategories = new ArrayList<>();
+
+        if (categoryApi.subcategories != null && !categoryApi.subcategories.isEmpty()) {
+
+            for (CategoryApi subcategoryApi : categoryApi.subcategories) {
+
+                Category subcategory = new Category();
+
+                subcategory.id = subcategoryApi.id;
+                subcategory.type = subcategoryApi.type;
+                subcategory.name = subcategoryApi.name;
+                subcategory.color = subcategoryApi.color;
+
+                subcategories.add(subcategory);
             }
 
-            @Override
-            public void onFailure(@NonNull Call<ResponseComment> call, @NonNull Throwable t) {
-                listener.onFailure(t);
+        }
+        category.subcategories = subcategories;
+
+        return category;
+    }
+    private ArrayList<Comment> mapComment(ArrayList<CommentApi> commentsFromResponse) {
+
+        ArrayList<Comment> allComments = new ArrayList<>();
+
+        for (CommentApi commentApi : commentsFromResponse) {
+
+            Comment comment = new Comment();
+
+            comment.likes = commentApi.negative_votes;
+            comment.dislikes = commentApi.positive_votes;
+            comment.createdAt = commentApi.created_at;
+            comment.news = commentApi.news;
+            comment.name = commentApi.name;
+            comment.parentComment = commentApi.parent_comment;
+            comment.id = commentApi.id;
+            comment.content = commentApi.content;
+
+            if (commentApi.children != null && !commentApi.children.isEmpty()) {
+                comment.children = mapComment(commentApi.children);
             }
-        });
+
+            allComments.add(comment);
+        }
+
+        return allComments;
     }
 }

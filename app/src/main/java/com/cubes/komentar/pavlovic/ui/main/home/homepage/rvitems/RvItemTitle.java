@@ -22,9 +22,17 @@ public class RvItemTitle implements RecyclerViewItemHomepage {
     }
 
     @Override
-    public void bind(HomepageAdapter.HomepageViewHolder holder) {
+    public void bind(HomepageAdapter.ViewHolder holder) {
 
         RvItemHorizontalTextViewBinding binding = (RvItemHorizontalTextViewBinding) holder.binding;
+
+        if (title.equalsIgnoreCase("Video")) {
+            binding.rootLayout.setBackgroundColor(Color.parseColor("#0F2039"));
+            binding.textViewTitle.setTextColor(Color.parseColor("#FFFFFFFF"));
+        } else {
+            binding.rootLayout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+            binding.textViewTitle.setTextColor(Color.parseColor("#000000"));
+        }
 
         binding.textViewTitle.setText(title);
         binding.viewColor.setBackgroundColor(Color.parseColor(color));

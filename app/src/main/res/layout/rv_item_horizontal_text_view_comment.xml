@@ -52,12 +52,13 @@
         app:layout_constraintTop_toBottomOf="@id/viewColor" />
 
     <TextView
-        android:id="@+id/upozorenje"
+        android:id="@+id/obavestenje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nema istaknutih komentara!"
         android:textColor="@color/black"
         android:textSize="@dimen/margin_big"
+        android:visibility="gone"
         android:textStyle="bold"
         android:layout_margin="@dimen/margin_big"
         app:layout_constraintEnd_toEndOf="parent"

@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
+import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 
 public class HomepageFragment extends Fragment {
 
@@ -25,8 +25,7 @@ public class HomepageFragment extends Fragment {
 
 
     public static HomepageFragment newInstance() {
-        HomepageFragment fragment = new HomepageFragment();
-        return fragment;
+        return new HomepageFragment();
     }
 
     @Override
@@ -46,6 +45,12 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadHomeData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
+
         setupRecyclerView();
         loadHomeData();
         refresh();
@@ -54,18 +59,20 @@ public class HomepageFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new HomepageAdapter(news -> {
-            Intent newsIntent = new Intent(getContext(), NewsDetailActivity.class);
-            newsIntent.putExtra("id", news.id);
-            getContext().startActivity(newsIntent);
-
+        adapter = new HomepageAdapter((newsId, newsUrl, newsIdList) -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_url", newsUrl);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
         }, news -> {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);
             i.putExtra(Intent.EXTRA_TEXT, news.url);
+            i.putExtra("title", news.title);
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
-            getContext().startActivity(shareIntent);
+            startActivity(shareIntent);
         });
 
         binding.recyclerViewHomepage.setAdapter(adapter);
@@ -78,19 +85,21 @@ public class HomepageFragment extends Fragment {
 
         DataRepository.getInstance().loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
-            public void onResponse(ResponseHomepage.ResponseHomepageData response) {
+            public void onResponse(NewsList response) {
 
                 adapter.setDataItems(response);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewHomepage.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 

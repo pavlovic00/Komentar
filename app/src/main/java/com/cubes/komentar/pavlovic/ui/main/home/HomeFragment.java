@@ -12,9 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.cubes.komentar.databinding.FragmentHomeBinding;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.ViewPagerAdapter;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -22,8 +24,7 @@ public class HomeFragment extends Fragment {
 
 
     public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -52,10 +53,10 @@ public class HomeFragment extends Fragment {
 
         DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
-            public void onResponse(ResponseCategories response) {
+            public void onResponse(ArrayList<Category> response) {
                 if (getActivity() != null) {
                     //Uvek koristi child ovde da bi se resio baga.
-                    binding.viewPagerHome.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), response.data));
+                    binding.viewPagerHome.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), response));
                 }
                 binding.tabLayout.setupWithViewPager(binding.viewPagerHome);
 

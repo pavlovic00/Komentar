@@ -1,6 +1,7 @@
 package com.cubes.komentar.pavlovic.ui.splashscreen;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -23,9 +24,20 @@ public class SplashscreenActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        new Handler().postDelayed(() -> {
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        if (getIntent().getExtras() == null) {
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
+            }, 800);
+
+        } else {
+            Bundle bundle = getIntent().getExtras();
+            String url = bundle.getString("url");
+
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
             finish();
-        }, 800);
+        }
     }
 }

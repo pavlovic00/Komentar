@@ -10,16 +10,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.databinding.ActivityTagsBinding;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.ArrayList;
 
 public class TagsActivity extends AppCompatActivity {
 
     private ActivityTagsBinding binding;
     private int id;
     private TagsAdapter adapter;
-    private int nextPage = 1;
+    private int nextPage = 2;
+    private String title;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -30,12 +35,20 @@ public class TagsActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         id = getIntent().getExtras().getInt("id");
-        String title = getIntent().getExtras().getString("title");
+        title = getIntent().getExtras().getString("title");
 
         binding.textViewTag.setText(title);
 
         binding.imageBack.setOnClickListener(view1 -> finish());
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupRecyclerView();
+            loadTagData();
+            binding.progressBar.setVisibility(View.GONE);
+        });
 
         setupRecyclerView();
         loadTagData();
@@ -45,20 +58,16 @@ public class TagsActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new TagsAdapter();
-        binding.recyclerViewTags.setAdapter(adapter);
-
-        adapter.setNewsListener(news -> {
-            Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
-            i.putExtra("id", news.id);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApplicationContext().startActivity(i);
-        });
-
-        adapter.setLoadingNewsListener(() -> DataRepository.getInstance().loadTagData(id, nextPage, new DataRepository.TagResponseListener() {
+        adapter = new TagsAdapter((newsId, newsUrl, newsIdList) -> {
+            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_url", newsUrl);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
+        }, () -> DataRepository.getInstance().loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList responseNewsList) {
-                adapter.addNewsList(responseNewsList.data.news);
+            public void onResponse(ArrayList<News> responseNewsList) {
+                adapter.addNewsList(responseNewsList);
 
                 nextPage++;
             }
@@ -70,29 +79,36 @@ public class TagsActivity extends AppCompatActivity {
             }
         }));
 
+        binding.recyclerViewTags.setAdapter(adapter);
     }
 
     public void loadTagData() {
 
+        Bundle bundle = new Bundle();
+        bundle.putString("tags", title);
+        mFirebaseAnalytics.logEvent("selected_tags", bundle);
+
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadTagData(id, nextPage, new DataRepository.TagResponseListener() {
+        DataRepository.getInstance().loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
-            public void onResponse(ResponseNewsList responseNewsList) {
+            public void onResponse(ArrayList<News> responseNewsList) {
 
-                nextPage++;
-                adapter.setDataTags(responseNewsList);
+                nextPage = 2;
+                adapter.setTagData(responseNewsList);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerViewTags.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 

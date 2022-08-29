@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemButtonTagBinding;
-import com.cubes.komentar.pavlovic.data.model.Tags;
-import com.cubes.komentar.pavlovic.ui.tools.NewsDetailListener;
+import com.cubes.komentar.pavlovic.data.domain.Tags;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 import java.util.ArrayList;
 
-public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.ButtonTagsHolder> {
+public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.ViewHolder> {
 
     private final ArrayList<Tags> list;
     private final NewsDetailListener tagListener;
@@ -26,18 +26,18 @@ public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.Bu
 
     @NonNull
     @Override
-    public ButtonTagsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ViewBinding binding;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         binding = RvItemButtonTagBinding.inflate(inflater, parent, false);
 
-        return new ButtonTagsHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ButtonTagsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Tags tags = list.get(position);
 
@@ -53,11 +53,11 @@ public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.Bu
         return list.size();
     }
 
-    public static class ButtonTagsHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewBinding binding;
 
-        public ButtonTagsHolder(@NonNull ViewBinding binding) {
+        public ViewHolder(@NonNull ViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

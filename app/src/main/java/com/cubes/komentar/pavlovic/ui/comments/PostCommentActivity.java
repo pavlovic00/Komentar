@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cubes.komentar.databinding.ActivityPostCommentBinding;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCommentSend;
+import com.cubes.komentar.pavlovic.data.source.response.RequestComment;
 
 public class PostCommentActivity extends AppCompatActivity {
 
@@ -80,9 +80,9 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void replyComment(String name, String email, String content) {
 
-        DataRepository.getInstance().replyComment(news, reply_id, name, email, content, new DataRepository.PostResponseListener() {
+        DataRepository.getInstance().replyComment(news, reply_id, name, email, content, new DataRepository.PostRequestListener() {
             @Override
-            public void onResponse(ResponseCommentSend.ResponseBody response) {
+            public void onResponse(RequestComment.RequestBody response) {
                 binding.name.setText("");
                 binding.mail.setText("");
                 binding.content.setText("");
@@ -99,9 +99,9 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void postComment(String name, String email, String content) {
 
-        DataRepository.getInstance().postComment(news, name, email, content, new DataRepository.PostResponseListener() {
+        DataRepository.getInstance().postComment(news, name, email, content, new DataRepository.PostRequestListener() {
             @Override
-            public void onResponse(ResponseCommentSend.ResponseBody response) {
+            public void onResponse(RequestComment.RequestBody response) {
                 binding.name.setText("");
                 binding.mail.setText("");
                 binding.content.setText("");

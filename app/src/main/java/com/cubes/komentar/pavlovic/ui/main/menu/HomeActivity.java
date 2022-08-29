@@ -1,10 +1,10 @@
 package com.cubes.komentar.pavlovic.ui.main.menu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -13,22 +13,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
+import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
-import com.cubes.komentar.pavlovic.ui.main.home.category.SubCategoryActivity;
+import com.cubes.komentar.pavlovic.ui.main.home.category.SubcategoryActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestFragment;
 import com.cubes.komentar.pavlovic.ui.main.search.SearchFragment;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoFragment;
+import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
-    private boolean click = true;
 
 
+    @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +43,30 @@ public class HomeActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        AdRequest adRequest = new AdRequest.Builder().build();
+        binding.adsView.loadAd(adRequest);
+        binding.adsView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                binding.closeAbs.setVisibility(View.VISIBLE);
+                binding.adsView.setVisibility(View.VISIBLE);
+            }
+        });
+        binding.closeAbs.setOnClickListener(view14 -> {
+            binding.adsView.setVisibility(View.GONE);
+            binding.closeAbs.setVisibility(View.GONE);
+        });
+
+        boolean isOn = SharedPrefs.isNotificationOn(HomeActivity.this);
+
+        binding.switchNotification.setChecked(isOn);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.homeLayout, HomeFragment.newInstance())
                 .commit();
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             Fragment selectedFragment = null;
 
@@ -73,22 +98,39 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             }
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.homeLayout, selectedFragment)
-                    .commit();
-
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.homeLayout, selectedFragment)
+                        .commit();
+            }
             return true;
         });
         //Lock drawer slide.
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         //Click menu.
         binding.imageRight.setOnClickListener(view19 -> {
             binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
+            DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+                @Override
+                public void onResponse(ArrayList<Category> response) {
+                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    binding.recyclerView.setAdapter(new CategoryAdapter(response, (categoryId, subcategoryId) -> {
+                        Intent i = new Intent(getApplicationContext(), SubcategoryActivity.class);
+                        i.putExtra("category_id", categoryId);
+                        i.putExtra("subcategory_id", subcategoryId);
+                        startActivity(i);
+                    }));
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
+
             //Za ovo sam se najvise namucio :D
             binding.drawerLayout.openDrawer(Gravity.RIGHT);
-
         });
         //Close menu.
         binding.imageClose.setOnClickListener(view18 -> binding.drawerLayout.closeDrawer(Gravity.RIGHT));
@@ -105,14 +147,13 @@ public class HomeActivity extends AppCompatActivity {
             //Novi activity.
             HoroscopeActivity.start(HomeActivity.this);
         });
-        binding.pushNotifikacije.setOnClickListener(view14 -> {
+        binding.switchNotification.setOnCheckedChangeListener((compoundButton, b) -> {
+            SharedPrefs.setNotificationStatus(HomeActivity.this, b);
 
-            if (click) {
-                Toast.makeText(view14.getContext().getApplicationContext(), "Push notifikacije su uključene!", Toast.LENGTH_SHORT).show();
-                click = false;
+            if (b) {
+                FirebaseMessaging.getInstance().subscribeToTopic("main");
             } else {
-                Toast.makeText(view14.getContext().getApplicationContext(), "Push notifikacije su isključene!", Toast.LENGTH_SHORT).show();
-                click = true;
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("main");
             }
 
         });
@@ -143,15 +184,20 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
+        loadHomeData();
+    }
+
+    public void loadHomeData() {
+
         DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
-            public void onResponse(ResponseCategories response) {
+            public void onResponse(ArrayList<Category> response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                binding.recyclerView.setAdapter(new CategoryAdapter(response.data, data -> {
-                    Intent categoryIntent = new Intent(getApplicationContext(), SubCategoryActivity.class);
-                    categoryIntent.putExtra("id", data.id);
-                    categoryIntent.putExtra("category", data.name);
-                    startActivity(categoryIntent);
+                binding.recyclerView.setAdapter(new CategoryAdapter(response, (categoryId, subcategoryId) -> {
+                    Intent i = new Intent(getApplicationContext(), SubcategoryActivity.class);
+                    i.putExtra("category_id", categoryId);
+                    i.putExtra("subcategory_id", subcategoryId);
+                    startActivity(i);
                 }));
             }
 
@@ -161,5 +207,4 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
 }
