@@ -1,13 +1,12 @@
 package com.cubes.komentar.pavlovic.ui.tools.listener;
 
 import com.cubes.komentar.pavlovic.data.domain.Comment;
-import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.data.domain.Tags;
 
 public interface NewsDetailListener {
 
-    void onNewsCLicked(News news);
+    void onNewsClickedVP(int newsId, String newsUrl, int[] newsIdList);
 
     void onTagClicked(Tags tags);
 

@@ -110,7 +110,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         //1
         for (int i = 0; i < response.top.size(); i++) {
             News news = response.top.get(i);
-            items.add(new RvItemSmall(news, newsListener));
+            items.add(new RvItemSmall(news, newsListener, response.top));
         }
         //2
         items.add(new RvItemButtonsNews(response.latest, response.mostCommented, response.mostRead, newsListener));
@@ -134,10 +134,10 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         //7-8-9
         for (CategoryBox categoryBox : response.category) {
             items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            items.add(new RvItemBig(categoryBox.news.get(0), newsListener));
+            items.add(new RvItemBig(categoryBox.news.get(0), newsListener, categoryBox.news));
 
             for (int i = 1; i < 5; i++) {
-                items.add(new RvItemSmall(categoryBox.news.get(i), newsListener));
+                items.add(new RvItemSmall(categoryBox.news.get(i), newsListener, categoryBox.news));
             }
         }
         notifyDataSetChanged();

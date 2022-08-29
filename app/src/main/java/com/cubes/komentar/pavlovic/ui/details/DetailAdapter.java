@@ -23,10 +23,10 @@ import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RecyclerViewItemDetail;
+import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemAdsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonAllComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemButtonPutComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemComment;
-import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemAdsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTagsDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleComment;
@@ -37,13 +37,13 @@ import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 import java.util.ArrayList;
 
-public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.ViewHolder> {
+public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder> {
 
     private final ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
     private final NewsDetailListener newsDetailListener;
 
 
-    public NewsDetailAdapter(NewsDetailListener newsDetailListener) {
+    public DetailAdapter(NewsDetailListener newsDetailListener) {
         this.newsDetailListener = newsDetailListener;
     }
 
@@ -143,7 +143,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
             for (int i = 0; i < response.relatedNews.size(); i++) {
                 News news = response.relatedNews.get(i);
 
-                this.items.add(new RvItemRelatedNews(news, newsDetailListener));
+                this.items.add(new RvItemRelatedNews(news, newsDetailListener, response.relatedNews));
             }
         }
         notifyDataSetChanged();

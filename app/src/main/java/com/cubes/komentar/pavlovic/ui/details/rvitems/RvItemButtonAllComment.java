@@ -3,7 +3,7 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 
 public class RvItemButtonAllComment implements RecyclerViewItemDetail {
@@ -23,7 +23,7 @@ public class RvItemButtonAllComment implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(NewsDetailAdapter.ViewHolder holder) {
+    public void bind(DetailAdapter.ViewHolder holder) {
 
         String count = data.commentsCount + "";
 

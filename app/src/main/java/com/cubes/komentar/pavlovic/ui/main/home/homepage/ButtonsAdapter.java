@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemTextForNewsHomepageBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 
 import java.util.ArrayList;
@@ -17,11 +18,13 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ViewHold
 
     private final ArrayList<News> list;
     private final NewsListener buttonsListener;
+    private final int[] newsListId;
 
 
     public ButtonsAdapter(ArrayList<News> list, NewsListener buttonsListener) {
         this.list = list;
         this.buttonsListener = buttonsListener;
+        this.newsListId = MyMethodsClass.initNewsIdList(list);
     }
 
     @NonNull
@@ -45,7 +48,7 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.ViewHold
         binding.textViewTitle.setText(news.title);
         binding.date.setText(news.createdAt);
 
-        holder.itemView.setOnClickListener(view -> buttonsListener.onNewsClicked(news));
+        holder.itemView.setOnClickListener(view -> buttonsListener.onNewsClickedVP(news.id, news.url, newsListId));
     }
 
     @Override

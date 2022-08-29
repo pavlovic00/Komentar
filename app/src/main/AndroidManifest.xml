@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Komentar">
         <activity
+            android:name=".pavlovic.ui.details.DetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".pavlovic.ui.comments.PostCommentActivity"
             android:exported="false" />
         <activity
@@ -33,28 +36,22 @@
             android:name=".pavlovic.ui.tag.TagsActivity"
             android:exported="false" />
         <activity
-            android:name=".pavlovic.ui.details.NewsDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".pavlovic.ui.main.menu.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".pavlovic.ui.splashscreen.SplashscreenActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
-
     </application>
 
 </manifest>

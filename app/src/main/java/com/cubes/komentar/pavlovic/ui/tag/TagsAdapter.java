@@ -13,8 +13,6 @@ import com.cubes.komentar.databinding.RvItemAdsViewBinding;
 import com.cubes.komentar.databinding.RvItemLoadingBinding;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.main.latest.rvitems.RvItemAdsLatest;
-import com.cubes.komentar.pavlovic.ui.main.latest.rvitems.RvItemSmallLatest;
 import com.cubes.komentar.pavlovic.ui.tag.rvitems.RecyclerViewItemTag;
 import com.cubes.komentar.pavlovic.ui.tag.rvitems.RvItemAdsTag;
 import com.cubes.komentar.pavlovic.ui.tag.rvitems.RvItemLoadingTag;
@@ -72,7 +70,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
-            items.add(new RvItemSmallTag(newsList.get(i), newsListener));
+            items.add(new RvItemSmallTag(newsList.get(i), newsListener, newsList));
         }
 
         if (newsList.size() == 20) {
@@ -84,12 +82,12 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
     public void setTagData(ArrayList<News> list) {
 
-        items.add(new RvItemSmallTag(list.get(0), newsListener));
+        items.add(new RvItemSmallTag(list.get(0), newsListener, list));
 
         items.add(new RvItemAdsTag());
         for (int i = 1; i < list.size(); i++) {
             if (i < 6) {
-                items.add(new RvItemSmallTag(list.get(i), newsListener));
+                items.add(new RvItemSmallTag(list.get(i), newsListener, list));
             }
         }
 
@@ -98,7 +96,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         }
         for (int i = 6; i < list.size(); i++) {
             if (i < 11) {
-                items.add(new RvItemSmallTag(list.get(i), newsListener));
+                items.add(new RvItemSmallTag(list.get(i), newsListener, list));
             }
         }
 
@@ -107,7 +105,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         }
         for (int i = 11; i < list.size(); i++) {
             if (i < 16) {
-                items.add(new RvItemSmallTag(list.get(i), newsListener));
+                items.add(new RvItemSmallTag(list.get(i), newsListener, list));
             }
         }
 
@@ -115,7 +113,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             items.add(new RvItemAdsTag());
         }
         for (int i = 16; i < list.size(); i++) {
-            items.add(new RvItemSmallTag(list.get(i), newsListener));
+            items.add(new RvItemSmallTag(list.get(i), newsListener, list));
 
         }
 

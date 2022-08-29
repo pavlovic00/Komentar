@@ -5,19 +5,24 @@ import android.graphics.Color;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class RvItemBigLatest implements RecyclerViewItemLatest {
 
     private final News news;
     private final NewsListener newsListener;
+    private final int[] newsListId;
 
 
-    public RvItemBigLatest(News news, NewsListener newsListener) {
+    public RvItemBigLatest(News news, NewsListener newsListener, ArrayList<News> newsList) {
         this.news = news;
         this.newsListener = newsListener;
+        this.newsListId = MyMethodsClass.initNewsIdList(newsList);
     }
 
     @Override
@@ -37,6 +42,6 @@ public class RvItemBigLatest implements RecyclerViewItemLatest {
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, news.url, newsListId));
     }
 }

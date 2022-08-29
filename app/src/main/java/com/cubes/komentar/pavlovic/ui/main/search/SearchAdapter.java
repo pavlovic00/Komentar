@@ -71,7 +71,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
-            items.add(new RvItemSmallSearch(newsList.get(i), newsListener));
+            items.add(new RvItemSmallSearch(newsList.get(i), newsListener, newsList));
         }
 
         if (newsList.size() == 20) {
@@ -83,12 +83,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public void setSearchData(ArrayList<News> list) {
 
-        items.add(new RvItemSmallSearch(list.get(0), newsListener));
+        items.add(new RvItemSmallSearch(list.get(0), newsListener, list));
 
         items.add(new RvItemAdsSearch());
         for (int i = 1; i < list.size(); i++) {
             if (i < 6) {
-                items.add(new RvItemSmallSearch(list.get(i), newsListener));
+                items.add(new RvItemSmallSearch(list.get(i), newsListener, list));
             }
         }
 
@@ -97,7 +97,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
         for (int i = 6; i < list.size(); i++) {
             if (i < 11) {
-                items.add(new RvItemSmallSearch(list.get(i), newsListener));
+                items.add(new RvItemSmallSearch(list.get(i), list));
             }
         }
 
@@ -106,7 +106,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
         for (int i = 11; i < list.size(); i++) {
             if (i < 16) {
-                items.add(new RvItemSmallSearch(list.get(i), newsListener));
+                items.add(new RvItemSmallSearch(list.get(i), list));
             }
         }
 
@@ -114,7 +114,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             items.add(new RvItemAdsSearch());
         }
         for (int i = 16; i < list.size(); i++) {
-            items.add(new RvItemSmallSearch(list.get(i), newsListener));
+            items.add(new RvItemSmallSearch(list.get(i), list));
 
         }
 

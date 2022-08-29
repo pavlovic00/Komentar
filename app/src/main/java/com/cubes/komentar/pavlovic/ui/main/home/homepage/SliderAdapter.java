@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemForHorizontalRvBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 
@@ -16,13 +17,16 @@ import java.util.ArrayList;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder> {
 
-    private final ArrayList<News> list;
+    private final ArrayList<News> newsList;
     private final NewsListener newsListener;
+    private final int[] newsIdList;
 
 
-    public SliderAdapter(ArrayList<News> list, NewsListener newsListener) {
-        this.list = list;
+    public SliderAdapter(ArrayList<News> newsList, NewsListener newsListener) {
+        this.newsList = newsList;
         this.newsListener = newsListener;
+
+        this.newsIdList = MyMethodsClass.initNewsIdList(newsList);
     }
 
     @NonNull
@@ -39,7 +43,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        News news = list.get(position);
+        News news = newsList.get(position);
 
         RvItemForHorizontalRvBinding binding = (RvItemForHorizontalRvBinding) holder.binding;
 
@@ -49,12 +53,12 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> newsListener.onNewsClicked(news));
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, news.url, newsIdList));
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return newsList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 
 public class HomepageFragment extends Fragment {
 
@@ -59,12 +59,12 @@ public class HomepageFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new HomepageAdapter(news -> {
-            Intent newsIntent = new Intent(getContext(), NewsDetailActivity.class);
-            newsIntent.putExtra("id", news.id);
-            newsIntent.putExtra("title", news.title);
-            startActivity(newsIntent);
-
+        adapter = new HomepageAdapter((newsId, newsUrl, newsIdList) -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_url", newsUrl);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
         }, news -> {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);

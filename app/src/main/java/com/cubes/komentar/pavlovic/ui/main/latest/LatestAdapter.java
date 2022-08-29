@@ -29,6 +29,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
     private final NewsListener newsListener;
     private final LoadingNewsListener loadingNewsListener;
 
+
     public LatestAdapter(NewsListener newsListener, LoadingNewsListener loadingNewsListener) {
         this.newsListener = newsListener;
         this.loadingNewsListener = loadingNewsListener;
@@ -74,7 +75,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
-            items.add(new RvItemSmallLatest(newsList.get(i), newsListener));
+            items.add(new RvItemSmallLatest(newsList.get(i), newsListener, newsList));
         }
 
         if (newsList.size() == 20) {
@@ -86,12 +87,12 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
     public void setData(ArrayList<News> list) {
 
-        items.add(new RvItemBigLatest(list.get(0), newsListener));
+        items.add(new RvItemBigLatest(list.get(0), newsListener, list));
 
         items.add(new RvItemAdsLatest());
         for (int i = 1; i < list.size(); i++) {
             if (i < 6) {
-                items.add(new RvItemSmallLatest(list.get(i), newsListener));
+                items.add(new RvItemSmallLatest(list.get(i), newsListener, list));
             }
         }
 
@@ -100,7 +101,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         }
         for (int i = 6; i < list.size(); i++) {
             if (i < 11) {
-                items.add(new RvItemSmallLatest(list.get(i), newsListener));
+                items.add(new RvItemSmallLatest(list.get(i), newsListener, list));
             }
         }
 
@@ -109,7 +110,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         }
         for (int i = 11; i < list.size(); i++) {
             if (i < 16) {
-                items.add(new RvItemSmallLatest(list.get(i), newsListener));
+                items.add(new RvItemSmallLatest(list.get(i), newsListener, list));
             }
         }
 
@@ -117,7 +118,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
             items.add(new RvItemAdsLatest());
         }
         for (int i = 16; i < list.size(); i++) {
-            items.add(new RvItemSmallLatest(list.get(i), newsListener));
+            items.add(new RvItemSmallLatest(list.get(i), newsListener, list));
 
         }
 

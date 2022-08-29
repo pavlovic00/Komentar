@@ -37,7 +37,7 @@ public class AllCommentActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        id = getIntent().getExtras().getInt("id");
+        id = getIntent().getIntExtra("news_id", -1);
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 

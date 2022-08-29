@@ -2,7 +2,7 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemHorizontalTextViewBinding;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
 
 public class RvItemTitleRelatedNews implements RecyclerViewItemDetail {
 
@@ -19,7 +19,7 @@ public class RvItemTitleRelatedNews implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(NewsDetailAdapter.ViewHolder holder) {
+    public void bind(DetailAdapter.ViewHolder holder) {
 
         RvItemHorizontalTextViewBinding binding = (RvItemHorizontalTextViewBinding) holder.binding;
         binding.textViewTitle.setText(title);

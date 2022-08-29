@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -58,12 +58,12 @@ public class TagsActivity extends AppCompatActivity {
     public void setupRecyclerView() {
 
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new TagsAdapter(news -> {
-            Intent i = new Intent(getApplicationContext(), NewsDetailActivity.class);
-            i.putExtra("id", news.id);
-            i.putExtra("title", news.title);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApplicationContext().startActivity(i);
+        adapter = new TagsAdapter((newsId, newsUrl, newsIdList) -> {
+            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_url", newsUrl);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
         }, () -> DataRepository.getInstance().loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {

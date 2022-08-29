@@ -2,7 +2,7 @@ package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemAdsViewBinding;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
 import com.google.android.gms.ads.AdRequest;
 
 public class RvItemAdsDetail implements RecyclerViewItemDetail {
@@ -17,7 +17,7 @@ public class RvItemAdsDetail implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(NewsDetailAdapter.ViewHolder holder) {
+    public void bind(DetailAdapter.ViewHolder holder) {
 
         RvItemAdsViewBinding binding = (RvItemAdsViewBinding) holder.binding;
 

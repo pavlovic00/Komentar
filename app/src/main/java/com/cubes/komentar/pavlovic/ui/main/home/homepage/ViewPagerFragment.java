@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentViewPagerCategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
-import com.cubes.komentar.pavlovic.ui.details.NewsDetailActivity;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -79,12 +79,12 @@ public class ViewPagerFragment extends Fragment {
 
     public void setupRecyclerView() {
         binding.recyclerViewPager2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter(news -> {
-            Intent i = new Intent(getContext(), NewsDetailActivity.class);
-            i.putExtra("id", news.id);
-            i.putExtra("title", news.title);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i);
+        adapter = new LatestAdapter((newsId, newsUrl, newsIdList) -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_url", newsUrl);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
         }, () -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
