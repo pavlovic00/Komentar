@@ -29,7 +29,7 @@ public class AllCommentActivity extends AppCompatActivity {
     private ArrayList<Vote> votes = new ArrayList<>();
     private CommentAdapter adapter;
     private int id;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     @Override
@@ -50,7 +50,8 @@ public class AllCommentActivity extends AppCompatActivity {
             binding.progressBar.setVisibility(View.GONE);
         });
 
-        appContainer = ((MyApplication) getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
 
         setupRecyclerView();
         loadCommentData();
@@ -81,7 +82,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
             @Override
             public void like(Comment comment) {
-                appContainer.dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
@@ -103,7 +104,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
             @Override
             public void dislike(Comment comment) {
-                appContainer.dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
@@ -131,7 +132,7 @@ public class AllCommentActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewComments.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadCommentData(id, new DataRepository.CommentResponseListener() {
+        dataRepository.loadCommentData(id, new DataRepository.CommentResponseListener() {
             @Override
             public void onResponse(ArrayList<Comment> response) {
 

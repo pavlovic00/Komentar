@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
@@ -46,7 +46,8 @@ public class HomeActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        appContainer = ((MyApplication) getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
 
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adsView.loadAd(adRequest);
@@ -116,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.imageRight.setOnClickListener(view19 -> {
             binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
-            appContainer.dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+            dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
                 @Override
                 public void onResponse(ArrayList<Category> response) {
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -194,7 +195,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void loadHomeData() {
 
-        appContainer.dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

@@ -21,7 +21,7 @@ public class PostCommentActivity extends AppCompatActivity {
     private ActivityPostCommentBinding binding;
     private String news;
     private String reply_id;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     @Override
@@ -39,7 +39,8 @@ public class PostCommentActivity extends AppCompatActivity {
         String email = binding.mail.getText().toString();
         String content = binding.content.getText().toString();
 
-        appContainer = ((MyApplication) getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
 
         if (reply_id == null) {
             binding.commentSend.setText("Postavi komentar");
@@ -85,7 +86,7 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void replyComment(String name, String email, String content) {
 
-        appContainer.dataRepository.replyComment(news, reply_id, name, email, content, new DataRepository.PostRequestListener() {
+        dataRepository.replyComment(news, reply_id, name, email, content, new DataRepository.PostRequestListener() {
             @Override
             public void onResponse(RequestComment.RequestBody response) {
                 binding.name.setText("");
@@ -104,7 +105,7 @@ public class PostCommentActivity extends AppCompatActivity {
 
     public void postComment(String name, String email, String content) {
 
-        appContainer.dataRepository.postComment(news, name, email, content, new DataRepository.PostRequestListener() {
+        dataRepository.postComment(news, name, email, content, new DataRepository.PostRequestListener() {
             @Override
             public void onResponse(RequestComment.RequestBody response) {
                 binding.name.setText("");

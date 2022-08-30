@@ -35,8 +35,7 @@ public class SearchFragment extends Fragment {
     private SearchAdapter adapter;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private AppContainer appContainer;
-
+    private DataRepository dataRepository;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -47,7 +46,8 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class SearchFragment extends Fragment {
             intent.putExtra("news_id", newsId);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> appContainer.dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
+        }, () -> dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseData) {
                 adapter.addNewsList(responseData);
@@ -159,7 +159,7 @@ public class SearchFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewSearch.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), 1, new DataRepository.SearchResponseListener() {
+        dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), 1, new DataRepository.SearchResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseData) {
 

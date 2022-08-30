@@ -27,7 +27,7 @@ public class TagsActivity extends AppCompatActivity {
     private int nextPage = 2;
     private String title;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     @Override
@@ -53,7 +53,8 @@ public class TagsActivity extends AppCompatActivity {
             binding.progressBar.setVisibility(View.GONE);
         });
 
-        appContainer = ((MyApplication) getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
 
         setupRecyclerView();
         loadTagData();
@@ -68,7 +69,7 @@ public class TagsActivity extends AppCompatActivity {
             intent.putExtra("news_id", newsId);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> appContainer.dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
+        }, () -> dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
@@ -95,7 +96,7 @@ public class TagsActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
+        dataRepository.loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
 

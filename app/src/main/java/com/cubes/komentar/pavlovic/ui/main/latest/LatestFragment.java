@@ -27,7 +27,7 @@ public class LatestFragment extends Fragment {
     private FragmentLatestBinding binding;
     private LatestAdapter adapter;
     private int nextPage = 2;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     public static LatestFragment newInstance() {
@@ -38,7 +38,8 @@ public class LatestFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class LatestFragment extends Fragment {
             intent.putExtra("news_id", newsId);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> appContainer.dataRepository.loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
+        }, () -> dataRepository.loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -96,7 +97,7 @@ public class LatestFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewLatest.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadLatestData(1, new DataRepository.LatestResponseListener() {
+        dataRepository.loadLatestData(1, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 

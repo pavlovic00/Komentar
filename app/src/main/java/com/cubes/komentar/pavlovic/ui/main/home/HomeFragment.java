@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     public static HomeFragment newInstance() {
@@ -34,7 +34,8 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment {
 
     public void loadCategoriesData() {
 
-        appContainer.dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> response) {
                 if (getActivity() != null) {

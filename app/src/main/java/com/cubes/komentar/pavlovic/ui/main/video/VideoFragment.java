@@ -26,7 +26,7 @@ public class VideoFragment extends Fragment {
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
     private int nextPage = 2;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     public static VideoFragment newInstance() {
@@ -37,7 +37,8 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -75,7 +76,7 @@ public class VideoFragment extends Fragment {
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
             startActivity(shareIntent);
-        }, () -> appContainer.dataRepository.loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+        }, () -> dataRepository.loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -98,7 +99,7 @@ public class VideoFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewVideo.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
+        dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 

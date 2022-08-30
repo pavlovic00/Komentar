@@ -34,7 +34,7 @@ public class SubcategoryPagerFragment extends Fragment {
     private String subcategoryName;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     public SubcategoryPagerFragment() {
@@ -60,7 +60,8 @@ public class SubcategoryPagerFragment extends Fragment {
         }
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -93,7 +94,7 @@ public class SubcategoryPagerFragment extends Fragment {
             intent.putExtra("news_id", newsId);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> appContainer.dataRepository.loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
+        }, () -> dataRepository.loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
@@ -120,7 +121,7 @@ public class SubcategoryPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
+        dataRepository.loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 

@@ -44,7 +44,7 @@ public class DetailsPagerFragment extends Fragment {
     private DetailsAdapter adapter;
     private DetailsListener detailsListener;
     private ArrayList<Vote> votes = new ArrayList<>();
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     public interface DetailsListener {
@@ -77,7 +77,8 @@ public class DetailsPagerFragment extends Fragment {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
 
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -161,7 +162,7 @@ public class DetailsPagerFragment extends Fragment {
 
             @Override
             public void like(Comment comment) {
-                appContainer.dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
@@ -183,7 +184,7 @@ public class DetailsPagerFragment extends Fragment {
 
             @Override
             public void dislike(Comment comment) {
-                appContainer.dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
@@ -212,7 +213,7 @@ public class DetailsPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewHomepage.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
+        dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(NewsDetail response) {
 

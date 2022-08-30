@@ -24,7 +24,7 @@ public class HomepageFragment extends Fragment {
 
     private FragmentHomepageBinding binding;
     public HomepageAdapter adapter;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     public static HomepageFragment newInstance() {
@@ -35,7 +35,8 @@ public class HomepageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class HomepageFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewHomepage.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadHomeData(new DataRepository.HomeResponseListener() {
+        dataRepository.loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
             public void onResponse(NewsList response) {
 

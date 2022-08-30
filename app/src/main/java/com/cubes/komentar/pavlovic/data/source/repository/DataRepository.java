@@ -294,6 +294,7 @@ public class DataRepository {
                     newsDetail.relatedNews = mapNews(response.body().data.related_news);
                     newsDetail.topComments = mapComment(response.body().data.comments_top_n);
                     newsDetail.url = response.body().data.url;
+                    newsDetail.title = response.body().data.title;
 
                     listener.onResponse(newsDetail);
                 }

@@ -20,7 +20,7 @@ public class SubcategoryActivity extends AppCompatActivity {
     private Category mCategory = new Category();
     private int mCategoryId;
     private int mSubcategoryId;
-    private AppContainer appContainer;
+    private DataRepository dataRepository;
 
 
     @Override
@@ -36,7 +36,8 @@ public class SubcategoryActivity extends AppCompatActivity {
 
         binding.imageViewBack.setOnClickListener(view -> finish());
         binding.imageViewRefresh.setOnClickListener(view -> getAllCategories(mCategoryId, mSubcategoryId));
-        appContainer = ((MyApplication) getApplication()).appContainer;
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     private void getAllCategories(int mCategoryId, int mSubcategoryId) {
@@ -44,7 +45,7 @@ public class SubcategoryActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.imageViewRefresh.setVisibility(View.GONE);
 
-        appContainer.dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> categories) {
 
