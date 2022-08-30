@@ -80,7 +80,6 @@ public class VideoFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -102,7 +101,6 @@ public class VideoFragment extends Fragment {
         dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 nextPage = 2;
                 adapter.setData(response);
 
@@ -124,7 +122,6 @@ public class VideoFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);
@@ -132,6 +129,5 @@ public class VideoFragment extends Fragment {
             loadDataVideo();
             binding.progressBar.setVisibility(View.GONE);
         });
-
     }
 }

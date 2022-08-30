@@ -4,7 +4,7 @@ import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.data.domain.Tags;
 
-public interface NewsDetailListener {
+public interface DetailsListener {
 
     void onNewsClickedVP(int newsId, int[] newsIdList);
 

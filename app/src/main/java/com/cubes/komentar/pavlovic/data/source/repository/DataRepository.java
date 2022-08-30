@@ -88,7 +88,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface SearchResponseListener {
@@ -103,8 +102,7 @@ public class DataRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseNewsList> call, @NonNull retrofit2.Response<ResponseNewsList> response) {
                 if (response.body() != null
-                        && response.isSuccessful()
-                        && !response.body().data.news.isEmpty()) {
+                        && response.isSuccessful()) {
                     listener.onResponse(mapNews(response.body().data.news));
                 }
             }
@@ -114,7 +112,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface TagNewsResponseListener {
@@ -140,7 +137,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface HomeResponseListener {
@@ -157,7 +153,6 @@ public class DataRepository {
                 if (response.body() != null
                         && response.isSuccessful()
                         && response.body().data != null) {
-
 
                     NewsList newsList = new NewsList();
 
@@ -194,7 +189,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface CategoriesResponseListener {
@@ -209,8 +203,8 @@ public class DataRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseCategories> call, @NonNull retrofit2.Response<ResponseCategories> response) {
                 if (response.body() != null
-                        && response.isSuccessful()
-                        && response.body().data != null) {
+                        && response.body().data != null
+                        && response.isSuccessful()) {
 
                     ArrayList<Category> categories = new ArrayList<>();
 
@@ -231,7 +225,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface CategoriesNewsResponseListener {
@@ -256,7 +249,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface DetailResponseListener {
@@ -305,7 +297,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface CommentResponseListener {
@@ -332,7 +323,6 @@ public class DataRepository {
                 listener.onFailure(t);
             }
         });
-
     }
 
     public interface PostRequestListener {

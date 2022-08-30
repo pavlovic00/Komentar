@@ -9,17 +9,17 @@ import androidx.viewbinding.ViewBinding;
 
 import com.cubes.komentar.databinding.RvItemButtonTagBinding;
 import com.cubes.komentar.pavlovic.data.domain.Tags;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 
 import java.util.ArrayList;
 
 public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.ViewHolder> {
 
     private final ArrayList<Tags> list;
-    private final NewsDetailListener tagListener;
+    private final DetailsListener tagListener;
 
 
-    public ButtonTagsAdapter(ArrayList<Tags> list, NewsDetailListener tagListener) {
+    public ButtonTagsAdapter(ArrayList<Tags> list, DetailsListener tagListener) {
         this.list = list;
         this.tagListener = tagListener;
     }
@@ -44,7 +44,6 @@ public class ButtonTagsAdapter extends RecyclerView.Adapter<ButtonTagsAdapter.Vi
         RvItemButtonTagBinding bindingButton = (RvItemButtonTagBinding) holder.binding;
 
         bindingButton.button.setText(tags.title);
-
         bindingButton.button.setOnClickListener(view -> tagListener.onTagClicked(tags));
     }
 

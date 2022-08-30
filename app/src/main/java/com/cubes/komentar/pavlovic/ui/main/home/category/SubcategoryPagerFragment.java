@@ -46,7 +46,6 @@ public class SubcategoryPagerFragment extends Fragment {
         args.putInt(ARG_CATEGORY_ID, categoryId);
         args.putString(SUBCATEGORY_NAME, subcategoryName);
         fragment.setArguments(args);
-
         fragment.mCategoryId = categoryId;
         return fragment;
     }
@@ -54,6 +53,7 @@ public class SubcategoryPagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mCategoryId = getArguments().getInt(ARG_CATEGORY_ID);
             subcategoryName = getArguments().getString(SUBCATEGORY_NAME);
@@ -98,7 +98,6 @@ public class SubcategoryPagerFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -124,9 +123,7 @@ public class SubcategoryPagerFragment extends Fragment {
         dataRepository.loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 adapter.setData(response);
-
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
@@ -148,7 +145,6 @@ public class SubcategoryPagerFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);

@@ -54,14 +54,6 @@
             android:visibility="gone"
             app:tint="@color/blue_dark" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:translationZ="90dp" />
-
         <LinearLayout
             android:id="@+id/linear_layout_category_pager"
             android:layout_width="match_parent"

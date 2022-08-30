@@ -65,8 +65,6 @@ public class HomeFragment extends Fragment {
                     binding.viewPagerHome.setAdapter(new HomePagerAdapter(getChildFragmentManager(), response));
                 }
                 binding.tabLayout.setupWithViewPager(binding.viewPagerHome);
-
-
                 binding.refresh.setVisibility(View.GONE);
                 binding.viewPagerHome.setVisibility(View.VISIBLE);
             }
@@ -81,7 +79,6 @@ public class HomeFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);

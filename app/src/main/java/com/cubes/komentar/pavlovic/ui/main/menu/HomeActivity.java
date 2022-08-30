@@ -65,13 +65,11 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         boolean isOn = SharedPrefs.isNotificationOn(HomeActivity.this);
-
         binding.switchNotification.setChecked(isOn);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.homeLayout, HomeFragment.newInstance())
                 .commit();
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             Fragment selectedFragment = null;

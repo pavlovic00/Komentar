@@ -23,5 +23,4 @@ public class NewsRetrofit {
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
     }
-
 }

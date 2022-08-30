@@ -28,7 +28,6 @@ import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -71,12 +70,12 @@ public class DetailsPagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             newsId = getArguments().getInt(NEWS_ID);
         }
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
-
         AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
         dataRepository = appContainer.dataRepository;
     }
@@ -117,7 +116,7 @@ public class DetailsPagerFragment extends Fragment {
         }
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new DetailsAdapter(new NewsDetailListener() {
+        adapter = new DetailsAdapter(new com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener() {
             @Override
             public void onNewsClickedVP(int newsId, int[] newsIdList) {
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
@@ -168,7 +167,6 @@ public class DetailsPagerFragment extends Fragment {
                         Toast.makeText(getContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
 
                         Vote vote = new Vote(comment.id, true);
-
                         votes.add(vote);
                         SharedPrefs.writeListInPref(requireActivity(), votes);
 
@@ -190,7 +188,6 @@ public class DetailsPagerFragment extends Fragment {
                         Toast.makeText(getContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
 
                         Vote vote = new Vote(comment.id, false);
-
                         votes.add(vote);
                         SharedPrefs.writeListInPref(requireActivity(), votes);
 
@@ -216,7 +213,6 @@ public class DetailsPagerFragment extends Fragment {
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(NewsDetail response) {
-
                 adapter.setDataItems(response);
 
                 newsId = response.id;
@@ -247,7 +243,6 @@ public class DetailsPagerFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);
@@ -255,5 +250,4 @@ public class DetailsPagerFragment extends Fragment {
             binding.progressBar.setVisibility(View.GONE);
         });
     }
-
 }

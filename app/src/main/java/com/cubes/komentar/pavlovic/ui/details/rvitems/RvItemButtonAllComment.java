@@ -4,15 +4,15 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemButtonAllCommentBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 
 public class RvItemButtonAllComment implements RecyclerViewItemDetail {
 
     private final NewsDetail data;
-    private final NewsDetailListener allCommentListener;
+    private final DetailsListener allCommentListener;
 
 
-    public RvItemButtonAllComment(NewsDetail data, NewsDetailListener allCommentListener) {
+    public RvItemButtonAllComment(NewsDetail data, DetailsListener allCommentListener) {
         this.data = data;
         this.allCommentListener = allCommentListener;
     }

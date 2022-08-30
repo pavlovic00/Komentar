@@ -78,7 +78,6 @@ public class LatestFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -100,7 +99,6 @@ public class LatestFragment extends Fragment {
         dataRepository.loadLatestData(1, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 nextPage = 2;
                 adapter.setData(response);
 
@@ -131,7 +129,5 @@ public class LatestFragment extends Fragment {
             loadDataLatest();
             binding.progressBar.setVisibility(View.GONE);
         });
-
     }
-
 }

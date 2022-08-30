@@ -55,6 +55,7 @@ public class HomePagerFragment extends Fragment {
         }
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
+
         AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
         dataRepository = appContainer.dataRepository;
     }
@@ -93,7 +94,6 @@ public class HomePagerFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -119,9 +119,7 @@ public class HomePagerFragment extends Fragment {
         dataRepository.loadCategoriesNewsData(categoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 adapter.setData(response);
-
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

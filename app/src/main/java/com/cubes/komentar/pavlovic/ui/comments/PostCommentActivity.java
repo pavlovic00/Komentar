@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class PostCommentActivity extends AppCompatActivity {
     private DataRepository dataRepository;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,5 +132,4 @@ public class PostCommentActivity extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 }

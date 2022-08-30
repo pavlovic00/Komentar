@@ -42,11 +42,9 @@ public class TagsActivity extends AppCompatActivity {
 
         id = getIntent().getExtras().getInt("id");
         title = getIntent().getExtras().getString("title");
-
         binding.textViewTag.setText(title);
 
         binding.imageBack.setOnClickListener(view1 -> finish());
-
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadTagData();
@@ -73,7 +71,6 @@ public class TagsActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.addNewsList(responseNewsList);
-
                 nextPage++;
             }
 
@@ -122,7 +119,6 @@ public class TagsActivity extends AppCompatActivity {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);
@@ -130,6 +126,5 @@ public class TagsActivity extends AppCompatActivity {
             loadTagData();
             binding.progressBar.setVisibility(View.GONE);
         });
-
     }
 }

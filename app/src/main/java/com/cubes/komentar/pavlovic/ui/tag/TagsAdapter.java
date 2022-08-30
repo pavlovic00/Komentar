@@ -28,6 +28,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     private final NewsListener newsListener;
     private final LoadingNewsListener loadingNewsListener;
 
+
     public TagsAdapter(NewsListener newsListener, LoadingNewsListener loadingNewsListener) {
         this.newsListener = newsListener;
         this.loadingNewsListener = loadingNewsListener;
@@ -84,37 +85,12 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
         items.add(new RvItemSmallTag(list.get(0), newsListener, list));
 
-        items.add(new RvItemAdsTag());
         for (int i = 1; i < list.size(); i++) {
-            if (i < 6) {
-                items.add(new RvItemSmallTag(list.get(i), newsListener, list));
-            }
-        }
 
-        if (list.size() > 6) {
-            items.add(new RvItemAdsTag());
-        }
-        for (int i = 6; i < list.size(); i++) {
-            if (i < 11) {
-                items.add(new RvItemSmallTag(list.get(i), newsListener, list));
+            if ((i - 1) % 5 == 0) {
+                items.add(new RvItemAdsTag());
             }
-        }
-
-        if (list.size() > 11) {
-            items.add(new RvItemAdsTag());
-        }
-        for (int i = 11; i < list.size(); i++) {
-            if (i < 16) {
-                items.add(new RvItemSmallTag(list.get(i), newsListener, list));
-            }
-        }
-
-        if (list.size() > 16) {
-            items.add(new RvItemAdsTag());
-        }
-        for (int i = 16; i < list.size(); i++) {
             items.add(new RvItemSmallTag(list.get(i), newsListener, list));
-
         }
 
         if (list.size() == 20) {

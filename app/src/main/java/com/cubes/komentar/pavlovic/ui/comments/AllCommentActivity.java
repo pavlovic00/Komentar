@@ -88,7 +88,6 @@ public class AllCommentActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
 
                         Vote vote = new Vote(comment.id, true);
-
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
@@ -110,7 +109,6 @@ public class AllCommentActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
 
                         Vote vote = new Vote(comment.id, false);
-
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
@@ -159,7 +157,6 @@ public class AllCommentActivity extends AppCompatActivity {
     }
 
     public void setDataComment(ArrayList<Comment> comments) {
-
         for (Comment comment : comments) {
             allComments.add(comment);
             addChildren(comment.children);
@@ -173,7 +170,6 @@ public class AllCommentActivity extends AppCompatActivity {
     }
 
     private void setVoteData(ArrayList<Comment> allComments, ArrayList<Vote> votes) {
-
         for (Comment comment : allComments) {
             for (Vote vote : votes) {
                 if (comment.id.equals(vote.commentId)) {
@@ -198,7 +194,6 @@ public class AllCommentActivity extends AppCompatActivity {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);

@@ -59,7 +59,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public void updateList(ArrayList<Comment> comments) {
         for (Comment comment : comments) {
-
             if (comment.parentComment.equals("0")) {
                 items.add(new RvItemCommentParent(comment, commentListener));
             } else {

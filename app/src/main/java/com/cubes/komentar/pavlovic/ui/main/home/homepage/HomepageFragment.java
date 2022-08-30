@@ -91,7 +91,6 @@ public class HomepageFragment extends Fragment {
         dataRepository.loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
             public void onResponse(NewsList response) {
-
                 adapter.setDataItems(response);
 
                 binding.refresh.setVisibility(View.GONE);

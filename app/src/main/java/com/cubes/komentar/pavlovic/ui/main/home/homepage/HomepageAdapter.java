@@ -114,12 +114,25 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         }
         //2
         items.add(new RvItemButtonsNews(response.latest, response.mostCommented, response.mostRead, newsListener));
-        //3-4
+        //Reklama
+        items.add(new RvItemAds());
+        //Sport
+        for (CategoryBox categoryBox : response.category) {
+            if (categoryBox.title.equalsIgnoreCase("Sport")) {
+                items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
+                items.add(new RvItemBig(categoryBox.news.get(0), newsListener, categoryBox.news));
+
+                for (int i = 1; i < 5; i++) {
+                    items.add(new RvItemSmall(categoryBox.news.get(i), newsListener, categoryBox.news));
+                }
+            }
+        }
+        //4-5
         if (response.editorsChoice.size() > 0) {
             items.add(new RvItemTitle("Izbor urednika", "#FF0000"));
             items.add(new RvItemEditorChoice(response.editorsChoice, newsListener));
         }
-        //5-6
+        //6-7
         if (response.videos.size() > 0) {
             //Reklama
             items.add(new RvItemAds());
@@ -131,13 +144,15 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         }
         //Reklama
         items.add(new RvItemAds());
-        //7-8-9
+        //8-9-10
         for (CategoryBox categoryBox : response.category) {
-            items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
-            items.add(new RvItemBig(categoryBox.news.get(0), newsListener, categoryBox.news));
+            if (!categoryBox.title.equalsIgnoreCase("Sport")) {
+                items.add(new RvItemTitle(categoryBox.title, categoryBox.color));
+                items.add(new RvItemBig(categoryBox.news.get(0), newsListener, categoryBox.news));
 
-            for (int i = 1; i < 5; i++) {
-                items.add(new RvItemSmall(categoryBox.news.get(i), newsListener, categoryBox.news));
+                for (int i = 1; i < 5; i++) {
+                    items.add(new RvItemSmall(categoryBox.news.get(i), newsListener, categoryBox.news));
+                }
             }
         }
         notifyDataSetChanged();

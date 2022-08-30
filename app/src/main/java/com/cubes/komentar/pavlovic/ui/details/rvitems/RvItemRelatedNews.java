@@ -7,7 +7,7 @@ import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
 import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
     private final News news;
-    private final NewsDetailListener newsListener;
+    private final DetailsListener newsListener;
     private final int[] newsListId;
 
 
-    public RvItemRelatedNews(News news, NewsDetailListener newsListener, ArrayList<News> newsList) {
+    public RvItemRelatedNews(News news, DetailsListener newsListener, ArrayList<News> newsList) {
         this.news = news;
         this.newsListener = newsListener;
         this.newsListId = MyMethodsClass.initNewsIdList(newsList);

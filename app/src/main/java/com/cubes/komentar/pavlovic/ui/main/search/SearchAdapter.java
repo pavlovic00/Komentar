@@ -85,37 +85,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         items.add(new RvItemSmallSearch(list.get(0), newsListener, list));
 
-        items.add(new RvItemAdsSearch());
         for (int i = 1; i < list.size(); i++) {
-            if (i < 6) {
-                items.add(new RvItemSmallSearch(list.get(i), newsListener, list));
+
+            if ((i - 1) % 5 == 0) {
+                items.add(new RvItemAdsSearch());
             }
-        }
-
-        if (list.size() > 6) {
-            items.add(new RvItemAdsSearch());
-        }
-        for (int i = 6; i < list.size(); i++) {
-            if (i < 11) {
-                items.add(new RvItemSmallSearch(list.get(i), list));
-            }
-        }
-
-        if (list.size() > 11) {
-            items.add(new RvItemAdsSearch());
-        }
-        for (int i = 11; i < list.size(); i++) {
-            if (i < 16) {
-                items.add(new RvItemSmallSearch(list.get(i), list));
-            }
-        }
-
-        if (list.size() > 16) {
-            items.add(new RvItemAdsSearch());
-        }
-        for (int i = 16; i < list.size(); i++) {
-            items.add(new RvItemSmallSearch(list.get(i), list));
-
+            items.add(new RvItemSmallSearch(list.get(i), newsListener, list));
         }
 
         if (list.size() == 20) {

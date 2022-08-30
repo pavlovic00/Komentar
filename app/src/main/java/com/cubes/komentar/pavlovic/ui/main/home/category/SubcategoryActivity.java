@@ -29,6 +29,9 @@ public class SubcategoryActivity extends AppCompatActivity {
         binding = ActivitySubcategoryNewsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
+
         mCategoryId = getIntent().getIntExtra("category_id", -1);
         mSubcategoryId = getIntent().getIntExtra("subcategory_id", -1);
 
@@ -36,20 +39,15 @@ public class SubcategoryActivity extends AppCompatActivity {
 
         binding.imageViewBack.setOnClickListener(view -> finish());
         binding.imageViewRefresh.setOnClickListener(view -> getAllCategories(mCategoryId, mSubcategoryId));
-        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
-        dataRepository = appContainer.dataRepository;
     }
 
     private void getAllCategories(int mCategoryId, int mSubcategoryId) {
 
-        binding.progressBar.setVisibility(View.VISIBLE);
         binding.imageViewRefresh.setVisibility(View.GONE);
 
         dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> categories) {
-
-                binding.progressBar.setVisibility(View.GONE);
                 binding.linearLayoutCategoryPager.setVisibility(View.VISIBLE);
 
                 for (int i = 0; i < categories.size(); i++) {
@@ -60,8 +58,6 @@ public class SubcategoryActivity extends AppCompatActivity {
                 }
 
                 int currentSubcategoryPosition = -1;
-
-
                 for (int i = 0; i < mCategory.subcategories.size(); i++) {
                     if (mSubcategoryId == mCategory.subcategories.get(i).id) {
                         currentSubcategoryPosition = i;
@@ -70,8 +66,6 @@ public class SubcategoryActivity extends AppCompatActivity {
                 }
 
                 int[] subcategoryIdList = new int[mCategory.subcategories.size()];
-
-
                 for (int i = 0; i < mCategory.subcategories.size(); i++) {
                     subcategoryIdList[i] = mCategory.subcategories.get(i).id;
                 }
@@ -91,7 +85,6 @@ public class SubcategoryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 binding.imageViewRefresh.setVisibility(View.VISIBLE);
-                binding.progressBar.setVisibility(View.GONE);
                 binding.linearLayoutCategoryPager.setVisibility(View.GONE);
             }
         });
