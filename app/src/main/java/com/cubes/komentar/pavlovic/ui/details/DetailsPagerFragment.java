@@ -22,16 +22,17 @@ import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
-public class DetailsFragment extends Fragment {
+public class DetailsPagerFragment extends Fragment {
 
     private FragmentDetailsBinding binding;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -39,20 +40,21 @@ public class DetailsFragment extends Fragment {
     private int newsId;
     private String title;
     private String newsUrl;
-    private DetailAdapter adapter;
+    private DetailsAdapter adapter;
     private DetailsListener detailsListener;
     private ArrayList<Vote> votes = new ArrayList<>();
+    private DataRepository dataRepository;
 
 
     public interface DetailsListener {
         void onDetailsResponseListener(int newsId, String newsUrl);
     }
 
-    public DetailsFragment() {
+    public DetailsPagerFragment() {
     }
 
-    public static DetailsFragment newInstance(int newsId) {
-        DetailsFragment fragment = new DetailsFragment();
+    public static DetailsPagerFragment newInstance(int newsId) {
+        DetailsPagerFragment fragment = new DetailsPagerFragment();
         Bundle args = new Bundle();
         args.putInt(NEWS_ID, newsId);
         fragment.setArguments(args);
@@ -68,11 +70,14 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             newsId = getArguments().getInt(NEWS_ID);
         }
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -111,12 +116,11 @@ public class DetailsFragment extends Fragment {
         }
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new DetailAdapter(new NewsDetailListener() {
+        adapter = new DetailsAdapter(new com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener() {
             @Override
-            public void onNewsClickedVP(int newsId, String newsUrl, int[] newsIdList) {
+            public void onNewsClickedVP(int newsId, int[] newsIdList) {
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
                 intent.putExtra("news_id", newsId);
-                intent.putExtra("news_url", newsUrl);
                 intent.putExtra("news_list_id", newsIdList);
                 startActivity(intent);
             }
@@ -149,25 +153,24 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onCommentClicked(Comment comment) {
                 Intent replyIntent = new Intent(getContext(), PostCommentActivity.class);
-                replyIntent.putExtra("reply_id", comment.id);
-                replyIntent.putExtra("news", comment.news);
+                replyIntent.putExtra("reply_id", comment.commentId);
+                replyIntent.putExtra("news", comment.newsId);
                 replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(replyIntent);
             }
 
             @Override
             public void like(Comment comment) {
-                DataRepository.getInstance().voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.voteComment(comment.commentId, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(comment.id, true);
-
+                        Vote vote = new Vote(comment.commentId, true);
                         votes.add(vote);
                         SharedPrefs.writeListInPref(requireActivity(), votes);
 
-                        adapter.setupLike(comment.id);
+                        adapter.setupLike(comment.commentId);
                     }
 
                     @Override
@@ -179,17 +182,16 @@ public class DetailsFragment extends Fragment {
 
             @Override
             public void dislike(Comment comment) {
-                DataRepository.getInstance().unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.unVoteComment(comment.commentId, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(comment.id, false);
-
+                        Vote vote = new Vote(comment.commentId, false);
                         votes.add(vote);
                         SharedPrefs.writeListInPref(requireActivity(), votes);
 
-                        adapter.setupDislike(comment.id);
+                        adapter.setupDislike(comment.commentId);
                     }
 
                     @Override
@@ -208,10 +210,9 @@ public class DetailsFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewHomepage.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadDetailData(newsId, new DataRepository.DetailResponseListener() {
+        dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(NewsDetail response) {
-
                 adapter.setDataItems(response);
 
                 newsId = response.id;
@@ -221,7 +222,6 @@ public class DetailsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("news", title);
                 mFirebaseAnalytics.logEvent("selected_news", bundle);
-
 
                 detailsListener.onDetailsResponseListener(newsId, newsUrl);
 
@@ -243,7 +243,6 @@ public class DetailsFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);
@@ -251,5 +250,4 @@ public class DetailsFragment extends Fragment {
             binding.progressBar.setVisibility(View.GONE);
         });
     }
-
 }

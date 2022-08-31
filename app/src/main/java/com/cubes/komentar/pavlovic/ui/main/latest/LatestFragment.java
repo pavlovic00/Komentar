@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentLatestBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class LatestFragment extends Fragment {
     private FragmentLatestBinding binding;
     private LatestAdapter adapter;
     private int nextPage = 2;
+    private DataRepository dataRepository;
 
 
     public static LatestFragment newInstance() {
@@ -34,6 +37,9 @@ public class LatestFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -63,17 +69,15 @@ public class LatestFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewLatest.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter((newsId, newsUrl, newsIdList) -> {
+        adapter = new LatestAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_url", newsUrl);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> DataRepository.getInstance().loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
+        }, () -> dataRepository.loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -92,10 +96,9 @@ public class LatestFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewLatest.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadLatestData(1, new DataRepository.LatestResponseListener() {
+        dataRepository.loadLatestData(1, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 nextPage = 2;
                 adapter.setData(response);
 
@@ -126,7 +129,5 @@ public class LatestFragment extends Fragment {
             loadDataLatest();
             binding.progressBar.setVisibility(View.GONE);
         });
-
     }
-
 }

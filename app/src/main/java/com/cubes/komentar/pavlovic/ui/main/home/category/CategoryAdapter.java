@@ -60,7 +60,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             bindingCategory.submenuarrow.setVisibility(View.INVISIBLE);
         }
         bindingCategory.submenuarrow.setOnClickListener(view -> {
-
             //Jako bitno mora biti na pocetku.
             category.open = !category.open;
 

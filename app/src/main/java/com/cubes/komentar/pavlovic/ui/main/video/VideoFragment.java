@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentVideoBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class VideoFragment extends Fragment {
     private FragmentVideoBinding binding;
     private VideoAdapter adapter;
     private int nextPage = 2;
+    private DataRepository dataRepository;
 
 
     public static VideoFragment newInstance() {
@@ -34,6 +37,8 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -71,11 +76,10 @@ public class VideoFragment extends Fragment {
             i.setType("text/plain");
             Intent shareIntent = Intent.createChooser(i, null);
             startActivity(shareIntent);
-        }, () -> DataRepository.getInstance().loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
+        }, () -> dataRepository.loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -94,10 +98,9 @@ public class VideoFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewVideo.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadVideoData(0, new DataRepository.VideoResponseListener() {
+        dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 nextPage = 2;
                 adapter.setData(response);
 
@@ -119,7 +122,6 @@ public class VideoFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);
@@ -127,6 +129,5 @@ public class VideoFragment extends Fragment {
             loadDataVideo();
             binding.progressBar.setVisibility(View.GONE);
         });
-
     }
 }

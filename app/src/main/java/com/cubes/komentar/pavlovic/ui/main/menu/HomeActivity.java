@@ -15,6 +15,8 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityHomeBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.main.home.HomeFragment;
 import com.cubes.komentar.pavlovic.ui.main.home.category.CategoryAdapter;
 import com.cubes.komentar.pavlovic.ui.main.home.category.SubcategoryActivity;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
+    private DataRepository dataRepository;
 
 
     @SuppressLint({"NonConstantResourceId", "RtlHardcoded"})
@@ -42,6 +45,9 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
 
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adsView.loadAd(adRequest);
@@ -59,13 +65,11 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         boolean isOn = SharedPrefs.isNotificationOn(HomeActivity.this);
-
         binding.switchNotification.setChecked(isOn);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.homeLayout, HomeFragment.newInstance())
                 .commit();
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             Fragment selectedFragment = null;
@@ -111,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.imageRight.setOnClickListener(view19 -> {
             binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
-            DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+            dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
                 @Override
                 public void onResponse(ArrayList<Category> response) {
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -189,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void loadHomeData() {
 
-        DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> response) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

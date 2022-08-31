@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentViewPagerSubcategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -32,6 +34,7 @@ public class SubcategoryPagerFragment extends Fragment {
     private String subcategoryName;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private DataRepository dataRepository;
 
 
     public SubcategoryPagerFragment() {
@@ -43,7 +46,6 @@ public class SubcategoryPagerFragment extends Fragment {
         args.putInt(ARG_CATEGORY_ID, categoryId);
         args.putString(SUBCATEGORY_NAME, subcategoryName);
         fragment.setArguments(args);
-
         fragment.mCategoryId = categoryId;
         return fragment;
     }
@@ -51,18 +53,21 @@ public class SubcategoryPagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mCategoryId = getArguments().getInt(ARG_CATEGORY_ID);
             subcategoryName = getArguments().getString(SUBCATEGORY_NAME);
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentViewPagerSubcategoryBinding.inflate(inflater, container, false);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
 
         return binding.getRoot();
     }
@@ -84,17 +89,15 @@ public class SubcategoryPagerFragment extends Fragment {
 
     public void setupRecyclerView() {
         binding.recyclerViewPager2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter((newsId, newsUrl, newsIdList) -> {
+        adapter = new LatestAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_url", newsUrl);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> DataRepository.getInstance().loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
+        }, () -> dataRepository.loadCategoriesNewsData(mCategoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -117,12 +120,10 @@ public class SubcategoryPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
+        dataRepository.loadCategoriesNewsData(mCategoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 adapter.setData(response);
-
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
@@ -144,7 +145,6 @@ public class SubcategoryPagerFragment extends Fragment {
     public void refresh() {
 
         binding.refresh.setOnClickListener(view -> {
-
             RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(300);
             binding.refresh.startAnimation(rotate);

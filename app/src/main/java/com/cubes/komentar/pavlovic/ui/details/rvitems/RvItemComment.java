@@ -5,17 +5,17 @@ import android.widget.Toast;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemCommentParentBinding;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
-import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 
 public class RvItemComment implements RecyclerViewItemDetail {
 
     private final Comment comment;
-    private final NewsDetailListener commentListener;
+    private final DetailsListener commentListener;
     private RvItemCommentParentBinding binding;
 
 
-    public RvItemComment(Comment comment, NewsDetailListener commentListener) {
+    public RvItemComment(Comment comment, DetailsListener commentListener) {
         this.comment = comment;
         this.commentListener = commentListener;
     }
@@ -26,7 +26,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(DetailAdapter.ViewHolder holder) {
+    public void bind(DetailsAdapter.ViewHolder holder) {
 
         binding = (RvItemCommentParentBinding) holder.binding;
 
@@ -74,7 +74,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
 
     @Override
     public String getCommentsId() {
-        return comment.id;
+        return comment.commentId;
     }
 
     @Override

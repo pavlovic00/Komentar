@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cubes.komentar.databinding.ActivitySubcategoryNewsBinding;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class SubcategoryActivity extends AppCompatActivity {
     private Category mCategory = new Category();
     private int mCategoryId;
     private int mSubcategoryId;
+    private DataRepository dataRepository;
 
 
     @Override
@@ -25,6 +28,9 @@ public class SubcategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySubcategoryNewsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
 
         mCategoryId = getIntent().getIntExtra("category_id", -1);
         mSubcategoryId = getIntent().getIntExtra("subcategory_id", -1);
@@ -37,14 +43,11 @@ public class SubcategoryActivity extends AppCompatActivity {
 
     private void getAllCategories(int mCategoryId, int mSubcategoryId) {
 
-        binding.progressBar.setVisibility(View.VISIBLE);
         binding.imageViewRefresh.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesData(new DataRepository.CategoriesResponseListener() {
+        dataRepository.loadCategoriesData(new DataRepository.CategoriesResponseListener() {
             @Override
             public void onResponse(ArrayList<Category> categories) {
-
-                binding.progressBar.setVisibility(View.GONE);
                 binding.linearLayoutCategoryPager.setVisibility(View.VISIBLE);
 
                 for (int i = 0; i < categories.size(); i++) {
@@ -55,8 +58,6 @@ public class SubcategoryActivity extends AppCompatActivity {
                 }
 
                 int currentSubcategoryPosition = -1;
-
-
                 for (int i = 0; i < mCategory.subcategories.size(); i++) {
                     if (mSubcategoryId == mCategory.subcategories.get(i).id) {
                         currentSubcategoryPosition = i;
@@ -65,8 +66,6 @@ public class SubcategoryActivity extends AppCompatActivity {
                 }
 
                 int[] subcategoryIdList = new int[mCategory.subcategories.size()];
-
-
                 for (int i = 0; i < mCategory.subcategories.size(); i++) {
                     subcategoryIdList[i] = mCategory.subcategories.get(i).id;
                 }
@@ -77,9 +76,7 @@ public class SubcategoryActivity extends AppCompatActivity {
                 new TabLayoutMediator(
                         binding.tabLayout,
                         binding.viewPager,
-                        (tab, position) -> {
-                            tab.setText(mCategory.subcategories.get(position).name);
-                        }
+                        (tab, position) -> tab.setText(mCategory.subcategories.get(position).name)
                 ).attach();
 
                 binding.viewPager.setCurrentItem(currentSubcategoryPosition);
@@ -88,7 +85,6 @@ public class SubcategoryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 binding.imageViewRefresh.setVisibility(View.VISIBLE);
-                binding.progressBar.setVisibility(View.GONE);
                 binding.linearLayoutCategoryPager.setVisibility(View.GONE);
             }
         });

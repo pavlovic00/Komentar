@@ -53,7 +53,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
 
         Picasso.get().load(news.image).into(binding.imageView);
 
-        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, news.url, newsIdList));
+        holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsIdList));
     }
 
     @Override

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cubes.komentar.databinding.ActivityDetailsBinding;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 
-public class DetailsActivity extends AppCompatActivity implements DetailsFragment.DetailsListener {
+public class DetailsActivity extends AppCompatActivity implements DetailsPagerFragment.DetailsListener {
 
     private ActivityDetailsBinding binding;
     private int newsId;
@@ -26,7 +26,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsFragmen
         newsId = getIntent().getExtras().getInt("news_id");
         int[] newsListId = getIntent().getIntArrayExtra("news_list_id");
 
-        DetailsViewPagerAdapter adapter = new DetailsViewPagerAdapter(this, newsListId);
+        DetailsPagerAdapter adapter = new DetailsPagerAdapter(this, newsListId);
         binding.viewPager2.setAdapter(adapter);
 
         for (int i = 0; i < newsListId.length; i++) {

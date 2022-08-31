@@ -33,18 +33,18 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleComment;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebViewDetail;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 
 import java.util.ArrayList;
 
-public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder> {
+public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHolder> {
 
     private final ArrayList<RecyclerViewItemDetail> items = new ArrayList<>();
-    private final NewsDetailListener newsDetailListener;
+    private final DetailsListener detailsListener;
 
 
-    public DetailAdapter(NewsDetailListener newsDetailListener) {
-        this.newsDetailListener = newsDetailListener;
+    public DetailsAdapter(DetailsListener detailsListener) {
+        this.detailsListener = detailsListener;
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -95,14 +95,11 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         this.items.get(position).bind(holder);
-
     }
 
     @Override
     public int getItemViewType(int position) {
-
         return this.items.get(position).getType();
     }
 
@@ -121,19 +118,19 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         this.items.add(new RvItemAdsDetail());
         if (response.tags.size() > 0) {
             this.items.add(new RvItemTitleDetail("Tagovi:"));
-            this.items.add(new RvItemTagsDetail(response.tags, newsDetailListener));
+            this.items.add(new RvItemTagsDetail(response.tags, detailsListener));
         }
         //3
-        this.items.add(new RvItemButtonPutComment(response, newsDetailListener));
+        this.items.add(new RvItemButtonPutComment(response, detailsListener));
         //4
         this.items.add(new RvItemTitleComment("Komentari", response));
         //5
         for (int i = 0; i < response.topComments.size(); i++) {
             Comment commentData = response.topComments.get(i);
-            this.items.add(new RvItemComment(commentData, newsDetailListener));
+            this.items.add(new RvItemComment(commentData, detailsListener));
         }
         //6
-        this.items.add(new RvItemButtonAllComment(response, newsDetailListener));
+        this.items.add(new RvItemButtonAllComment(response, detailsListener));
         //7-8
         if (response.relatedNews.size() > 0) {
             //Reklama
@@ -142,8 +139,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
 
             for (int i = 0; i < response.relatedNews.size(); i++) {
                 News news = response.relatedNews.get(i);
-
-                this.items.add(new RvItemRelatedNews(news, newsDetailListener, response.relatedNews));
+                this.items.add(new RvItemRelatedNews(news, detailsListener, response.relatedNews));
             }
         }
         notifyDataSetChanged();

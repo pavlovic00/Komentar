@@ -16,13 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentViewPagerCategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
-public class ViewPagerFragment extends Fragment {
+public class HomePagerFragment extends Fragment {
 
     private FragmentViewPagerCategoryBinding binding;
     private static final String CATEGORY_ID = "categoryId";
@@ -32,10 +34,11 @@ public class ViewPagerFragment extends Fragment {
     private LatestAdapter adapter;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private DataRepository dataRepository;
 
 
-    public static ViewPagerFragment newInstance(int categoryId, String categoryName) {
-        ViewPagerFragment fragment = new ViewPagerFragment();
+    public static HomePagerFragment newInstance(int categoryId, String categoryName) {
+        HomePagerFragment fragment = new HomePagerFragment();
         Bundle args = new Bundle();
         args.putInt(CATEGORY_ID, categoryId);
         args.putString(CATEGORY_NAME, categoryName);
@@ -50,14 +53,17 @@ public class ViewPagerFragment extends Fragment {
             categoryId = getArguments().getInt(CATEGORY_ID);
             categoryName = getArguments().getString(CATEGORY_NAME);
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
+
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentViewPagerCategoryBinding.inflate(inflater, container, false);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
 
         return binding.getRoot();
     }
@@ -79,17 +85,15 @@ public class ViewPagerFragment extends Fragment {
 
     public void setupRecyclerView() {
         binding.recyclerViewPager2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter((newsId, newsUrl, newsIdList) -> {
+        adapter = new LatestAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_url", newsUrl);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, () -> DataRepository.getInstance().loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
+        }, () -> dataRepository.loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
-
                 nextPage++;
             }
 
@@ -112,12 +116,10 @@ public class ViewPagerFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadCategoriesNewsData(categoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
+        dataRepository.loadCategoriesNewsData(categoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-
                 adapter.setData(response);
-
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

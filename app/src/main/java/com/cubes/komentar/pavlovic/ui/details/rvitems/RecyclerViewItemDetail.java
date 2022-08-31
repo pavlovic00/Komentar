@@ -1,12 +1,12 @@
 package com.cubes.komentar.pavlovic.ui.details.rvitems;
 
-import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
+import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
 
 public interface RecyclerViewItemDetail {
 
     int getType();
 
-    void bind(DetailAdapter.ViewHolder holder);
+    void bind(DetailsAdapter.ViewHolder holder);
 
     default String getCommentsId() {
         return null;

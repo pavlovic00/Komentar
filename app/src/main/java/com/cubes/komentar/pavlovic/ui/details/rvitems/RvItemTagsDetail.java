@@ -4,8 +4,8 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemGridRvBinding;
 import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.ui.details.ButtonTagsAdapter;
-import com.cubes.komentar.pavlovic.ui.details.DetailAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.listener.NewsDetailListener;
+import com.cubes.komentar.pavlovic.ui.details.DetailsAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class RvItemTagsDetail implements RecyclerViewItemDetail {
 
     private final ArrayList<Tags> tagsList;
-    private final NewsDetailListener tagListener;
+    private final DetailsListener tagListener;
 
 
-    public RvItemTagsDetail(ArrayList<Tags> tagsList, NewsDetailListener tagListener) {
+    public RvItemTagsDetail(ArrayList<Tags> tagsList, DetailsListener tagListener) {
         this.tagsList = tagsList;
         this.tagListener = tagListener;
     }
@@ -27,7 +27,7 @@ public class RvItemTagsDetail implements RecyclerViewItemDetail {
     }
 
     @Override
-    public void bind(DetailAdapter.ViewHolder holder) {
+    public void bind(DetailsAdapter.ViewHolder holder) {
 
         RvItemGridRvBinding binding = (RvItemGridRvBinding) holder.binding;
 

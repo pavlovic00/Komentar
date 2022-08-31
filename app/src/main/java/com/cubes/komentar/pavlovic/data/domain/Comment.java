@@ -7,10 +7,10 @@ public class Comment {
     public int likes;
     public int dislikes;
     public String createdAt;
-    public String news;
+    public String newsId;
     public String name;
-    public String parentComment;
-    public String id;
+    public String parentCommentId;
+    public String commentId;
     public String content;
     public ArrayList<Comment> children;
 

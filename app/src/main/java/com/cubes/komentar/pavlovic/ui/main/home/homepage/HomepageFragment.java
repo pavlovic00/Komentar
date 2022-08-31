@@ -16,12 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
 import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
+import com.cubes.komentar.pavlovic.di.AppContainer;
+import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 
 public class HomepageFragment extends Fragment {
 
     private FragmentHomepageBinding binding;
     public HomepageAdapter adapter;
+    private DataRepository dataRepository;
 
 
     public static HomepageFragment newInstance() {
@@ -31,6 +34,9 @@ public class HomepageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppContainer appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
+        dataRepository = appContainer.dataRepository;
     }
 
     @Override
@@ -59,10 +65,9 @@ public class HomepageFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new HomepageAdapter((newsId, newsUrl, newsIdList) -> {
+        adapter = new HomepageAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_url", newsUrl);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
         }, news -> {
@@ -83,10 +88,9 @@ public class HomepageFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewHomepage.setVisibility(View.GONE);
 
-        DataRepository.getInstance().loadHomeData(new DataRepository.HomeResponseListener() {
+        dataRepository.loadHomeData(new DataRepository.HomeResponseListener() {
             @Override
             public void onResponse(NewsList response) {
-
                 adapter.setDataItems(response);
 
                 binding.refresh.setVisibility(View.GONE);
