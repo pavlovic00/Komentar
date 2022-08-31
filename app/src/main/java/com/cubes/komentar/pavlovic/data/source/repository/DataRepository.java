@@ -39,6 +39,7 @@ public class DataRepository {
         this.api = api;
     }
 
+
     public interface VideoResponseListener {
 
         void onResponse(ArrayList<News> response);
@@ -487,10 +488,10 @@ public class DataRepository {
             comment.likes = commentApi.negative_votes;
             comment.dislikes = commentApi.positive_votes;
             comment.createdAt = commentApi.created_at;
-            comment.news = commentApi.news;
+            comment.newsId = commentApi.news;
             comment.name = commentApi.name;
-            comment.parentComment = commentApi.parent_comment;
-            comment.id = commentApi.id;
+            comment.parentCommentId = commentApi.parent_comment;
+            comment.commentId = commentApi.id;
             comment.content = commentApi.content;
 
             if (commentApi.children != null && !commentApi.children.isEmpty()) {

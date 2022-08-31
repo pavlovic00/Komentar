@@ -74,7 +74,7 @@ public class RvItemComment implements RecyclerViewItemDetail {
 
     @Override
     public String getCommentsId() {
-        return comment.id;
+        return comment.commentId;
     }
 
     @Override

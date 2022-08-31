@@ -153,24 +153,24 @@ public class DetailsPagerFragment extends Fragment {
             @Override
             public void onCommentClicked(Comment comment) {
                 Intent replyIntent = new Intent(getContext(), PostCommentActivity.class);
-                replyIntent.putExtra("reply_id", comment.id);
-                replyIntent.putExtra("news", comment.news);
+                replyIntent.putExtra("reply_id", comment.commentId);
+                replyIntent.putExtra("news", comment.newsId);
                 replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(replyIntent);
             }
 
             @Override
             public void like(Comment comment) {
-                dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.voteComment(comment.commentId, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(comment.id, true);
+                        Vote vote = new Vote(comment.commentId, true);
                         votes.add(vote);
                         SharedPrefs.writeListInPref(requireActivity(), votes);
 
-                        adapter.setupLike(comment.id);
+                        adapter.setupLike(comment.commentId);
                     }
 
                     @Override
@@ -182,16 +182,16 @@ public class DetailsPagerFragment extends Fragment {
 
             @Override
             public void dislike(Comment comment) {
-                dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.unVoteComment(comment.commentId, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(comment.id, false);
+                        Vote vote = new Vote(comment.commentId, false);
                         votes.add(vote);
                         SharedPrefs.writeListInPref(requireActivity(), votes);
 
-                        adapter.setupDislike(comment.id);
+                        adapter.setupDislike(comment.commentId);
                     }
 
                     @Override

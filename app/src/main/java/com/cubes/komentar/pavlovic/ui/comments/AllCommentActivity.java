@@ -74,24 +74,24 @@ public class AllCommentActivity extends AppCompatActivity {
             @Override
             public void onCommentClicked(Comment comment) {
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
-                replyIntent.putExtra("reply_id", comment.id);
-                replyIntent.putExtra("news", comment.news);
+                replyIntent.putExtra("reply_id", comment.commentId);
+                replyIntent.putExtra("news", comment.newsId);
                 replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(replyIntent);
             }
 
             @Override
             public void like(Comment comment) {
-                dataRepository.voteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.voteComment(comment.commentId, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za LAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(comment.id, true);
+                        Vote vote = new Vote(comment.commentId, true);
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
-                        adapter.setupLike(comment.id);
+                        adapter.setupLike(comment.commentId);
                     }
 
                     @Override
@@ -103,16 +103,16 @@ public class AllCommentActivity extends AppCompatActivity {
 
             @Override
             public void dislike(Comment comment) {
-                dataRepository.unVoteComment(comment.id, new DataRepository.VoteCommentListener() {
+                dataRepository.unVoteComment(comment.commentId, new DataRepository.VoteCommentListener() {
                     @Override
                     public void onResponse(ResponseComment response) {
                         Toast.makeText(getApplicationContext(), "Bravo za DISLAJK!", Toast.LENGTH_SHORT).show();
 
-                        Vote vote = new Vote(comment.id, false);
+                        Vote vote = new Vote(comment.commentId, false);
                         votes.add(vote);
                         SharedPrefs.writeListInPref(AllCommentActivity.this, votes);
 
-                        adapter.setupDislike(comment.id);
+                        adapter.setupDislike(comment.commentId);
                     }
 
                     @Override
@@ -172,7 +172,7 @@ public class AllCommentActivity extends AppCompatActivity {
     private void setVoteData(ArrayList<Comment> allComments, ArrayList<Vote> votes) {
         for (Comment comment : allComments) {
             for (Vote vote : votes) {
-                if (comment.id.equals(vote.commentId)) {
+                if (comment.commentId.equals(vote.commentId)) {
                     comment.vote = vote;
                 }
                 if (comment.children != null) {

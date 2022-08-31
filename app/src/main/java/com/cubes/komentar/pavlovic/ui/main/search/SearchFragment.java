@@ -149,6 +149,8 @@ public class SearchFragment extends Fragment {
                         Toast.makeText(getContext(), "Nema vesti za termin: " + binding.editTextSearch.getText(), Toast.LENGTH_SHORT).show();
                         binding.progressBar.setVisibility(View.GONE);
                         binding.recyclerViewSearch.setVisibility(View.GONE);
+                        binding.obavestenje.setVisibility(View.VISIBLE);
+                        binding.imageViewObavestenje.setVisibility(View.VISIBLE);
                     }
 
                     nextPage = 2;
