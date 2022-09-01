@@ -24,12 +24,11 @@ public class SplashscreenActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        if (getIntent().getExtras() == null) {
+        if (getIntent().getExtras() == null || getIntent().getExtras().getString("url") == null) {
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
             }, 800);
-
         } else {
             Bundle bundle = getIntent().getExtras();
             String url = bundle.getString("url");

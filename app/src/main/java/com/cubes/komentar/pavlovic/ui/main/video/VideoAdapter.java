@@ -17,19 +17,19 @@ import com.cubes.komentar.pavlovic.ui.main.video.rvitems.RvItemAdsVideo;
 import com.cubes.komentar.pavlovic.ui.main.video.rvitems.RvItemLoadingVideo;
 import com.cubes.komentar.pavlovic.ui.main.video.rvitems.RvItemVideo;
 import com.cubes.komentar.pavlovic.ui.tools.listener.LoadingNewsListener;
-import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 
 import java.util.ArrayList;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
 
     private final ArrayList<RecyclerViewItemVideo> items = new ArrayList<>();
-    private final VideoListener videoListener;
+    private final NewsListener newsListener;
     private final LoadingNewsListener loadingNewsListener;
 
 
-    public VideoAdapter(VideoListener videoListener, LoadingNewsListener loadingNewsListener) {
-        this.videoListener = videoListener;
+    public VideoAdapter(NewsListener newsListener, LoadingNewsListener loadingNewsListener) {
+        this.newsListener = newsListener;
         this.loadingNewsListener = loadingNewsListener;
     }
 
@@ -65,7 +65,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
-            items.add(new RvItemVideo(newsList.get(i), videoListener));
+            items.add(new RvItemVideo(newsList.get(i), newsListener, newsList));
         }
 
         if (newsList.size() == 20) {
@@ -77,14 +77,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     public void setData(ArrayList<News> list) {
 
-        items.add(new RvItemVideo(list.get(0), videoListener));
+        items.add(new RvItemVideo(list.get(0), newsListener, list));
 
         for (int i = 1; i < list.size(); i++) {
 
             if ((i - 1) % 5 == 0) {
                 items.add(new RvItemAdsVideo());
             }
-            items.add(new RvItemVideo(list.get(i), videoListener));
+            items.add(new RvItemVideo(list.get(i), newsListener, list));
         }
 
         if (list.size() == 20) {

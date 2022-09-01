@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_margin="@dimen/margin_main"
+        android:foreground="@drawable/dark_transparent_background"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,13 +19,16 @@
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_main"
         android:maxLines="3"
         android:text="Title"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_normal"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textViewCategory"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPlay" />
 
@@ -60,7 +64,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:tint="@color/gray" />
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

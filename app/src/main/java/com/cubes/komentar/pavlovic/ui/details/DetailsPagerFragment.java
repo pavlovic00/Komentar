@@ -137,7 +137,7 @@ public class DetailsPagerFragment extends Fragment {
             @Override
             public void onPutCommentClicked(NewsDetail data) {
                 Intent i = new Intent(getContext(), PostCommentActivity.class);
-                i.putExtra("id", data.id);
+                i.putExtra("news_id", data.id);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }
@@ -145,7 +145,7 @@ public class DetailsPagerFragment extends Fragment {
             @Override
             public void onAllCommentClicked(NewsDetail data) {
                 Intent commentIntent = new Intent(getContext(), AllCommentActivity.class);
-                commentIntent.putExtra("id", data.id);
+                commentIntent.putExtra("news_id", data.id);
                 commentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(commentIntent);
             }

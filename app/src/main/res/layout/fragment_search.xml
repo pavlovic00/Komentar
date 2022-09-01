@@ -104,6 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Unesite pojam u traku za pretragu!"
+        android:textColor="@color/gray"
         android:textSize="@dimen/text_size_big"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -113,8 +114,8 @@
 
     <ImageView
         android:id="@+id/imageViewObavestenje"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="@dimen/margin_main"
         android:src="@drawable/ic_search"
         app:layout_constraintEnd_toEndOf="parent"

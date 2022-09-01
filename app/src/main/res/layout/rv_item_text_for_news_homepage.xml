@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="275dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_main"
         android:maxLines="3"
@@ -29,6 +29,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_normal"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/date"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -30,7 +30,6 @@ import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSmall;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideoHome;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
-import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
 
 import java.util.ArrayList;
 
@@ -38,12 +37,10 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
 
     private final ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
     private final NewsListener newsListener;
-    private final VideoListener videoListener;
 
 
-    public HomepageAdapter(NewsListener newsListener, VideoListener videoListener) {
+    public HomepageAdapter(NewsListener newsListener) {
         this.newsListener = newsListener;
-        this.videoListener = videoListener;
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -139,7 +136,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             items.add(new RvItemTitle("Video", "#FF0000"));
 
             for (News video : response.videos) {
-                items.add(new RvItemVideoHome(video, videoListener));
+                items.add(new RvItemVideoHome(video, newsListener, response.videos));
             }
         }
         //Reklama

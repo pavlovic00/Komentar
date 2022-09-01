@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:scaleType="centerCrop"
+        android:foreground="@drawable/dark_transparent_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,14 +18,16 @@
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="345dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:maxLines="3"
+        android:layout_marginRight="@dimen/margin_main"
         android:text="Title"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_normal"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textViewCategory"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 

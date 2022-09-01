@@ -70,14 +70,6 @@ public class HomepageFragment extends Fragment {
             intent.putExtra("news_id", newsId);
             intent.putExtra("news_list_id", newsIdList);
             startActivity(intent);
-        }, news -> {
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_SEND);
-            i.putExtra(Intent.EXTRA_TEXT, news.url);
-            i.putExtra("title", news.title);
-            i.setType("text/plain");
-            Intent shareIntent = Intent.createChooser(i, null);
-            startActivity(shareIntent);
         });
 
         binding.recyclerViewHomepage.setAdapter(adapter);
