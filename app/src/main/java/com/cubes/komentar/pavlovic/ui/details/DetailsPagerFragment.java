@@ -221,7 +221,7 @@ public class DetailsPagerFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("news", title);
-                mFirebaseAnalytics.logEvent("selected_news", bundle);
+                mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
                 detailsListener.onDetailsResponseListener(newsId, newsUrl);
 

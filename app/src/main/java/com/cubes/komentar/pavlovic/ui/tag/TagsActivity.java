@@ -88,7 +88,7 @@ public class TagsActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("tags", title);
-        mFirebaseAnalytics.logEvent("selected_tags", bundle);
+        mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);

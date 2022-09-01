@@ -111,7 +111,7 @@ public class HomePagerFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putString("category", categoryName);
-        mFirebaseAnalytics.logEvent("selected_category", bundle);
+        mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);

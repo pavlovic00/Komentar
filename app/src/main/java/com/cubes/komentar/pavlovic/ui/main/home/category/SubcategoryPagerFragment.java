@@ -115,7 +115,7 @@ public class SubcategoryPagerFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putString("subcategory", subcategoryName);
-        mFirebaseAnalytics.logEvent("selected_subcategory", bundle);
+        mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
