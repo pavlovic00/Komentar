@@ -35,7 +35,8 @@ public class RvItemWebViewDetail implements RecyclerViewItemDetail {
 
         binding.webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
                 webViewListener.onWebViewLoaded();
             }
         });
