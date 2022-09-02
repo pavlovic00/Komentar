@@ -9,6 +9,7 @@ import android.view.animation.RotateAnimation;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
@@ -45,6 +46,8 @@ public class TagsActivity extends AppCompatActivity {
         binding.textViewTag.setText(title);
 
         binding.imageBack.setOnClickListener(view1 -> finish());
+
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.blue_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadTagData();

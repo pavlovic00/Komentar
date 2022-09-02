@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cubes.komentar.databinding.ActivityDetailsBinding;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 
-public class DetailsActivity extends AppCompatActivity implements DetailsPagerFragment.DetailsListener {
+public class DetailsActivity extends AppCompatActivity implements DetailsPagerFragment.DetailListener {
 
     private ActivityDetailsBinding binding;
     private int newsId;

@@ -34,6 +34,7 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleDetail;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebViewDetail;
 import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.WebViewListener;
 
 import java.util.ArrayList;
 
@@ -108,11 +109,11 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
         return this.items.size();
     }
 
-    public void setDataItems(NewsDetail response) {
+    public void setDataItems(NewsDetail response, WebViewListener webViewListener) {
         //Reklama
         this.items.add(new RvItemAdsDetail());
         //0
-        this.items.add(new RvItemWebViewDetail(response));
+        this.items.add(new RvItemWebViewDetail(response, webViewListener));
         //1-2
         //Reklama
         this.items.add(new RvItemAdsDetail());
@@ -142,6 +143,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
                 this.items.add(new RvItemRelatedNews(news, detailsListener, response.relatedNews));
             }
         }
+
         notifyDataSetChanged();
     }
 
