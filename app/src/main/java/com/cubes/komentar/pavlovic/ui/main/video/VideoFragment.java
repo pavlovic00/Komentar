@@ -101,8 +101,9 @@ public class VideoFragment extends Fragment {
         dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-                nextPage = 2;
                 adapter.setData(response);
+                binding.recyclerViewVideo.setItemViewCacheSize(50);
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

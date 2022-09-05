@@ -31,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
 
         for (int i = 0; i < newsListId.length; i++) {
             if (newsId == newsListId[i]) {
-                binding.viewPager2.setCurrentItem(i);
+                binding.viewPager2.setCurrentItem(i, false);
                 break;
             }
         }

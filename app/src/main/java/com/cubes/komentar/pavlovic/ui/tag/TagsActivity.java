@@ -99,9 +99,9 @@ public class TagsActivity extends AppCompatActivity {
         dataRepository.loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
-
-                nextPage = 2;
                 adapter.setTagData(responseNewsList);
+                binding.recyclerViewTags.setItemViewCacheSize(50);
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

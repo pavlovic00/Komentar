@@ -80,6 +80,7 @@ public class LatestFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.addNewsList(response);
+                binding.recyclerViewLatest.setItemViewCacheSize(50);
                 nextPage++;
             }
 
@@ -101,8 +102,9 @@ public class LatestFragment extends Fragment {
         dataRepository.loadLatestData(1, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-                nextPage = 2;
                 adapter.setData(response);
+                binding.recyclerViewLatest.setItemViewCacheSize(50);
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

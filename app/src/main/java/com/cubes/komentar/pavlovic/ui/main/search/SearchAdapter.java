@@ -78,7 +78,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             items.add(new RvItemLoadingSearch(loadingNewsListener));
         }
 
-        notifyDataSetChanged();
+        // notifyDataSetChanged();
+        notifyItemRangeChanged(20, items.size());
     }
 
     public void setSearchData(ArrayList<News> list) {

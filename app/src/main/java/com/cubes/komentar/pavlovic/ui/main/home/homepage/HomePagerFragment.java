@@ -122,6 +122,7 @@ public class HomePagerFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.setData(response);
+                binding.recyclerViewPager2.setItemViewCacheSize(50);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

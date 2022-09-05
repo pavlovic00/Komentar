@@ -82,7 +82,8 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
             items.add(new RvItemLoadingLatest(loadingNewsListener));
         }
 
-        notifyDataSetChanged();
+       // notifyDataSetChanged();
+        notifyItemRangeChanged(20, items.size());
     }
 
     public void setData(ArrayList<News> list) {

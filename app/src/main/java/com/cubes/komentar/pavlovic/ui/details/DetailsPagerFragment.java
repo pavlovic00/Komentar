@@ -120,7 +120,7 @@ public class DetailsPagerFragment extends Fragment {
             votes = (ArrayList<Vote>) SharedPrefs.readListFromPref(requireActivity());
         }
 
-        binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerViewDetails.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DetailsAdapter(new DetailsListener() {
             @Override
             public void onNewsClickedVP(int newsId, int[] newsIdList) {
@@ -207,20 +207,22 @@ public class DetailsPagerFragment extends Fragment {
             }
         });
 
-        binding.recyclerViewHomepage.setAdapter(adapter);
+        binding.recyclerViewDetails.setAdapter(adapter);
+
     }
 
     public void loadDetailData() {
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        binding.recyclerViewHomepage.setVisibility(View.GONE);
+        binding.recyclerViewDetails.setVisibility(View.GONE);
 
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(NewsDetail response) {
                 adapter.setDataItems(response, () -> {
                     binding.progressBar.setVisibility(View.GONE);
-                    binding.recyclerViewHomepage.setVisibility(View.VISIBLE);
+                    binding.recyclerViewDetails.setVisibility(View.VISIBLE);
+                    binding.recyclerViewDetails.setItemViewCacheSize(50);
                 });
 
                 newsId = response.id;
