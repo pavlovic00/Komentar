@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -18,38 +19,41 @@
             android:id="@+id/buttonNajnovije"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/margin_main"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginStart="@dimen/margin_main_12"
+            android:layout_marginTop="@dimen/margin_main_12"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="Najnovije"
+            android:text="@string/text_view_latest"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/buttonNajcitanije"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/margin_main"
-            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginStart="@dimen/margin_main_12"
+            android:layout_marginTop="@dimen/margin_main_12"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="Najčitanije"
+            android:text="@string/text_view_the_most_read"
             app:layout_constraintStart_toEndOf="@+id/buttonNajnovije"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/buttonKomentari"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/margin_main"
-            android:layout_marginTop="@dimen/margin_main"
-            android:layout_marginRight="@dimen/margin_main"
+            android:layout_marginLeft="@dimen/margin_main_12"
+            android:layout_marginTop="@dimen/margin_main_12"
+            android:layout_marginRight="@dimen/margin_main_12"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="Komentari"
+            android:text="@string/text_view_comments"
             app:layout_constraintStart_toEndOf="@+id/buttonNajcitanije"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
@@ -67,7 +71,7 @@
             android:id="@+id/view1"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginLeft="@dimen/margin_main"
+            android:layout_marginStart="@dimen/margin_main_12"
             android:layout_weight="1"
             android:background="@color/red" />
 
@@ -75,7 +79,7 @@
             android:id="@+id/view2"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginLeft="@dimen/margin_main"
+            android:layout_marginStart="@dimen/margin_main_12"
             android:layout_weight="1"
             android:background="@color/gray" />
 
@@ -83,8 +87,8 @@
             android:id="@+id/view3"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginLeft="@dimen/margin_main"
-            android:layout_marginRight="@dimen/margin_main"
+            android:layout_marginLeft="@dimen/margin_main_12"
+            android:layout_marginRight="@dimen/margin_main_12"
             android:layout_weight="1"
             android:background="@color/gray" />
 

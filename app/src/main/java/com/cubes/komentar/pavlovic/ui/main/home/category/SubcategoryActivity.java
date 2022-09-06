@@ -79,7 +79,7 @@ public class SubcategoryActivity extends AppCompatActivity {
                         (tab, position) -> tab.setText(mCategory.subcategories.get(position).name)
                 ).attach();
 
-                binding.viewPager.setCurrentItem(currentSubcategoryPosition);
+                binding.viewPager.setCurrentItem(currentSubcategoryPosition, false);
             }
 
             @Override

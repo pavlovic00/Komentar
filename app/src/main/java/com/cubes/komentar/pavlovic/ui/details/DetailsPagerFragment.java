@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentDetailsBinding;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
@@ -28,6 +29,7 @@ import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -41,12 +43,12 @@ public class DetailsPagerFragment extends Fragment {
     private String title;
     private String newsUrl;
     private DetailsAdapter adapter;
-    private DetailsListener detailsListener;
+    private DetailListener detailListener;
     private ArrayList<Vote> votes = new ArrayList<>();
     private DataRepository dataRepository;
 
 
-    public interface DetailsListener {
+    public interface DetailListener {
         void onDetailsResponseListener(int newsId, String newsUrl);
     }
 
@@ -64,7 +66,7 @@ public class DetailsPagerFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.detailsListener = (DetailsListener) context;
+        this.detailListener = (DetailListener) context;
     }
 
     @Override
@@ -83,7 +85,9 @@ public class DetailsPagerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         binding = FragmentDetailsBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
     }
 
@@ -91,6 +95,7 @@ public class DetailsPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadDetailData();
@@ -106,7 +111,7 @@ public class DetailsPagerFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        detailsListener.onDetailsResponseListener(newsId, newsUrl);
+        detailListener.onDetailsResponseListener(newsId, newsUrl);
     }
 
     private void setupRecyclerView() {
@@ -115,8 +120,8 @@ public class DetailsPagerFragment extends Fragment {
             votes = (ArrayList<Vote>) SharedPrefs.readListFromPref(requireActivity());
         }
 
-        binding.recyclerViewHomepage.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new DetailsAdapter(new com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener() {
+        binding.recyclerViewDetails.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new DetailsAdapter(new DetailsListener() {
             @Override
             public void onNewsClickedVP(int newsId, int[] newsIdList) {
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
@@ -137,7 +142,7 @@ public class DetailsPagerFragment extends Fragment {
             @Override
             public void onPutCommentClicked(NewsDetail data) {
                 Intent i = new Intent(getContext(), PostCommentActivity.class);
-                i.putExtra("id", data.id);
+                i.putExtra("news_id", data.id);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }
@@ -145,7 +150,7 @@ public class DetailsPagerFragment extends Fragment {
             @Override
             public void onAllCommentClicked(NewsDetail data) {
                 Intent commentIntent = new Intent(getContext(), AllCommentActivity.class);
-                commentIntent.putExtra("id", data.id);
+                commentIntent.putExtra("news_id", data.id);
                 commentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(commentIntent);
             }
@@ -202,18 +207,23 @@ public class DetailsPagerFragment extends Fragment {
             }
         });
 
-        binding.recyclerViewHomepage.setAdapter(adapter);
+        binding.recyclerViewDetails.setAdapter(adapter);
+
     }
 
     public void loadDetailData() {
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        binding.recyclerViewHomepage.setVisibility(View.GONE);
+        binding.recyclerViewDetails.setVisibility(View.GONE);
 
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(NewsDetail response) {
-                adapter.setDataItems(response);
+                adapter.setDataItems(response, () -> {
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.recyclerViewDetails.setVisibility(View.VISIBLE);
+                    binding.recyclerViewDetails.setItemViewCacheSize(50);
+                });
 
                 newsId = response.id;
                 newsUrl = response.url;
@@ -221,13 +231,11 @@ public class DetailsPagerFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("news", title);
-                mFirebaseAnalytics.logEvent("selected_news", bundle);
+                mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
-                detailsListener.onDetailsResponseListener(newsId, newsUrl);
+                detailListener.onDetailsResponseListener(newsId, newsUrl);
 
                 binding.refresh.setVisibility(View.GONE);
-                binding.progressBar.setVisibility(View.GONE);
-                binding.recyclerViewHomepage.setVisibility(View.VISIBLE);
                 binding.swipeRefresh.setRefreshing(false);
             }
 

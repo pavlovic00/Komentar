@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityAllCommentBinding;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
@@ -44,6 +45,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadCommentData();

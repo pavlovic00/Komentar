@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentViewPagerCategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
@@ -72,6 +73,7 @@ public class HomePagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadCategoriesHomeData();
@@ -111,7 +113,7 @@ public class HomePagerFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putString("category", categoryName);
-        mFirebaseAnalytics.logEvent("selected_category", bundle);
+        mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewPager2.setVisibility(View.GONE);
@@ -120,6 +122,7 @@ public class HomePagerFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.setData(response);
+                binding.recyclerViewPager2.setItemViewCacheSize(50);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

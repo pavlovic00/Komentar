@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentSearchBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
@@ -87,6 +88,7 @@ public class SearchFragment extends Fragment {
             binding.imageViewObavestenje.setVisibility(View.GONE);
         });
 
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadSearchData();
@@ -152,6 +154,7 @@ public class SearchFragment extends Fragment {
                         binding.obavestenje.setVisibility(View.VISIBLE);
                         binding.imageViewObavestenje.setVisibility(View.VISIBLE);
                     }
+                    binding.recyclerViewSearch.setItemViewCacheSize(50);
 
                     nextPage = 2;
                     binding.refresh.setVisibility(View.GONE);

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cubes.komentar.databinding.ActivityDetailsBinding;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 
-public class DetailsActivity extends AppCompatActivity implements DetailsPagerFragment.DetailsListener {
+public class DetailsActivity extends AppCompatActivity implements DetailsPagerFragment.DetailListener {
 
     private ActivityDetailsBinding binding;
     private int newsId;
@@ -31,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
 
         for (int i = 0; i < newsListId.length; i++) {
             if (newsId == newsListId[i]) {
-                binding.viewPager2.setCurrentItem(i);
+                binding.viewPager2.setCurrentItem(i, false);
                 break;
             }
         }

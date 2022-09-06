@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -189,6 +190,15 @@ public class HomeActivity extends AppCompatActivity {
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 
         loadHomeData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            this.binding.drawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void loadHomeData() {

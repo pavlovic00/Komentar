@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_main">12dp</dimen>
-    <dimen name="text_size_biggest">28sp</dimen>
-    <dimen name="text_size_big">22sp</dimen>
-    <dimen name="text_size_normal">18sp</dimen>
-    <dimen name="text_size_medium">14sp</dimen>
-    <dimen name="text_size_small">12sp</dimen>
-    <dimen name="margin_small">8dp</dimen>
-    <dimen name="margin_big">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    //Margin dimens
+    <dimen name="margin_small_8">8dp</dimen>
+    <dimen name="margin_main_12">12dp</dimen>
+    <dimen name="margin_big_16">16dp</dimen>
+    //Text size
+    <dimen name="text_size_smallest_8">8sp</dimen>
+    <dimen name="text_size_small_12">12sp</dimen>
+    <dimen name="text_size_medium_14">14sp</dimen>
+    <dimen name="text_size_medium_16">16sp</dimen>
+    <dimen name="text_size_normal_18">18sp</dimen>
+    <dimen name="text_size_big_22">22sp</dimen>
+    <dimen name="text_size_biggest_28">28sp</dimen>
 </resources>

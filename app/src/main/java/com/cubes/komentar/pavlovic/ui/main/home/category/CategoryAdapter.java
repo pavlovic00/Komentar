@@ -81,7 +81,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             DrawerLayout drawer = ((HomeActivity) view.getContext()).findViewById(R.id.drawerLayout);
             ViewPager viewPager = ((HomeActivity) view.getContext()).findViewById(R.id.viewPagerHome);
             drawer.closeDrawer(((HomeActivity) view.getContext()).findViewById(R.id.navigationView));
-            viewPager.setCurrentItem(position + 1);
+            viewPager.setCurrentItem(position + 1, false);
         });
     }
 

@@ -5,8 +5,8 @@ import android.graphics.Color;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemBigBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 

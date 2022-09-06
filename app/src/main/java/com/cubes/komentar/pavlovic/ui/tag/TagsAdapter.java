@@ -78,7 +78,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             items.add(new RvItemLoadingTag(loadingNewsListener));
         }
 
-        notifyDataSetChanged();
+        // notifyDataSetChanged();
+        notifyItemRangeChanged(20, items.size());
     }
 
     public void setTagData(ArrayList<News> list) {

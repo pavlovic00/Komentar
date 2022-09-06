@@ -9,6 +9,7 @@ import android.view.animation.RotateAnimation;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
@@ -45,6 +46,8 @@ public class TagsActivity extends AppCompatActivity {
         binding.textViewTag.setText(title);
 
         binding.imageBack.setOnClickListener(view1 -> finish());
+
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadTagData();
@@ -88,7 +91,7 @@ public class TagsActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("tags", title);
-        mFirebaseAnalytics.logEvent("selected_tags", bundle);
+        mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerViewTags.setVisibility(View.GONE);
@@ -96,9 +99,9 @@ public class TagsActivity extends AppCompatActivity {
         dataRepository.loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
-
-                nextPage = 2;
                 adapter.setTagData(responseNewsList);
+                binding.recyclerViewTags.setItemViewCacheSize(50);
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

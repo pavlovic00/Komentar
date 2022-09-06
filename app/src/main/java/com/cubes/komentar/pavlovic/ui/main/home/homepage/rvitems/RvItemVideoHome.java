@@ -6,18 +6,23 @@ import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
-import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class RvItemVideoHome implements RecyclerViewItemHomepage {
 
     private final News video;
-    private final VideoListener videoListener;
+    private final NewsListener newsListener;
+    private final int[] newsListId;
 
 
-    public RvItemVideoHome(News video, VideoListener videoListener) {
+    public RvItemVideoHome(News video, NewsListener newsListener, ArrayList<News> newsList) {
         this.video = video;
-        this.videoListener = videoListener;
+        this.newsListener = newsListener;
+        this.newsListId = MyMethodsClass.initNewsIdList(newsList);
     }
 
     @Override
@@ -36,6 +41,6 @@ public class RvItemVideoHome implements RecyclerViewItemHomepage {
         bindingVideo.textViewCategory.setTextColor(Color.parseColor(video.category.color));
         Picasso.get().load(video.image).into(bindingVideo.imageView);
 
-        bindingVideo.imageViewPlay.setOnClickListener(view -> videoListener.onVideoClicked(video));
+        bindingVideo.imageViewPlay.setOnClickListener(view -> newsListener.onNewsClickedVP(video.id, newsListId));
     }
 }

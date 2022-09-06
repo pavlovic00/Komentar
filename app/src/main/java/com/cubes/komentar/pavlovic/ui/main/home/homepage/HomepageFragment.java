@@ -13,18 +13,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentHomepageBinding;
+import com.cubes.komentar.pavlovic.data.domain.CategoryBox;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.NewsList;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
+
+import java.util.ArrayList;
 
 public class HomepageFragment extends Fragment {
 
     private FragmentHomepageBinding binding;
-    public HomepageAdapter adapter;
+    private HomepageAdapter adapter;
     private DataRepository dataRepository;
+    private int[] newsListId;
 
 
     public static HomepageFragment newInstance() {
@@ -51,6 +58,7 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadHomeData();
@@ -68,16 +76,8 @@ public class HomepageFragment extends Fragment {
         adapter = new HomepageAdapter((newsId, newsIdList) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
             intent.putExtra("news_id", newsId);
-            intent.putExtra("news_list_id", newsIdList);
+            intent.putExtra("news_list_id", newsListId);
             startActivity(intent);
-        }, news -> {
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_SEND);
-            i.putExtra(Intent.EXTRA_TEXT, news.url);
-            i.putExtra("title", news.title);
-            i.setType("text/plain");
-            Intent shareIntent = Intent.createChooser(i, null);
-            startActivity(shareIntent);
         });
 
         binding.recyclerViewHomepage.setAdapter(adapter);
@@ -92,6 +92,8 @@ public class HomepageFragment extends Fragment {
             @Override
             public void onResponse(NewsList response) {
                 adapter.setDataItems(response);
+                newsListId = getAllId(response);
+                binding.recyclerViewHomepage.setItemViewCacheSize(50);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
@@ -107,6 +109,30 @@ public class HomepageFragment extends Fragment {
             }
         });
 
+    }
+
+    private int[] getAllId(NewsList response) {
+
+        ArrayList<News> allNews = new ArrayList<>();
+
+        allNews.addAll(response.slider);
+        allNews.addAll(response.top);
+        allNews.addAll(response.latest);
+        allNews.addAll(response.mostRead);
+        allNews.addAll(response.mostCommented);
+        for (CategoryBox categoryBox : response.category) {
+            if (categoryBox.title.equalsIgnoreCase("Sport")) {
+                allNews.addAll(categoryBox.news);
+            }
+        }
+        allNews.addAll(response.videos);
+        for (CategoryBox categoryBox : response.category) {
+            if (!categoryBox.title.equalsIgnoreCase("Sport")) {
+                allNews.addAll(categoryBox.news);
+            }
+        }
+
+        return MyMethodsClass.initNewsIdList(allNews);
     }
 
     public void refresh() {

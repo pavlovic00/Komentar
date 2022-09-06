@@ -7,21 +7,22 @@
     android:orientation="vertical"
     tools:context=".pavlovic.ui.main.home.category.SubcategoryActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue">
+        android:background="@color/purple">
 
         <ImageView
             android:id="@+id/imageViewBack"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/margin_small_8"
+            android:padding="10dp"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -41,18 +42,19 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <ImageView
             android:id="@+id/imageViewRefresh"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_refresh"
             android:translationZ="90dp"
             android:visibility="gone"
-            app:tint="@color/blue_dark" />
+            app:tint="@color/purple_dark"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:id="@+id/linear_layout_category_pager"
@@ -64,7 +66,7 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/blue_light"
+                android:background="@color/purple_light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +74,7 @@
                 app:tabIndicatorColor="@color/white"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/white"
-                app:tabTextColor="@color/white_transparent" />
+                app:tabTextColor="@color/white_transparent56" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"

@@ -51,19 +51,33 @@ public class PostCommentActivity extends AppCompatActivity {
         }
 
         binding.content.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == EditorInfo.IME_ACTION_SEND) {
-                if (reply_id == null) {
-                    postComment(name, email, content);
-                    hideKeyboard(PostCommentActivity.this);
-                    Log.d("COMPOST", "RADIPOST");
+
+            if (binding.name.getText().toString().isEmpty() ||
+                    binding.mail.getText().toString().isEmpty() ||
+                    binding.content.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Popunite sva polja", Toast.LENGTH_LONG).show();
+            } else {
+
+                if (!isEmailValid(binding.mail.getText())) {
+                    Toast.makeText(getApplicationContext(), "Email nije ispravan!", Toast.LENGTH_LONG).show();
                 } else {
-                    replyComment(name, email, content);
-                    hideKeyboard(PostCommentActivity.this);
-                    Log.d("COMPOST", "RADIREPLY");
+                    if (i == EditorInfo.IME_ACTION_SEND) {
+                        if (reply_id == null) {
+                            postComment(name, email, content);
+                            hideKeyboard(PostCommentActivity.this);
+                            Log.d("COMPOST", "RADIPOST");
+                        } else {
+                            replyComment(name, email, content);
+                            hideKeyboard(PostCommentActivity.this);
+                            Log.d("COMPOST", "RADIREPLY");
+                        }
+                    }
                 }
+
             }
             return false;
         });
+
 
         binding.commentSend.setOnClickListener(view12 -> {
             if (binding.name.getText().toString().isEmpty() ||
@@ -72,12 +86,16 @@ public class PostCommentActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Popunite sva polja", Toast.LENGTH_LONG).show();
             } else {
 
-                if (reply_id == null) {
-                    postComment(name, email, content);
-                    Log.d("COMPOST", "RADIPOST");
+                if (!isEmailValid(binding.mail.getText())) {
+                    Toast.makeText(getApplicationContext(), "Email nije ispravan!", Toast.LENGTH_LONG).show();
                 } else {
-                    replyComment(name, email, content);
-                    Log.d("COMPOST", "RADIREPLY");
+                    if (reply_id == null) {
+                        postComment(name, email, content);
+                        Log.d("COMPOST", "RADIPOST");
+                    } else {
+                        replyComment(name, email, content);
+                        Log.d("COMPOST", "RADIREPLY");
+                    }
                 }
 
             }
@@ -132,4 +150,9 @@ public class PostCommentActivity extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
 }

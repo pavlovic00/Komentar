@@ -13,11 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentVideoBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
+import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 
 import java.util.ArrayList;
 
@@ -54,6 +56,7 @@ public class VideoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadDataVideo();
@@ -68,14 +71,11 @@ public class VideoFragment extends Fragment {
     public void setupRecyclerView() {
 
         binding.recyclerViewVideo.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new VideoAdapter(news -> {
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_SEND);
-            i.putExtra(Intent.EXTRA_TEXT, news.url);
-            i.putExtra("title", news.title);
-            i.setType("text/plain");
-            Intent shareIntent = Intent.createChooser(i, null);
-            startActivity(shareIntent);
+        adapter = new VideoAdapter((newsId, newsIdList) -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra("news_id", newsId);
+            intent.putExtra("news_list_id", newsIdList);
+            startActivity(intent);
         }, () -> dataRepository.loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
@@ -101,8 +101,9 @@ public class VideoFragment extends Fragment {
         dataRepository.loadVideoData(0, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-                nextPage = 2;
                 adapter.setData(response);
+                binding.recyclerViewVideo.setItemViewCacheSize(50);
+                nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);
