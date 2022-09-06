@@ -16,7 +16,7 @@
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
+            android:background="@color/purple"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -25,17 +25,19 @@
                 android:id="@+id/imageBack"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:padding="13dp"
-                android:src="@drawable/ic_komentar_logo" />
+                android:src="@drawable/ic_komentar_logo"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/imageRight"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:padding="12dp"
-                android:src="@drawable/ic_menu" />
+                android:src="@drawable/ic_menu"
+                tools:ignore="ContentDescription" />
 
         </FrameLayout>
 
@@ -53,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small_8"
             android:visibility="gone"
             ads:adSize="LARGE_BANNER"
             ads:adUnitId="@string/banner_ad_unit_id"
@@ -70,13 +72,14 @@
             android:visibility="gone"
             ads:layout_constraintEnd_toEndOf="@+id/adsView"
             ads:layout_constraintTop_toTopOf="@+id/adsView"
-            ads:tint="@color/black" />
+            ads:tint="@color/black"
+            tools:ignore="ContentDescription" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
+            android:background="@color/purple"
             app:itemIconTint="@color/white"
             app:itemTextColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="@color/blue">
+        android:background="@color/purple">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -99,28 +102,30 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:padding="10dp"
                     android:src="@drawable/ic_komentar_logo"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:id="@+id/imageClose"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:padding="15dp"
                     android:src="@drawable/ic_close"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -134,7 +139,7 @@
                     android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_margin="@dimen/margin_main"
+                    android:layout_margin="@dimen/margin_main_12"
                     android:background="@color/gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -144,12 +149,12 @@
                     android:id="@+id/vremenska_prognoza"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Vremenska prognoza"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_weather"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/view" />
 
@@ -157,12 +162,12 @@
                     android:id="@+id/kursna_lista"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Kursna lista"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_course_list"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/vremenska_prognoza" />
 
@@ -170,12 +175,12 @@
                     android:id="@+id/horoskop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Horoskop"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_horoscope"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/kursna_lista" />
 
@@ -183,7 +188,7 @@
                     android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_margin="@dimen/margin_main"
+                    android:layout_margin="@dimen/margin_main_12"
                     android:background="@color/gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -193,12 +198,12 @@
                     android:id="@+id/push_notifikacije"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Push notifikacije"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_push_notification"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view2" />
 
@@ -206,7 +211,7 @@
                     android:id="@+id/switchNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margin_main"
+                    android:layout_marginEnd="@dimen/margin_main_12"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/push_notifikacije"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -215,12 +220,12 @@
                     android:id="@+id/marketing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Marketing"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_marketing"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/push_notifikacije" />
 
@@ -228,12 +233,12 @@
                     android:id="@+id/uslovi_koriscenja"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Uslovi korišćenja"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_terms_of_use"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/marketing" />
 
@@ -241,19 +246,19 @@
                     android:id="@+id/kontakt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Kontakt"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="@dimen/margin_small_8"
+                    android:text="@string/menu_contact"
                     android:textAllCaps="true"
                     android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_18"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/uslovi_koriscenja" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_main"
+                    android:layout_margin="@dimen/margin_main_12"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -263,32 +268,37 @@
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main"
-                        android:src="@drawable/ic_facebook" />
+                        android:layout_margin="@dimen/margin_main_12"
+                        android:src="@drawable/ic_facebook"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main"
-                        android:src="@drawable/ic_instagram" />
+                        android:layout_margin="@dimen/margin_main_12"
+                        android:src="@drawable/ic_instagram"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main"
-                        android:src="@drawable/ic_twitter" />
+                        android:layout_margin="@dimen/margin_main_12"
+                        android:src="@drawable/ic_twitter"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main"
-                        android:src="@drawable/ic_viber" />
+                        android:layout_margin="@dimen/margin_main_12"
+                        android:src="@drawable/ic_viber"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main"
-                        android:src="@drawable/ic_whatsapp" />
+                        android:layout_margin="@dimen/margin_main_12"
+                        android:src="@drawable/ic_whatsapp"
+                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 

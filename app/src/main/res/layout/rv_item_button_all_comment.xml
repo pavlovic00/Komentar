@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_main"
-    android:layout_marginBottom="@dimen/margin_main">
+    android:layout_marginTop="@dimen/margin_main_12"
+    android:layout_marginBottom="@dimen/margin_main_12">
 
     <LinearLayout
         android:id="@+id/buttonAllComment"
         android:layout_width="190dp"
         android:layout_height="45dp"
-        android:background="@color/blue"
+        android:background="@color/purple"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,33 +22,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_big"
-            android:text="Svi komentari"
+            android:layout_marginStart="@dimen/margin_big_16"
+            android:text="@string/text_view_all_comments"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16dp"
+            android:textSize="@dimen/text_size_medium_16"
             android:textStyle="bold" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small_8"
             android:layout_marginTop="1dp"
             android:src="@drawable/ic_comment"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/commentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginBottom="1dp"
-            android:text="4"
+            android:text="@string/text_view_default_number"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

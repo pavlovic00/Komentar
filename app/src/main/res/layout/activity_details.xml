@@ -11,7 +11,7 @@
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
+        android:background="@color/purple"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,23 +21,25 @@
             android:id="@+id/imageBack"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small_8"
             android:padding="10dp"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/imageViewShare"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small_8"
             android:padding="13dp"
             android:src="@drawable/ic_share"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/allComments"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/allComments"
@@ -48,7 +50,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,14 +74,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/blue" />
+        app:tint="@color/purple"
+        tools:ignore="ContentDescription" />
 
     <ProgressBar
         android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:indeterminateTint="@color/blue_light"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

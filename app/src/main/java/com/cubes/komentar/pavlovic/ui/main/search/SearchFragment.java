@@ -88,7 +88,7 @@ public class SearchFragment extends Fragment {
             binding.imageViewObavestenje.setVisibility(View.GONE);
         });
 
-        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.blue_light));
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadSearchData();

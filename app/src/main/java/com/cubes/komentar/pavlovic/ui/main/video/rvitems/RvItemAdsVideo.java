@@ -1,7 +1,5 @@
 package com.cubes.komentar.pavlovic.ui.main.video.rvitems;
 
-import android.graphics.Color;
-
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemAdsViewBinding;
 import com.cubes.komentar.pavlovic.ui.main.video.VideoAdapter;
@@ -23,7 +21,7 @@ public class RvItemAdsVideo implements RecyclerViewItemVideo {
 
         RvItemAdsViewBinding binding = (RvItemAdsViewBinding) holder.binding;
 
-        binding.rootLayout.setBackgroundColor(Color.parseColor("#0F2039"));
+        binding.rootLayout.setBackgroundColor(Integer.parseInt(String.valueOf(binding.getRoot().getContext().getResources().getColor(R.color.purple_dark))));
 
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adsView.loadAd(adRequest);

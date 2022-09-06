@@ -45,7 +45,7 @@ public class AllCommentActivity extends AppCompatActivity {
 
         binding.imageBack.setOnClickListener(view1 -> finish());
 
-        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.blue_light));
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadCommentData();

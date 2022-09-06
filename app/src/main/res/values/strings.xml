@@ -1,19 +1,52 @@
 <resources>
     <string name="app_name">Komentar</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
     <string name="menu_home">Naslovna</string>
     <string name="menu_search">Pretraga</string>
     <string name="menu_video">Video</string>
     <string name="menu_latest">Najnovije</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_reply">ReplyActivity</string>
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="menu_weather">Vremenska prognoza</string>
+    <string name="menu_course_list">Kursna lista</string>
+    <string name="menu_horoscope">Horoskop</string>
+    <string name="menu_push_notification">Pus notifikacije</string>
+    <string name="menu_marketing">Marketing</string>
+    <string name="menu_terms_of_use">Uslovi korišćenja</string>
+    <string name="menu_contact">Kontakt</string>
+
+    <string name="text_view_date">DATE</string>
+    <string name="text_view_category">CATEGORY</string>
+    <string name="text_view_title">TITLE</string>
+    <string name="text_view_weather">Vremenska prognoza!</string>
+    <string name="text_view_horoscope">Horoskop!</string>
+    <string name="text_view_course_list">Kursna lista!</string>
+    <string name="text_view_empty_comments">Nema komentara!</string>
+    <string name="text_view_reply_activity">ReplyActivity</string>
+    <string name="text_view_loading">Ucitavanje vesti…</string>
+    <string name="text_view_number_comment">(0)</string>
+    <string name="text_view_empty_top_comments">Nema istaknutih komentara!</string>
+    <string name="text_view_leave_a_comment">Ostavi komentar</string>
+    <string name="text_view_all_comments">Svi komentari</string>
+    <string name="text_view_default_number">0</string>
+    <string name="text_view_search">Unesite pojam u traku za pretragu!</string>
+    <string name="text_view_tag">Tag</string>
+    <string name="text_view_title_with_points">Title:</string>
+    <string name="text_view_comments">Komentari</string>
+    <string name="text_view_number_like">14</string>
+    <string name="text_view_number_dislike">0</string>
+    <string name="text_view_reply">Odgovori</string>
+    <string name="text_view_description">Description.</string>
+    <string name="text_view_name">Name</string>
+    <string name="text_view_latest">Najnovije</string>
+    <string name="text_view_the_most_read">Najčitanije</string>
+    <string name="text_view_button">Button</string>
+    <string name="text_view_send_comment">Send comment</string>
+
+    <string name="hint_name_surname">Ime i Prezime:</string>
+    <string name="hint_email">Email:</string>
+    <string name="hint_description">Unesi komentar:</string>
+    <string name="hint_search">Pretraži</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

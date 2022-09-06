@@ -77,7 +77,7 @@ public class SubcategoryPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.blue_light));
+        binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
             setupRecyclerView();
             loadCategoriesHomeData();
