@@ -72,6 +72,8 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
     public void addNewsList(ArrayList<News> newsList) {
 
+        int lastIndex = items.size() - 1;
+
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
@@ -82,8 +84,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
             items.add(new RvItemLoadingLatest(loadingNewsListener));
         }
 
-       // notifyDataSetChanged();
-        notifyItemRangeChanged(20, items.size());
+        notifyItemRangeInserted(lastIndex, newsList.size() - 1);
     }
 
     public void setData(ArrayList<News> list) {

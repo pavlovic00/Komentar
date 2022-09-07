@@ -37,7 +37,7 @@ public class RvItemSlider implements RecyclerViewItemHomepage {
 
         binding.recyclerViewHorizontal.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(),
                 RecyclerView.HORIZONTAL, false));
-        binding.recyclerViewHorizontal.setAdapter(new SliderAdapter(sliderList, newsListener));
+        binding.recyclerViewHorizontal.setAdapter(new SliderAdapter(sliderList, newsListener, true));
 
         if (binding.recyclerViewHorizontal.getOnFlingListener() == null) {
             pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHorizontal);

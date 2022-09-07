@@ -68,6 +68,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public void addNewsList(ArrayList<News> newsList) {
 
+        int lastIndex = items.size() - 1;
+
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
@@ -78,8 +80,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             items.add(new RvItemLoadingSearch(loadingNewsListener));
         }
 
-        // notifyDataSetChanged();
-        notifyItemRangeChanged(20, items.size());
+        notifyItemRangeInserted(lastIndex, newsList.size() - 1);
     }
 
     public void setSearchData(ArrayList<News> list) {
