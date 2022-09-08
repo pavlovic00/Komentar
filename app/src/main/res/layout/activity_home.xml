@@ -96,215 +96,231 @@
         android:layout_gravity="end"
         android:background="@color/purple">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ProgressBar
+                android:id="@+id/progress_indicator"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="3dp"
+                android:progressTint="@color/white" />
 
-                <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="start"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_komentar_logo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="3dp">
 
-                <ImageView
-                    android:id="@+id/imageClose"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="end"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_close"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/logo" />
-
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="@dimen/margin_main_12"
-                    android:background="@color/gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-
-                <TextView
-                    android:id="@+id/vremenska_prognoza"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_weather"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/view" />
-
-                <TextView
-                    android:id="@+id/kursna_lista"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_course_list"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vremenska_prognoza" />
-
-                <TextView
-                    android:id="@+id/horoskop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_horoscope"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/kursna_lista" />
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="@dimen/margin_main_12"
-                    android:background="@color/gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/horoskop" />
-
-                <TextView
-                    android:id="@+id/push_notifikacije"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_push_notification"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-                <Switch
-                    android:id="@+id/switchNotification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_main_12"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/push_notifikacije"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-                <TextView
-                    android:id="@+id/marketing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_marketing"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/push_notifikacije" />
-
-                <TextView
-                    android:id="@+id/uslovi_koriscenja"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_terms_of_use"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/marketing" />
-
-                <TextView
-                    android:id="@+id/kontakt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="@dimen/margin_small_8"
-                    android:text="@string/menu_contact"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white_transparent76"
-                    android:textSize="@dimen/text_size_normal_18"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/uslovi_koriscenja" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_main_12"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/kontakt">
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main_12"
-                        android:src="@drawable/ic_facebook"
+                        android:id="@+id/logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="start"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_komentar_logo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_margin="@dimen/margin_main_12"
-                        android:src="@drawable/ic_instagram"
+                        android:id="@+id/imageClose"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="end"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_close"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="ContentDescription" />
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
                         android:layout_margin="@dimen/margin_main_12"
-                        android:src="@drawable/ic_twitter"
-                        tools:ignore="ContentDescription" />
+                        android:background="@color/gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                    <TextView
+                        android:id="@+id/vremenska_prognoza"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_weather"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/view" />
+
+                    <TextView
+                        android:id="@+id/kursna_lista"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_course_list"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vremenska_prognoza" />
+
+                    <TextView
+                        android:id="@+id/horoskop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_horoscope"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/kursna_lista" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
                         android:layout_margin="@dimen/margin_main_12"
-                        android:src="@drawable/ic_viber"
-                        tools:ignore="ContentDescription" />
+                        android:background="@color/gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/horoskop" />
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                    <TextView
+                        android:id="@+id/push_notifikacije"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_push_notification"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+                    <Switch
+                        android:id="@+id/switchNotification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_main_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/push_notifikacije"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                    <TextView
+                        android:id="@+id/marketing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_marketing"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/push_notifikacije" />
+
+                    <TextView
+                        android:id="@+id/uslovi_koriscenja"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_terms_of_use"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/marketing" />
+
+                    <TextView
+                        android:id="@+id/kontakt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="@dimen/margin_small_8"
+                        android:text="@string/menu_contact"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white_transparent76"
+                        android:textSize="@dimen/text_size_normal_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/uslovi_koriscenja" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin_main_12"
-                        android:src="@drawable/ic_whatsapp"
-                        tools:ignore="ContentDescription" />
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/kontakt">
 
-                </LinearLayout>
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="@dimen/margin_main_12"
+                            android:src="@drawable/ic_facebook"
+                            tools:ignore="ContentDescription" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="@dimen/margin_main_12"
+                            android:src="@drawable/ic_instagram"
+                            tools:ignore="ContentDescription" />
 
-        </ScrollView>
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="@dimen/margin_main_12"
+                            android:src="@drawable/ic_twitter"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="@dimen/margin_main_12"
+                            android:src="@drawable/ic_viber"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="@dimen/margin_main_12"
+                            android:src="@drawable/ic_whatsapp"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
 

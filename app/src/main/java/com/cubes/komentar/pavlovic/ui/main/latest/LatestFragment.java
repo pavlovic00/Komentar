@@ -79,9 +79,13 @@ public class LatestFragment extends Fragment {
         }, () -> dataRepository.loadLatestData(nextPage, new DataRepository.LatestResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-                adapter.addNewsList(response);
-                binding.recyclerViewLatest.setItemViewCacheSize(50);
-                nextPage++;
+
+                if (response == null || response.size() == 0) {
+                    adapter.removeItem();
+                } else {
+                    adapter.addNewsList(response);
+                    nextPage++;
+                }
             }
 
             @Override

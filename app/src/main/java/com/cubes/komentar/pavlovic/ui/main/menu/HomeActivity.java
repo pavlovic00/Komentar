@@ -2,6 +2,7 @@ package com.cubes.komentar.pavlovic.ui.main.menu;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -186,6 +187,15 @@ public class HomeActivity extends AppCompatActivity {
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             HomeActivity.this.startActivity(shareIntent);
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view1, i, i1, i2, i3) -> {
+                int length = binding.scrollView.getChildAt(0).getHeight() - binding.scrollView.getHeight();
+
+                binding.progressIndicator.setMax(length);
+                binding.progressIndicator.setProgress(i1);
+            });
+        }
 
         binding.logo.setImageResource(R.drawable.ic_komentar_logo);
 

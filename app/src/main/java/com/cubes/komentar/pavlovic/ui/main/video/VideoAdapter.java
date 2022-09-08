@@ -62,6 +62,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     public void addNewsList(ArrayList<News> newsList) {
 
+        int lastIndex = items.size();
+
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
@@ -72,7 +74,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             items.add(new RvItemLoadingVideo(loadingNewsListener));
         }
 
-        notifyDataSetChanged();
+        notifyItemRangeInserted(lastIndex, newsList.size());
     }
 
     public void setData(ArrayList<News> list) {
@@ -92,6 +94,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         }
 
         notifyDataSetChanged();
+    }
+
+    public void removeItem() {
+        items.remove(items.size() - 1);
+        notifyItemRemoved(items.size());
     }
 
     @Override

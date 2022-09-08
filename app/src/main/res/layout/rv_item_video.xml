@@ -23,16 +23,17 @@
         android:id="@+id/textViewTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_main_12"
+        android:layout_marginEnd="@dimen/margin_big_16"
+        android:layout_marginBottom="10dp"
         android:maxLines="3"
         android:text="@string/text_view_title"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_normal_18"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textViewCategory"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPlay" />
+        app:layout_constraintStart_toStartOf="@+id/textViewCategory" />
 
     <TextView
         android:id="@+id/textViewCategory"

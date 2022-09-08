@@ -68,6 +68,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
     public void addNewsList(ArrayList<News> newsList) {
 
+        int lastIndex = items.size();
+
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
@@ -78,8 +80,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             items.add(new RvItemLoadingTag(loadingNewsListener));
         }
 
-        // notifyDataSetChanged();
-        notifyItemRangeChanged(20, items.size());
+        notifyItemRangeInserted(lastIndex, newsList.size());
     }
 
     public void setTagData(ArrayList<News> list) {
@@ -99,6 +100,11 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         }
 
         notifyDataSetChanged();
+    }
+
+    public void removeItem() {
+        items.remove(items.size() - 1);
+        notifyItemRemoved(items.size());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

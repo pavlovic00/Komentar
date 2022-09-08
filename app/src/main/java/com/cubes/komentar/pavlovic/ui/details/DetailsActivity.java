@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.cubes.komentar.databinding.ActivityDetailsBinding;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
+
+import java.lang.reflect.Field;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsPagerFragment.DetailListener {
 
@@ -36,6 +40,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
             }
         }
 
+        reduceDragSensitivity(5);
+
         setClickListeners();
     }
 
@@ -56,6 +62,22 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
             i.setType("text/plain");
             startActivity(Intent.createChooser(i, null));
         });
+    }
+
+    public void reduceDragSensitivity(int sensitivity) {
+        try {
+            Field ff = ViewPager2.class.getDeclaredField("mRecyclerView");
+            ff.setAccessible(true);
+            RecyclerView recyclerView = (RecyclerView) ff.get(binding.viewPager2);
+            Field touchSlopField = RecyclerView.class.getDeclaredField("mTouchSlop");
+            touchSlopField.setAccessible(true);
+            int touchSlop = (int) touchSlopField.get(recyclerView);
+            touchSlopField.set(recyclerView, touchSlop * sensitivity);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

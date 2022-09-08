@@ -1,6 +1,7 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,11 +21,13 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
     private final ArrayList<News> newsList;
     private final NewsListener newsListener;
     private final int[] newsIdList;
+    private final boolean isEditorChoice;
 
 
-    public SliderAdapter(ArrayList<News> newsList, NewsListener newsListener) {
+    public SliderAdapter(ArrayList<News> newsList, NewsListener newsListener, boolean isEditorChoice) {
         this.newsList = newsList;
         this.newsListener = newsListener;
+        this.isEditorChoice = isEditorChoice;
 
         this.newsIdList = MyMethodsClass.initNewsIdList(newsList);
     }
@@ -46,6 +49,11 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
         News news = newsList.get(position);
 
         RvItemForHorizontalRvBinding binding = (RvItemForHorizontalRvBinding) holder.binding;
+
+        if (isEditorChoice) {
+            binding.date.setVisibility(View.INVISIBLE);
+            binding.textViewCategory.setVisibility(View.INVISIBLE);
+        }
 
         binding.textViewTitle.setText(news.title);
         binding.textViewCategory.setText(news.category.name);

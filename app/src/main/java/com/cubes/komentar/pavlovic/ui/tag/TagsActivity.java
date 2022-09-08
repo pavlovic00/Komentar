@@ -72,9 +72,14 @@ public class TagsActivity extends AppCompatActivity {
             startActivity(intent);
         }, () -> dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
-            public void onResponse(ArrayList<News> responseNewsList) {
-                adapter.addNewsList(responseNewsList);
-                nextPage++;
+            public void onResponse(ArrayList<News> response) {
+
+                if (response == null || response.size() == 0) {
+                    adapter.removeItem();
+                } else {
+                    adapter.addNewsList(response);
+                    nextPage++;
+                }
             }
 
             @Override

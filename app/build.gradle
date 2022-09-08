@@ -57,9 +57,9 @@ dependencies {
     //FlexBox
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     //Firebase
-    implementation 'com.google.firebase:firebase-bom:30.3.2'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.12'
-    implementation 'com.google.firebase:firebase-analytics:21.1.0'
-    implementation 'com.google.firebase:firebase-messaging:23.0.7'
+    implementation 'com.google.firebase:firebase-bom:30.4.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.13'
+    implementation 'com.google.firebase:firebase-analytics:21.1.1'
+    implementation 'com.google.firebase:firebase-messaging:23.0.8'
 
 }

@@ -79,8 +79,13 @@ public class VideoFragment extends Fragment {
         }, () -> dataRepository.loadVideoData(nextPage, new DataRepository.VideoResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-                adapter.addNewsList(response);
-                nextPage++;
+
+                if (response == null || response.size() == 0) {
+                    adapter.removeItem();
+                } else {
+                    adapter.addNewsList(response);
+                    nextPage++;
+                }
             }
 
             @Override
