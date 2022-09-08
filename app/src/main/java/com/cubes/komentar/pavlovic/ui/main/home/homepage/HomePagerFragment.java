@@ -95,8 +95,13 @@ public class HomePagerFragment extends Fragment {
         }, () -> dataRepository.loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
-                adapter.addNewsList(response);
-                nextPage++;
+
+                if (response == null || response.size() == 0) {
+                    adapter.removeItem();
+                } else {
+                    adapter.addNewsList(response);
+                    nextPage++;
+                }
             }
 
             @Override

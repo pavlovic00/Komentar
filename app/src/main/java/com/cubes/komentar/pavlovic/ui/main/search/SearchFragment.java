@@ -108,9 +108,14 @@ public class SearchFragment extends Fragment {
             startActivity(intent);
         }, () -> dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
             @Override
-            public void onResponse(ArrayList<News> responseData) {
-                adapter.addNewsList(responseData);
-                nextPage++;
+            public void onResponse(ArrayList<News> response) {
+
+                if (response == null || response.size() == 0) {
+                    adapter.removeItem();
+                } else {
+                    adapter.addNewsList(response);
+                    nextPage++;
+                }
             }
 
             @Override
