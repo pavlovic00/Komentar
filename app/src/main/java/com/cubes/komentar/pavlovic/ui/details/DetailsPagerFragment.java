@@ -46,6 +46,7 @@ public class DetailsPagerFragment extends Fragment {
     private DetailsAdapter adapter;
     private DetailListener detailListener;
     private ArrayList<Vote> votes = new ArrayList<>();
+    private final ArrayList<Comment> allComments = new ArrayList<>();
     private DataRepository dataRepository;
 
 
@@ -126,6 +127,8 @@ public class DetailsPagerFragment extends Fragment {
 
     private void setupRecyclerView() {
 
+        allComments.clear();
+
         if (SharedPrefs.readListFromPref(requireActivity()) != null) {
             votes = (ArrayList<Vote>) SharedPrefs.readListFromPref(requireActivity());
         }
@@ -145,7 +148,6 @@ public class DetailsPagerFragment extends Fragment {
                 Intent tagsIntent = new Intent(getContext(), TagsActivity.class);
                 tagsIntent.putExtra("id", tags.id);
                 tagsIntent.putExtra("title", tags.title);
-                tagsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(tagsIntent);
             }
 
@@ -153,7 +155,6 @@ public class DetailsPagerFragment extends Fragment {
             public void onPutCommentClicked(NewsDetail data) {
                 Intent i = new Intent(getContext(), PostCommentActivity.class);
                 i.putExtra("news_id", data.id);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }
 
@@ -161,7 +162,6 @@ public class DetailsPagerFragment extends Fragment {
             public void onAllCommentClicked(NewsDetail data) {
                 Intent commentIntent = new Intent(getContext(), AllCommentActivity.class);
                 commentIntent.putExtra("news_id", data.id);
-                commentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(commentIntent);
             }
 
@@ -170,7 +170,6 @@ public class DetailsPagerFragment extends Fragment {
                 Intent replyIntent = new Intent(getContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.commentId);
                 replyIntent.putExtra("news", comment.newsId);
-                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(replyIntent);
             }
 
@@ -225,6 +224,8 @@ public class DetailsPagerFragment extends Fragment {
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.linearLayout.setVisibility(View.GONE);
+        binding.left.setVisibility(View.GONE);
+        binding.right.setVisibility(View.GONE);
 
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
@@ -232,8 +233,13 @@ public class DetailsPagerFragment extends Fragment {
                 adapter.setDataItems(response, () -> {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.linearLayout.setVisibility(View.VISIBLE);
-                    binding.recyclerViewDetails.setItemViewCacheSize(50);
+                    binding.left.setVisibility(View.VISIBLE);
+                    binding.right.setVisibility(View.VISIBLE);
+                    binding.left.animate().alpha(0).setDuration(1500);
+                    binding.right.animate().alpha(0).setDuration(1500);
                 });
+
+                setDataComment(response.topComments);
 
                 newsId = response.id;
                 newsUrl = response.url;
@@ -256,6 +262,26 @@ public class DetailsPagerFragment extends Fragment {
                 binding.swipeRefresh.setRefreshing(false);
             }
         });
+    }
+
+    public void setDataComment(ArrayList<Comment> comments) {
+        allComments.addAll(comments);
+
+        if (votes != null) {
+            setVoteData(allComments, votes);
+        }
+
+        adapter.updateCommentsList(allComments);
+    }
+
+    private void setVoteData(ArrayList<Comment> allComments, ArrayList<Vote> votes) {
+        for (Comment comment : allComments) {
+            for (Vote vote : votes) {
+                if (comment.commentId.equals(vote.commentId)) {
+                    comment.vote = vote;
+                }
+            }
+        }
     }
 
     public void refresh() {

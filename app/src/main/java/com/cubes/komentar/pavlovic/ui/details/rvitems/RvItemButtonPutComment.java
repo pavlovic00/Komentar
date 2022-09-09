@@ -27,6 +27,6 @@ public class RvItemButtonPutComment implements RecyclerViewItemDetail {
 
         RvItemButtonCommentBinding binding = (RvItemButtonCommentBinding) holder.binding;
 
-        binding.buttonComment.setOnClickListener(view -> putCommentListener.onPutCommentClicked(data));
+        binding.buttonPutComment.setOnClickListener(view -> putCommentListener.onPutCommentClicked(data));
     }
 }

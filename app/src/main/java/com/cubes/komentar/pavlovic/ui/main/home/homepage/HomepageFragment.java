@@ -1,7 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.home.homepage;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,15 +65,6 @@ public class HomepageFragment extends Fragment {
             binding.progressBar.setVisibility(View.GONE);
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.nestedScrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view1, i, i1, i2, i3) -> {
-                int length = binding.nestedScrollView.getChildAt(0).getHeight() - binding.nestedScrollView.getHeight();
-
-                binding.progressIndicator.setMax(length);
-                binding.progressIndicator.setProgress(i1);
-            });
-        }
-
         setupRecyclerView();
         loadHomeData();
         refresh();
@@ -103,7 +93,7 @@ public class HomepageFragment extends Fragment {
             public void onResponse(NewsList response) {
                 adapter.setDataItems(response);
                 newsListId = getAllId(response);
-                binding.recyclerViewHomepage.setItemViewCacheSize(50);
+                binding.recyclerViewHomepage.setItemViewCacheSize(25);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

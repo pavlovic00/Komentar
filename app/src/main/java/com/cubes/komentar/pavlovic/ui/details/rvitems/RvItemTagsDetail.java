@@ -31,7 +31,16 @@ public class RvItemTagsDetail implements RecyclerViewItemDetail {
 
         RvItemGridRvBinding binding = (RvItemGridRvBinding) holder.binding;
 
-        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(binding.getRoot().getContext());
+        binding.recyclerViewGrid.stopScroll();
+
+
+        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(binding.getRoot().getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+
         binding.recyclerViewGrid.setLayoutManager(flexboxLayoutManager);
         binding.recyclerViewGrid.setAdapter(new ButtonTagsAdapter(tagsList, tagListener));
     }

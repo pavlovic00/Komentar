@@ -105,7 +105,7 @@ public class TagsActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<News> responseNewsList) {
                 adapter.setTagData(responseNewsList);
-                binding.recyclerViewTags.setItemViewCacheSize(50);
+                binding.recyclerViewTags.setItemViewCacheSize(25);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
