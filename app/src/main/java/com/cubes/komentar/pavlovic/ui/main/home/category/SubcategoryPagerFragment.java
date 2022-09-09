@@ -131,7 +131,7 @@ public class SubcategoryPagerFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.setData(response);
-                binding.recyclerViewPager2.setItemViewCacheSize(50);
+                binding.recyclerViewPager2.setItemViewCacheSize(25);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

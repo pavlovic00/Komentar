@@ -107,7 +107,7 @@ public class VideoFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.setData(response);
-                binding.recyclerViewVideo.setItemViewCacheSize(50);
+                binding.recyclerViewVideo.setItemViewCacheSize(25);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

@@ -78,7 +78,6 @@ public class AllCommentActivity extends AppCompatActivity {
                 Intent replyIntent = new Intent(getApplicationContext(), PostCommentActivity.class);
                 replyIntent.putExtra("reply_id", comment.commentId);
                 replyIntent.putExtra("news", comment.newsId);
-                replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(replyIntent);
             }
 

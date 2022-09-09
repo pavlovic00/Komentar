@@ -128,7 +128,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
         //5
         for (int i = 0; i < response.topComments.size(); i++) {
             Comment commentData = response.topComments.get(i);
-            this.items.add(new RvItemComment(commentData, detailsListener));
+            items.add(new RvItemComment(commentData, detailsListener));
         }
         //6
         this.items.add(new RvItemButtonAllComment(response, detailsListener));
@@ -142,6 +142,14 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
                 News news = response.relatedNews.get(i);
                 this.items.add(new RvItemRelatedNews(news, detailsListener, response.relatedNews));
             }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void updateCommentsList(ArrayList<Comment> comments) {
+        for (Comment comment : comments) {
+            items.add(new RvItemComment(comment, detailsListener));
         }
 
         notifyDataSetChanged();
