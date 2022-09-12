@@ -35,6 +35,7 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebViewDetail;
 import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 import com.cubes.komentar.pavlovic.ui.tools.listener.WebViewListener;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.ArrayList;
 
@@ -87,6 +88,8 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
                 break;
             case R.layout.rv_item_ads_view:
                 binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                ((RvItemAdsViewBinding) binding).adsView.loadAd(adRequest);
                 break;
         }
 

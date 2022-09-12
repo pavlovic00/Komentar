@@ -93,7 +93,15 @@ public class VideoFragment extends Fragment {
                 binding.recyclerViewVideo.setVisibility(View.GONE);
                 binding.refresh.setVisibility(View.VISIBLE);
             }
-        }));
+        }), (url, title) -> {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_SEND);
+            i.putExtra(Intent.EXTRA_TEXT, url);
+            i.putExtra("title", title);
+            i.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(i, null);
+            startActivity(shareIntent);
+        });
 
         binding.recyclerViewVideo.setAdapter(adapter);
     }
@@ -107,7 +115,6 @@ public class VideoFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<News> response) {
                 adapter.setData(response);
-                binding.recyclerViewVideo.setItemViewCacheSize(25);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);

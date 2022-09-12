@@ -20,6 +20,7 @@ import com.cubes.komentar.pavlovic.ui.main.latest.rvitems.RvItemLoadingLatest;
 import com.cubes.komentar.pavlovic.ui.main.latest.rvitems.RvItemSmallLatest;
 import com.cubes.komentar.pavlovic.ui.tools.listener.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,8 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
             binding = RvItemSmallBinding.inflate(inflater, parent, false);
         } else if (viewType == R.layout.rv_item_ads_view) {
             binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            ((RvItemAdsViewBinding) binding).adsView.loadAd(adRequest);
         } else {
             binding = RvItemLoadingBinding.inflate(inflater, parent, false);
         }

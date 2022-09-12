@@ -30,6 +30,8 @@ import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemSmall;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemTitle;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.rvitems.RvItemVideoHome;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.ArrayList;
 
@@ -37,10 +39,12 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
 
     private final ArrayList<RecyclerViewItemHomepage> items = new ArrayList<>();
     private final NewsListener newsListener;
+    private final VideoListener videoListener;
 
 
-    public HomepageAdapter(NewsListener newsListener) {
+    public HomepageAdapter(NewsListener newsListener, VideoListener videoListener) {
         this.newsListener = newsListener;
+        this.videoListener = videoListener;
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -73,6 +77,8 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
                 break;
             case R.layout.rv_item_ads_view:
                 binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                ((RvItemAdsViewBinding) binding).adsView.loadAd(adRequest);
                 break;
             default:
                 binding = RvItemHorizontalTextViewBinding.inflate(inflater, parent, false);
@@ -83,19 +89,16 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         this.items.get(position).bind(holder);
     }
 
     @Override
     public int getItemViewType(int position) {
-
         return this.items.get(position).getType();
     }
 
     @Override
     public int getItemCount() {
-
         return this.items.size();
     }
 
@@ -136,7 +139,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             items.add(new RvItemTitle("Video", "#FF0000"));
 
             for (News video : response.videos) {
-                items.add(new RvItemVideoHome(video, newsListener, response.videos));
+                items.add(new RvItemVideoHome(video, newsListener, response.videos, videoListener));
             }
         }
         //Reklama

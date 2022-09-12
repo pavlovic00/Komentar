@@ -159,7 +159,6 @@ public class SearchFragment extends Fragment {
                         binding.obavestenje.setVisibility(View.VISIBLE);
                         binding.imageViewObavestenje.setVisibility(View.VISIBLE);
                     }
-                    binding.recyclerViewSearch.setItemViewCacheSize(25);
 
                     nextPage = 2;
                     binding.refresh.setVisibility(View.GONE);

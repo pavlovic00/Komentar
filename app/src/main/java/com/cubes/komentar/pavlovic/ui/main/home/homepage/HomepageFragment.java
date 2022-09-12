@@ -78,6 +78,14 @@ public class HomepageFragment extends Fragment {
             intent.putExtra("news_id", newsId);
             intent.putExtra("news_list_id", newsListId);
             startActivity(intent);
+        }, (url, title) -> {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_SEND);
+            i.putExtra(Intent.EXTRA_TEXT, url);
+            i.putExtra("title", title);
+            i.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(i, null);
+            startActivity(shareIntent);
         });
 
         binding.recyclerViewHomepage.setAdapter(adapter);
@@ -93,7 +101,6 @@ public class HomepageFragment extends Fragment {
             public void onResponse(NewsList response) {
                 adapter.setDataItems(response);
                 newsListId = getAllId(response);
-                binding.recyclerViewHomepage.setItemViewCacheSize(25);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.progressBar.setVisibility(View.GONE);

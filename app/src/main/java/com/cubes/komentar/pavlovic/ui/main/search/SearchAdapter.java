@@ -19,6 +19,7 @@ import com.cubes.komentar.pavlovic.ui.main.search.rvitems.RvItemLoadingSearch;
 import com.cubes.komentar.pavlovic.ui.main.search.rvitems.RvItemSmallSearch;
 import com.cubes.komentar.pavlovic.ui.tools.listener.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             binding = RvItemSmallBinding.inflate(inflater, parent, false);
         } else if (viewType == R.layout.rv_item_ads_view) {
             binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            ((RvItemAdsViewBinding) binding).adsView.loadAd(adRequest);
         } else {
             binding = RvItemLoadingBinding.inflate(inflater, parent, false);
         }

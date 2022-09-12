@@ -18,6 +18,8 @@ import com.cubes.komentar.pavlovic.ui.main.video.rvitems.RvItemLoadingVideo;
 import com.cubes.komentar.pavlovic.ui.main.video.rvitems.RvItemVideo;
 import com.cubes.komentar.pavlovic.ui.tools.listener.LoadingNewsListener;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
+import com.cubes.komentar.pavlovic.ui.tools.listener.VideoListener;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.ArrayList;
 
@@ -25,11 +27,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     private final ArrayList<RecyclerViewItemVideo> items = new ArrayList<>();
     private final NewsListener newsListener;
+    private final VideoListener videoListener;
     private final LoadingNewsListener loadingNewsListener;
 
 
-    public VideoAdapter(NewsListener newsListener, LoadingNewsListener loadingNewsListener) {
+    public VideoAdapter(NewsListener newsListener, LoadingNewsListener loadingNewsListener, VideoListener videoListener) {
         this.newsListener = newsListener;
+        this.videoListener = videoListener;
         this.loadingNewsListener = loadingNewsListener;
     }
 
@@ -44,6 +48,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             binding = RvItemVideoBinding.inflate(inflater, parent, false);
         } else if (viewType == R.layout.rv_item_ads_view) {
             binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            ((RvItemAdsViewBinding) binding).adsView.loadAd(adRequest);
         } else {
             binding = RvItemLoadingBinding.inflate(inflater, parent, false);
         }
@@ -67,7 +73,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         items.remove(items.size() - 1);
 
         for (int i = 0; i < newsList.size(); i++) {
-            items.add(new RvItemVideo(newsList.get(i), newsListener, newsList));
+            items.add(new RvItemVideo(newsList.get(i), newsListener, newsList, videoListener));
         }
 
         if (newsList.size() == 20) {
@@ -79,14 +85,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     public void setData(ArrayList<News> list) {
 
-        items.add(new RvItemVideo(list.get(0), newsListener, list));
+        items.add(new RvItemVideo(list.get(0), newsListener, list, videoListener));
 
         for (int i = 1; i < list.size(); i++) {
 
             if ((i - 1) % 5 == 0) {
                 items.add(new RvItemAdsVideo());
             }
-            items.add(new RvItemVideo(list.get(i), newsListener, list));
+            items.add(new RvItemVideo(list.get(i), newsListener, list, videoListener));
         }
 
         if (list.size() == 20) {
