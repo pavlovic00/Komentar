@@ -35,8 +35,10 @@ public class RvItemSmallTag implements RecyclerViewItemTag {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
+        String date = "| " + news.createdAt.substring(11, 16);
+
         binding.textViewTitle.setText(news.title);
-        binding.date.setText(news.createdAt);
+        binding.date.setText(date);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 

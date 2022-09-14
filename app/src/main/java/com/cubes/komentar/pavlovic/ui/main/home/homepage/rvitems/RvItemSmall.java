@@ -5,8 +5,8 @@ import android.graphics.Color;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
-import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.main.home.homepage.HomepageAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.squareup.picasso.Picasso;
 
@@ -35,8 +35,10 @@ public class RvItemSmall implements RecyclerViewItemHomepage {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
+        String date = "| " + news.createdAt.substring(11, 16);
+
         binding.textViewTitle.setText(news.title);
-        binding.date.setText(news.createdAt);
+        binding.date.setText(date);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
