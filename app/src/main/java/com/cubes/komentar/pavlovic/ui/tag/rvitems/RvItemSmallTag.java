@@ -44,6 +44,24 @@ public class RvItemSmallTag implements RecyclerViewItemTag {
 
         Picasso.get().load(news.image).into(binding.imageView);
 
+        if (news.isSaved) {
+            binding.unSave.setImageResource(R.drawable.ic_save);
+        } else {
+            binding.unSave.setImageResource(R.drawable.ic_un_save);
+        }
+
+        binding.unSave.setOnClickListener(view -> {
+            if (news.isSaved) {
+                binding.unSave.setImageResource(R.drawable.ic_un_save);
+                newsListener.onUnSaveClicked(news.id, news.title);
+                news.isSaved = false;
+            } else {
+                binding.unSave.setImageResource(R.drawable.ic_save);
+                newsListener.onSaveClicked(news.id, news.title);
+                news.isSaved = true;
+            }
+        });
+
         holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsListId));
     }
 }

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Komentar">
         <activity
+            android:name=".pavlovic.ui.main.menu.SaveNewsActivity"
+            android:exported="false" />
+        <activity
             android:name=".pavlovic.ui.details.DetailsActivity"
             android:exported="false" />
         <activity

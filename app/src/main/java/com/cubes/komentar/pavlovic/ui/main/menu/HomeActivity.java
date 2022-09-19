@@ -141,6 +141,11 @@ public class HomeActivity extends AppCompatActivity {
         //Close menu.
         binding.imageClose.setOnClickListener(view18 -> binding.drawerLayout.closeDrawer(Gravity.RIGHT));
 
+        binding.sacuvaneVesti.setOnClickListener(view110 -> {
+            Intent i = new Intent(getApplicationContext(), SaveNewsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
+        });
         binding.vremenskaPrognoza.setOnClickListener(view17 -> {
             //Novi activity.
             WeatherActivity.start(HomeActivity.this);

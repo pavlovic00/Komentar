@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivityTagsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
+import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class TagsActivity extends AppCompatActivity {
     private int nextPage = 2;
     private String title;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private ArrayList<SaveNews> saveNewsList = new ArrayList<>();
     private DataRepository dataRepository;
 
 
@@ -63,20 +68,58 @@ public class TagsActivity extends AppCompatActivity {
     }
 
     public void setupRecyclerView() {
+        if (SharedPrefs.showNewsFromPref(TagsActivity.this) != null) {
+            saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(TagsActivity.this);
+        }
 
         binding.recyclerViewTags.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new TagsAdapter((newsId, newsIdList) -> {
-            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
-            intent.putExtra("news_id", newsId);
-            intent.putExtra("news_list_id", newsIdList);
-            startActivity(intent);
-        }, () -> dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
+        adapter = new TagsAdapter((new NewsListener() {
+            @Override
+            public void onNewsClickedVP(int newsId, int[] newsIdList) {
+                Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                intent.putExtra("news_id", newsId);
+                intent.putExtra("news_list_id", newsIdList);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onSaveClicked(int id, String title) {
+
+                SaveNews saveNews = new SaveNews(id, title);
+
+                if (SharedPrefs.showNewsFromPref(TagsActivity.this) != null) {
+                    saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(TagsActivity.this);
+
+                    for (int i = 0; i < saveNewsList.size(); i++) {
+                        if (saveNews.id == saveNewsList.get(i).id) {
+                            Toast.makeText(getApplicationContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                saveNewsList.add(saveNews);
+                SharedPrefs.saveNewsInPref(TagsActivity.this, saveNewsList);
+            }
+
+            @Override
+            public void onUnSaveClicked(int id, String title) {
+                SaveNews saveNews = new SaveNews(id, title);
+
+                for (int i = 0; i < saveNewsList.size(); i++) {
+                    if (saveNews.id == saveNewsList.get(i).id) {
+                        saveNewsList.remove(saveNewsList.get(i));
+                        SharedPrefs.saveNewsInPref(TagsActivity.this, saveNewsList);
+                    }
+                }
+            }
+        }), () -> dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 
                 if (response == null || response.size() == 0) {
                     adapter.removeItem();
                 } else {
+                    checkSave(response, saveNewsList);
                     adapter.addNewsList(response);
                     nextPage++;
                 }
@@ -103,8 +146,10 @@ public class TagsActivity extends AppCompatActivity {
 
         dataRepository.loadTagNewsData(id, 0, new DataRepository.TagNewsResponseListener() {
             @Override
-            public void onResponse(ArrayList<News> responseNewsList) {
-                adapter.setTagData(responseNewsList);
+            public void onResponse(ArrayList<News> response) {
+                checkSave(response, saveNewsList);
+
+                adapter.setTagData(response);
                 nextPage = 2;
 
                 binding.refresh.setVisibility(View.GONE);
@@ -121,6 +166,17 @@ public class TagsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void checkSave(ArrayList<News> newsList, ArrayList<SaveNews> saveNews) {
+        for (News news : newsList) {
+            for (SaveNews save : saveNews) {
+                if (news.id == save.id) {
+                    news.isSaved = true;
+                    break;
+                }
+            }
+        }
     }
 
     public void refresh() {

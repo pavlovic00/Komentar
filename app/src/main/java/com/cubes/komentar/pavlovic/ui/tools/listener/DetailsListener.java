@@ -8,6 +8,10 @@ public interface DetailsListener {
 
     void onNewsClickedVP(int newsId, int[] newsIdList);
 
+    void onSaveClicked(int id, String title);
+
+    void onUnSaveClicked(int id, String title);
+
     void onTagClicked(Tags tags);
 
     void onPutCommentClicked(NewsDetail data);

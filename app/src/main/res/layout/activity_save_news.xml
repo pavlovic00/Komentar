@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".pavlovic.ui.main.menu.SaveNewsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/purple">
+
+            <ImageView
+                android:id="@+id/imageBack"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="@dimen/margin_small_8"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/textViewTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_small_8"
+                android:text="@string/menu_save_news"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big_22"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </FrameLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSaveNews"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/refresh"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_refresh"
+        android:visibility="gone"
+        app:tint="@color/purple"
+        tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="100dp"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        android:visibility="gone" />
+
+</FrameLayout>

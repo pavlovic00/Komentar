@@ -44,6 +44,24 @@ public class RvItemVideoHome implements RecyclerViewItemHomepage {
         bindingVideo.textViewCategory.setTextColor(Color.parseColor(video.category.color));
         Picasso.get().load(video.image).into(bindingVideo.imageView);
 
+        if (video.isSaved) {
+            bindingVideo.unSave.setImageResource(R.drawable.ic_save);
+        } else {
+            bindingVideo.unSave.setImageResource(R.drawable.ic_un_save);
+        }
+
+        bindingVideo.unSave.setOnClickListener(view -> {
+            if (video.isSaved) {
+                bindingVideo.unSave.setImageResource(R.drawable.ic_un_save);
+                newsListener.onUnSaveClicked(video.id, video.title);
+                video.isSaved = false;
+            } else {
+                bindingVideo.unSave.setImageResource(R.drawable.ic_save);
+                newsListener.onSaveClicked(video.id, video.title);
+                video.isSaved = true;
+            }
+        });
+
         bindingVideo.imageView.setOnClickListener(view -> newsListener.onNewsClickedVP(video.id, newsListId));
         bindingVideo.imageViewPlay.setOnClickListener(view -> videoListener.onVideoClicked(video.url, video.title));
     }

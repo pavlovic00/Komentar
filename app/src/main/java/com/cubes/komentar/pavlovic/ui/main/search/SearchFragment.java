@@ -21,10 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentSearchBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
+import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class SearchFragment extends Fragment {
     private SearchAdapter adapter;
     private int nextPage = 2;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private ArrayList<SaveNews> saveNewsList = new ArrayList<>();
     private DataRepository dataRepository;
 
 
@@ -100,19 +104,58 @@ public class SearchFragment extends Fragment {
     }
 
     public void setupRecyclerView() {
+        if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+            saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+        }
+
         binding.recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new SearchAdapter((newsId, newsIdList) -> {
-            Intent intent = new Intent(getContext(), DetailsActivity.class);
-            intent.putExtra("news_id", newsId);
-            intent.putExtra("news_list_id", newsIdList);
-            startActivity(intent);
-        }, () -> dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
+        adapter = new SearchAdapter((new NewsListener() {
+            @Override
+            public void onNewsClickedVP(int newsId, int[] newsIdList) {
+                Intent intent = new Intent(getContext(), DetailsActivity.class);
+                intent.putExtra("news_id", newsId);
+                intent.putExtra("news_list_id", newsIdList);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onSaveClicked(int id, String title) {
+
+                SaveNews saveNews = new SaveNews(id, title);
+
+                if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+                    saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+
+                    for (int i = 0; i < saveNewsList.size(); i++) {
+                        if (saveNews.id == saveNewsList.get(i).id) {
+                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                saveNewsList.add(saveNews);
+                SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+            }
+
+            @Override
+            public void onUnSaveClicked(int id, String title) {
+                SaveNews saveNews = new SaveNews(id, title);
+
+                for (int i = 0; i < saveNewsList.size(); i++) {
+                    if (saveNews.id == saveNewsList.get(i).id) {
+                        saveNewsList.remove(saveNewsList.get(i));
+                        SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                    }
+                }
+            }
+        }), () -> dataRepository.loadSearchData(String.valueOf(binding.editTextSearch.getText()), nextPage, new DataRepository.SearchResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
 
                 if (response == null || response.size() == 0) {
                     adapter.removeItem();
                 } else {
+                    checkSave(response, saveNewsList);
                     adapter.addNewsList(response);
                     nextPage++;
                 }
@@ -151,6 +194,7 @@ public class SearchFragment extends Fragment {
                     setupRecyclerView();
 
                     if (response.size() > 0) {
+                        checkSave(response, saveNewsList);
                         adapter.setSearchData(response);
                     } else {
                         Toast.makeText(getContext(), "Nema vesti za termin: " + binding.editTextSearch.getText(), Toast.LENGTH_SHORT).show();
@@ -172,6 +216,17 @@ public class SearchFragment extends Fragment {
                     binding.refresh.setVisibility(View.VISIBLE);
                 }
             });
+        }
+    }
+
+    public void checkSave(ArrayList<News> newsList, ArrayList<SaveNews> saveNews) {
+        for (News news : newsList) {
+            for (SaveNews save : saveNews) {
+                if (news.id == save.id) {
+                    news.isSaved = true;
+                    break;
+                }
+            }
         }
     }
 

@@ -35,12 +35,32 @@ public class RvItemRelatedNews implements RecyclerViewItemDetail {
 
         RvItemSmallBinding binding = (RvItemSmallBinding) holder.binding;
 
+        String date = "| " + news.createdAt.substring(11, 16);
+
         binding.textViewTitle.setText(news.title);
-        binding.date.setText(news.createdAt);
+        binding.date.setText(date);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
 
         Picasso.get().load(news.image).into(binding.imageView);
+
+        if (news.isSaved) {
+            binding.unSave.setImageResource(R.drawable.ic_save);
+        } else {
+            binding.unSave.setImageResource(R.drawable.ic_un_save);
+        }
+
+        binding.unSave.setOnClickListener(view -> {
+            if (news.isSaved) {
+                binding.unSave.setImageResource(R.drawable.ic_un_save);
+                newsListener.onUnSaveClicked(news.id, news.title);
+                news.isSaved = false;
+            } else {
+                binding.unSave.setImageResource(R.drawable.ic_save);
+                newsListener.onSaveClicked(news.id, news.title);
+                news.isSaved = true;
+            }
+        });
 
         holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsListId));
     }

@@ -70,4 +70,16 @@
         app:layout_constraintTop_toTopOf="@+id/imageView"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/unSave"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="@dimen/margin_main_12"
+        android:padding="3dp"
+        android:src="@drawable/ic_un_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        tools:ignore="ContentDescription" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
