@@ -74,11 +74,11 @@
             android:id="@+id/unSave"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:padding="3dp"
+            android:padding="5dp"
             android:src="@drawable/ic_un_save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/purple"
+            app:tint="@color/purple_light"
             tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

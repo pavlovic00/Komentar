@@ -5,6 +5,7 @@ import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseHoroscope;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 
 import retrofit2.Call;
@@ -42,6 +43,9 @@ public interface RetrofitService {
 
     @GET("api/tag")
     Call<ResponseNewsList> getTag(@Query("tag") int tag, @Query("page") int page);
+
+    @GET("api/horoscope")
+    Call<ResponseHoroscope> getHoroscope();
 
     @POST("api/commentvote")
     Call<ResponseComment> postLike(@Query("comment") int id, @Query("vote") boolean vote);

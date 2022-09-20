@@ -28,5 +28,9 @@ public class CourseListActivity extends AppCompatActivity {
         setContentView(view);
 
         binding.imageClose.setOnClickListener(view1 -> finish());
+
+        String url = "http://www.vipsistem.rs/kursna-lista.php";
+
+        binding.webView.loadUrl(url);
     }
 }

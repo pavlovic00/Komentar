@@ -28,5 +28,9 @@ public class WeatherActivity extends AppCompatActivity {
         setContentView(view);
 
         binding.imageClose.setOnClickListener(view1 -> finish());
+
+        String url = "https://naslovi.net/vremenska-prognoza/";
+
+        binding.webView.loadUrl(url);
     }
 }

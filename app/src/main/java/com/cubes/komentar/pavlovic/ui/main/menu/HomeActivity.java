@@ -51,16 +51,24 @@ public class HomeActivity extends AppCompatActivity {
         AppContainer appContainer = ((MyApplication) getApplication()).appContainer;
         dataRepository = appContainer.dataRepository;
 
+        binding.adsView.setVisibility(View.GONE);
+        binding.shimmerLayout.setVisibility(View.VISIBLE);
+        binding.shimmerLayout.startShimmerAnimation();
+
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adsView.loadAd(adRequest);
+
         binding.adsView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-                binding.closeAbs.setVisibility(View.VISIBLE);
+                binding.shimmerLayout.stopShimmerAnimation();
+                binding.shimmerLayout.setVisibility(View.GONE);
                 binding.adsView.setVisibility(View.VISIBLE);
+                binding.closeAbs.setVisibility(View.VISIBLE);
             }
         });
+
         binding.closeAbs.setOnClickListener(view14 -> {
             binding.adsView.setVisibility(View.GONE);
             binding.closeAbs.setVisibility(View.GONE);
