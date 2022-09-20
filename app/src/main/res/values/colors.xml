@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple">#40146C</color>
-    <color name="purple_transparent">#8040146C</color>
+    <color name="purple_transparent80">#8040146C</color>
+    <color name="purple_transparent50">#5040146C</color>
     <color name="purple_light">#851CBD</color>
     <color name="purple_dark">#2A0F39</color>
     <color name="purple_text">#5D008F</color>
+    <color name="blue">#1C73BD</color>
     <color name="red">#FF0000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

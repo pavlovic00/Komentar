@@ -1,29 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".pavlovic.ui.main.menu.HoroscopeActivity">
 
-    <ImageView
-        android:id="@+id/imageClose"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_gravity="start"
-        android:layout_margin="@dimen/margin_main_12"
-        android:padding="5dp"
-        android:src="@drawable/ic_back"
-        tools:ignore="ContentDescription" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/horoscope"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/text_view_horoscope"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_biggest_28"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imageClose"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="start|center"
+            android:layout_margin="@dimen/margin_main_12"
+            android:padding="5dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="ContentDescription" />
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/menu_horoscope"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big_22" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/horoscope"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/background_horoscope"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/margin_main_12"
+                android:text="@string/text_view_title"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big_22" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/margin_main_12"
+                android:background="@drawable/horoscope_image_background"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/text_view_date"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_small_12" />
+
+            <TextView
+                android:id="@+id/horoscope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/margin_main_12"
+                android:text="@string/text_view_description"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_medium_14" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

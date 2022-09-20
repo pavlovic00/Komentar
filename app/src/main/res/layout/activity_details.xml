@@ -55,6 +55,19 @@
                 app:tint="@color/white"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/unSave"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="@dimen/margin_small_8"
+                android:padding="11dp"
+                android:src="@drawable/ic_un_save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewShare"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white"
+                tools:ignore="ContentDescription" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.viewpager2.widget.ViewPager2

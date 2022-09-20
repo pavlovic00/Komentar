@@ -2,6 +2,7 @@ package com.cubes.komentar.pavlovic.ui.details;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,8 @@ import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemTitleRelatedNews;
 import com.cubes.komentar.pavlovic.ui.details.rvitems.RvItemWebViewDetail;
 import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 import com.cubes.komentar.pavlovic.ui.tools.listener.WebViewListener;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.ArrayList;
 
@@ -87,6 +90,23 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
                 break;
             case R.layout.rv_item_ads_view:
                 binding = RvItemAdsViewBinding.inflate(inflater, parent, false);
+                ((RvItemAdsViewBinding) binding).adsView.setVisibility(View.GONE);
+                ((RvItemAdsViewBinding) binding).shimmerLayout.setVisibility(View.VISIBLE);
+                ((RvItemAdsViewBinding) binding).shimmerLayout.startShimmerAnimation();
+
+                AdRequest adRequest = new AdRequest.Builder().build();
+                ((RvItemAdsViewBinding) binding).adsView.loadAd(adRequest);
+
+                ViewBinding finalBinding = binding;
+                ((RvItemAdsViewBinding) binding).adsView.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        ((RvItemAdsViewBinding) finalBinding).shimmerLayout.stopShimmerAnimation();
+                        ((RvItemAdsViewBinding) finalBinding).shimmerLayout.setVisibility(View.GONE);
+                        ((RvItemAdsViewBinding) finalBinding).adsView.setVisibility(View.VISIBLE);
+                    }
+                });
                 break;
         }
 

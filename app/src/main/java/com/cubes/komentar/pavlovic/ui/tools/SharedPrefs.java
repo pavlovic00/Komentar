@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class SharedPrefs {
 
+    private static final String SAVE_NEWS_KEY = "save_news_key";
     private static final String LIST_KEY = "list_key";
     private static final String NOTIFICATION_KEY = "notification_key";
 
@@ -33,6 +35,26 @@ public class SharedPrefs {
 
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Vote>>() {
+        }.getType();
+        return gson.fromJson(jsonString, type);
+    }
+
+    public static void saveNewsInPref(Activity activity, List<SaveNews> list) {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(list);
+
+        android.content.SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        android.content.SharedPreferences.Editor editor = pref.edit();
+        editor.putString(SAVE_NEWS_KEY, jsonString);
+        editor.apply();
+    }
+
+    public static List<SaveNews> showNewsFromPref(Activity activity) {
+        android.content.SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String jsonString = pref.getString(SAVE_NEWS_KEY, "");
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<SaveNews>>() {
         }.getType();
         return gson.fromJson(jsonString, type);
     }

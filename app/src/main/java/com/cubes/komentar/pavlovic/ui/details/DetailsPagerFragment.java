@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentDetailsBinding;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
+import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
+import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.data.domain.Vote;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
@@ -45,13 +47,16 @@ public class DetailsPagerFragment extends Fragment {
     private String newsUrl;
     private DetailsAdapter adapter;
     private DetailListener detailListener;
+    private SaveNews saveNews;
+    private News news;
+    private ArrayList<SaveNews> saveNewsList = new ArrayList<>();
     private ArrayList<Vote> votes = new ArrayList<>();
     private final ArrayList<Comment> allComments = new ArrayList<>();
     private DataRepository dataRepository;
 
 
     public interface DetailListener {
-        void onDetailsResponseListener(int newsId, String newsUrl);
+        void onDetailsResponseListener(int newsId, String newsUrl, SaveNews saveNews, News news);
     }
 
     public DetailsPagerFragment() {
@@ -122,10 +127,14 @@ public class DetailsPagerFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        detailListener.onDetailsResponseListener(newsId, newsUrl);
+        detailListener.onDetailsResponseListener(newsId, newsUrl, saveNews, news);
     }
 
     private void setupRecyclerView() {
+
+        if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+            saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+        }
 
         allComments.clear();
 
@@ -141,6 +150,36 @@ public class DetailsPagerFragment extends Fragment {
                 intent.putExtra("news_id", newsId);
                 intent.putExtra("news_list_id", newsIdList);
                 startActivity(intent);
+            }
+
+            @Override
+            public void onSaveClicked(int id, String title) {
+                SaveNews saveNews = new SaveNews(id, title);
+
+                if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+                    saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+
+                    for (int i = 0; i < saveNewsList.size(); i++) {
+                        if (saveNews.id == saveNewsList.get(i).id) {
+                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                saveNewsList.add(saveNews);
+                SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+            }
+
+            @Override
+            public void onUnSaveClicked(int id, String title) {
+                SaveNews saveNews = new SaveNews(id, title);
+
+                for (int i = 0; i < saveNewsList.size(); i++) {
+                    if (saveNews.id == saveNewsList.get(i).id) {
+                        saveNewsList.remove(saveNewsList.get(i));
+                        SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                    }
+                }
             }
 
             @Override
@@ -230,6 +269,7 @@ public class DetailsPagerFragment extends Fragment {
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
             public void onResponse(NewsDetail response) {
+                checkSaveRelated(response.relatedNews, saveNewsList);
                 adapter.setDataItems(response, () -> {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.linearLayout.setVisibility(View.VISIBLE);
@@ -249,7 +289,13 @@ public class DetailsPagerFragment extends Fragment {
                 bundle.putString("news", title);
                 mFirebaseAnalytics.logEvent("android_komentar", bundle);
 
-                detailListener.onDetailsResponseListener(newsId, newsUrl);
+                saveNews = new SaveNews(response.id, response.title);
+                news = new News();
+                news.id = response.id;
+                news.title = response.title;
+                checkSave(response.id);
+
+                detailListener.onDetailsResponseListener(newsId, newsUrl, saveNews, news);
 
                 binding.refresh.setVisibility(View.GONE);
                 binding.swipeRefresh.setRefreshing(false);
@@ -279,6 +325,31 @@ public class DetailsPagerFragment extends Fragment {
             for (Vote vote : votes) {
                 if (comment.commentId.equals(vote.commentId)) {
                     comment.vote = vote;
+                }
+            }
+        }
+    }
+
+    public void checkSave(int newsId) {
+
+        if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+            ArrayList<SaveNews> saveNews = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+
+            for (SaveNews save : saveNews) {
+                if (newsId == save.id) {
+                    news.isSaved = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void checkSaveRelated(ArrayList<News> newsList, ArrayList<SaveNews> saveNews) {
+        for (News news : newsList) {
+            for (SaveNews save : saveNews) {
+                if (news.id == save.id) {
+                    news.isSaved = true;
+                    break;
                 }
             }
         }

@@ -1,9 +1,7 @@
 package com.cubes.komentar.pavlovic.ui.main.latest.rvitems;
 
 import com.cubes.komentar.R;
-import com.cubes.komentar.databinding.RvItemAdsViewBinding;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
-import com.google.android.gms.ads.AdRequest;
 
 public class RvItemAdsLatest implements RecyclerViewItemLatest {
 
@@ -19,9 +17,5 @@ public class RvItemAdsLatest implements RecyclerViewItemLatest {
     @Override
     public void bind(LatestAdapter.ViewHolder holder) {
 
-        RvItemAdsViewBinding binding = (RvItemAdsViewBinding) holder.binding;
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        binding.adsView.loadAd(adRequest);
     }
 }

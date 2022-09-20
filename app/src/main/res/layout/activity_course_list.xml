@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".pavlovic.ui.main.menu.CourseListActivity">
 
-    <ImageView
-        android:id="@+id/imageClose"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_gravity="start"
-        android:layout_margin="@dimen/margin_main_12"
-        android:padding="5dp"
-        android:src="@drawable/ic_back"
-        tools:ignore="ContentDescription" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/purple"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/text_view_course_list"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_biggest_28"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imageClose"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="start|center"
+            android:layout_margin="@dimen/margin_main_12"
+            android:padding="5dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="ContentDescription" />
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/menu_course_list"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big_22" />
+
+    </FrameLayout>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

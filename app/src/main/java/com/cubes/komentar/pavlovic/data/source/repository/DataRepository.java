@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.cubes.komentar.pavlovic.data.domain.Category;
 import com.cubes.komentar.pavlovic.data.domain.CategoryBox;
 import com.cubes.komentar.pavlovic.data.domain.Comment;
+import com.cubes.komentar.pavlovic.data.domain.Horoscope;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.NewsDetail;
 import com.cubes.komentar.pavlovic.data.domain.NewsList;
@@ -14,6 +15,7 @@ import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.data.model.CategoryApi;
 import com.cubes.komentar.pavlovic.data.model.CategoryBoxApi;
 import com.cubes.komentar.pavlovic.data.model.CommentApi;
+import com.cubes.komentar.pavlovic.data.model.HoroscopeApi;
 import com.cubes.komentar.pavlovic.data.model.NewsApi;
 import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.data.source.networking.RetrofitService;
@@ -22,6 +24,7 @@ import com.cubes.komentar.pavlovic.data.source.response.ResponseCategories;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseComment;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseDetail;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseHomepage;
+import com.cubes.komentar.pavlovic.data.source.response.ResponseHoroscope;
 import com.cubes.komentar.pavlovic.data.source.response.ResponseNewsList;
 
 import java.util.ArrayList;
@@ -39,6 +42,37 @@ public class DataRepository {
         this.api = api;
     }
 
+    public interface HoroscopeResponseListener{
+
+        void onResponse(Horoscope horoscope);
+
+        void onFailure(Throwable t);
+    }
+    public void loadHoroscopeData(HoroscopeResponseListener listener){
+
+        api.getHoroscope().enqueue(new Callback<ResponseHoroscope>() {
+            @Override
+            public void onResponse(Call<ResponseHoroscope> call, Response<ResponseHoroscope> response) {
+                if (response.body() != null
+                        && response.isSuccessful()) {
+
+                    Horoscope horoscope = new Horoscope();
+
+                    horoscope.horoscope = response.body().data.horoscope;
+                    horoscope.date = response.body().data.date;
+                    horoscope.name = response.body().data.name;
+                    horoscope.imageUrl = response.body().data.image_url;
+
+                    listener.onResponse(horoscope);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseHoroscope> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
 
     public interface VideoResponseListener {
 

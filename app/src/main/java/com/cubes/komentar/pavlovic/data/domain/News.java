@@ -9,4 +9,5 @@ public class News {
     public String title;
     public String createdAt;
     public String url;
+    public boolean isSaved;
 }
