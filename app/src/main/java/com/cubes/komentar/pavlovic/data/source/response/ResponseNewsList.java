@@ -15,4 +15,5 @@ public class ResponseNewsList extends ParentResponse {
         public ArrayList<NewsApi> news;
 
     }
+
 }
