@@ -14,7 +14,6 @@ import com.cubes.komentar.databinding.ActivityDetailsBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
 import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
-import com.cubes.komentar.pavlovic.ui.main.menu.HomeActivity;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
 
 import java.lang.reflect.Field;
@@ -61,10 +60,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
             saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(DetailsActivity.this);
         }
 
-        binding.imageBack.setOnClickListener(view1 -> {
-            Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(i);
-        });
+        binding.imageBack.setOnClickListener(view -> finish());
 
         binding.allComments.setOnClickListener(view -> {
             Intent commentIntent = new Intent(view.getContext(), AllCommentActivity.class);

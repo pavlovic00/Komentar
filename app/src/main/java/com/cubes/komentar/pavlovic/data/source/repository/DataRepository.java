@@ -15,7 +15,6 @@ import com.cubes.komentar.pavlovic.data.domain.Tags;
 import com.cubes.komentar.pavlovic.data.model.CategoryApi;
 import com.cubes.komentar.pavlovic.data.model.CategoryBoxApi;
 import com.cubes.komentar.pavlovic.data.model.CommentApi;
-import com.cubes.komentar.pavlovic.data.model.HoroscopeApi;
 import com.cubes.komentar.pavlovic.data.model.NewsApi;
 import com.cubes.komentar.pavlovic.data.model.TagsApi;
 import com.cubes.komentar.pavlovic.data.source.networking.RetrofitService;
@@ -52,7 +51,7 @@ public class DataRepository {
 
         api.getHoroscope().enqueue(new Callback<ResponseHoroscope>() {
             @Override
-            public void onResponse(Call<ResponseHoroscope> call, Response<ResponseHoroscope> response) {
+            public void onResponse(@NonNull Call<ResponseHoroscope> call, @NonNull Response<ResponseHoroscope> response) {
                 if (response.body() != null
                         && response.isSuccessful()) {
 
@@ -68,7 +67,7 @@ public class DataRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseHoroscope> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseHoroscope> call, @NonNull Throwable t) {
                 listener.onFailure(t);
             }
         });

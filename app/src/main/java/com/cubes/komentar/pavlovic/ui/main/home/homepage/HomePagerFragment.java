@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,11 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.FragmentViewPagerCategoryBinding;
 import com.cubes.komentar.pavlovic.data.domain.News;
+import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.cubes.komentar.pavlovic.ui.main.latest.LatestAdapter;
+import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
+import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -34,6 +38,7 @@ public class HomePagerFragment extends Fragment {
     private String categoryName;
     private LatestAdapter adapter;
     private int nextPage = 2;
+    private ArrayList<SaveNews> saveNewsList = new ArrayList<>();
     private FirebaseAnalytics mFirebaseAnalytics;
     private DataRepository dataRepository;
 
@@ -86,12 +91,51 @@ public class HomePagerFragment extends Fragment {
     }
 
     public void setupRecyclerView() {
+
+        if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+            saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+        }
+
         binding.recyclerViewPager2.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LatestAdapter((newsId, newsIdList) -> {
-            Intent intent = new Intent(getContext(), DetailsActivity.class);
-            intent.putExtra("news_id", newsId);
-            intent.putExtra("news_list_id", newsIdList);
-            startActivity(intent);
+        adapter = new LatestAdapter(new NewsListener() {
+            @Override
+            public void onNewsClickedVP(int newsId, int[] newsIdList) {
+                Intent intent = new Intent(getContext(), DetailsActivity.class);
+                intent.putExtra("news_id", newsId);
+                intent.putExtra("news_list_id", newsIdList);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onSaveClicked(int id, String title) {
+
+                SaveNews saveNews = new SaveNews(id, title);
+
+                if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
+                    saveNewsList = (ArrayList<SaveNews>) SharedPrefs.showNewsFromPref(requireActivity());
+
+                    for (int i = 0; i < saveNewsList.size(); i++) {
+                        if (saveNews.id == saveNewsList.get(i).id) {
+                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+                saveNewsList.add(saveNews);
+                SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+            }
+
+            @Override
+            public void onUnSaveClicked(int id, String title) {
+                SaveNews saveNews = new SaveNews(id, title);
+
+                for (int i = 0; i < saveNewsList.size(); i++) {
+                    if (saveNews.id == saveNewsList.get(i).id) {
+                        saveNewsList.remove(saveNewsList.get(i));
+                        SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                    }
+                }
+            }
         }, () -> dataRepository.loadCategoriesNewsData(categoryId, nextPage, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
@@ -99,6 +143,7 @@ public class HomePagerFragment extends Fragment {
                 if (response == null || response.size() == 0) {
                     adapter.removeItem();
                 } else {
+                    checkSave(response, saveNewsList);
                     adapter.addNewsList(response);
                     nextPage++;
                 }
@@ -126,6 +171,7 @@ public class HomePagerFragment extends Fragment {
         dataRepository.loadCategoriesNewsData(categoryId, 0, new DataRepository.CategoriesNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {
+                checkSave(response, saveNewsList);
                 adapter.setData(response);
                 nextPage = 2;
 
@@ -143,6 +189,17 @@ public class HomePagerFragment extends Fragment {
             }
         });
 
+    }
+
+    public void checkSave(ArrayList<News> newsList, ArrayList<SaveNews> saveNews) {
+        for (News news : newsList) {
+            for (SaveNews save : saveNews) {
+                if (news.id == save.id) {
+                    news.isSaved = true;
+                    break;
+                }
+            }
+        }
     }
 
     public void refresh() {

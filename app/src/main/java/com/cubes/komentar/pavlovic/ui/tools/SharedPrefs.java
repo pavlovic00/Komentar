@@ -19,6 +19,7 @@ public class SharedPrefs {
     private static final String LIST_KEY = "list_key";
     private static final String NOTIFICATION_KEY = "notification_key";
 
+
     public static void writeListInPref(Activity activity, List<Vote> list) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(list);

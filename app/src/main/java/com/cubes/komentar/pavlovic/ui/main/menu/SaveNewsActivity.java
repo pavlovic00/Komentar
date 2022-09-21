@@ -33,10 +33,7 @@ public class SaveNewsActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        binding.imageBack.setOnClickListener(view1 -> {
-            Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(i);
-        });
+        binding.imageBack.setOnClickListener(view1 -> finish());
 
         binding.swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.purple_light));
         binding.swipeRefresh.setOnRefreshListener(() -> {
