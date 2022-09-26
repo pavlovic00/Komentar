@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.ActivitySaveNewsBinding;
@@ -82,7 +85,27 @@ public class SaveNewsActivity extends AppCompatActivity {
             }
         });
 
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0
+        ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                adapter.onRowMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                SharedPrefs.showNewsFromPref(SaveNewsActivity.this).clear();
+                SharedPrefs.saveNewsInPref(SaveNewsActivity.this, adapter.getNewList());
+
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        };
+
         binding.recyclerViewSaveNews.setAdapter(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewSaveNews);
     }
 
     public void loadSaveNewsData() {

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".pavlovic.ui.main.menu.HoroscopeActivity">
@@ -47,6 +48,7 @@
             tools:ignore="ContentDescription" />
 
         <LinearLayout
+            android:id="@+id/rootLayout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -95,6 +97,16 @@
                 android:textSize="@dimen/text_size_medium_14" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_refresh"
+            android:visibility="gone"
+            app:tint="@color/white_transparent76"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 

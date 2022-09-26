@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.comments;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -57,6 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return items.get(position).getType();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateList(ArrayList<Comment> comments) {
         for (Comment comment : comments) {
             if (comment.parentCommentId.equals("0")) {

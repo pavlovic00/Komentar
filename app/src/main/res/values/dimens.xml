@@ -5,6 +5,7 @@
     <dimen name="margin_small_8">8dp</dimen>
     <dimen name="margin_main_12">12dp</dimen>
     <dimen name="margin_big_16">16dp</dimen>
+    <dimen name="margin_big_20">20dp</dimen>
     //Text size
     <dimen name="text_size_smallest_8">8sp</dimen>
     <dimen name="text_size_small_12">12sp</dimen>

@@ -118,6 +118,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         return this.items.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setDataItems(NewsList response) {
         //0
         items.add(new RvItemSlider(response.slider, newsListener));

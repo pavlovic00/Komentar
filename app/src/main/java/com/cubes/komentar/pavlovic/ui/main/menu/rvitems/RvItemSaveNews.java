@@ -38,4 +38,8 @@ public class RvItemSaveNews implements RecyclerViewItemSaveNews {
 
         holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsListId));
     }
+
+    public SaveNews getNews() {
+        return news;
+    }
 }

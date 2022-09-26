@@ -2,7 +2,6 @@ package com.cubes.komentar.pavlovic.ui.details;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,14 +108,14 @@ public class DetailsPagerFragment extends Fragment {
             binding.progressBar.setVisibility(View.GONE);
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.nestedScrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view1, i, i1, i2, i3) -> {
-                int length = binding.nestedScrollView.getChildAt(0).getHeight() - binding.nestedScrollView.getHeight();
-
-                binding.progressIndicator.setMax(length);
-                binding.progressIndicator.setProgress(i1);
-            });
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            binding.nestedScrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (view1, i, i1, i2, i3) -> {
+//                int length = binding.nestedScrollView.getChildAt(0).getHeight() - binding.nestedScrollView.getHeight();
+//
+//                binding.progressIndicator.setMax(length);
+//                binding.progressIndicator.setProgress(i1);
+//            });
+//        }
 
         setupRecyclerView();
         loadDetailData();
@@ -142,7 +141,8 @@ public class DetailsPagerFragment extends Fragment {
             votes = (ArrayList<Vote>) SharedPrefs.readListFromPref(requireActivity());
         }
 
-        binding.recyclerViewDetails.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        binding.recyclerViewDetails.setLayoutManager(linearLayoutManager);
         adapter = new DetailsAdapter(new DetailsListener() {
             @Override
             public void onNewsClickedVP(int newsId, int[] newsIdList) {
@@ -257,6 +257,7 @@ public class DetailsPagerFragment extends Fragment {
 
         binding.recyclerViewDetails.setAdapter(adapter);
 
+        binding.upAndDown.setOnClickListener(view -> linearLayoutManager.smoothScrollToPosition(binding.recyclerViewDetails, null, 1));
     }
 
     public void loadDetailData() {

@@ -102,6 +102,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         notifyItemRangeInserted(lastIndex, newsList.size());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setSearchData(ArrayList<News> list) {
 
         items.add(new RvItemSmallSearch(list.get(0), newsListener, list));
