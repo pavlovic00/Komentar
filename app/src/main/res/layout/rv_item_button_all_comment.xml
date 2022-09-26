@@ -14,7 +14,8 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/purple"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <TextView
             android:layout_width="wrap_content"

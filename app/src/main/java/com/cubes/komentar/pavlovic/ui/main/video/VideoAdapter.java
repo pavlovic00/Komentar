@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.video;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,6 +102,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         notifyItemRangeInserted(lastIndex, newsList.size());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(ArrayList<News> list) {
 
         items.add(new RvItemVideo(list.get(0), newsListener, list, videoListener));

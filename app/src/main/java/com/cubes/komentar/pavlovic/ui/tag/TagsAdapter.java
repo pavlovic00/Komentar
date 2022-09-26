@@ -102,6 +102,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         notifyItemRangeInserted(lastIndex, newsList.size());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setTagData(ArrayList<News> list) {
 
         items.add(new RvItemSmallTag(list.get(0), newsListener, list));

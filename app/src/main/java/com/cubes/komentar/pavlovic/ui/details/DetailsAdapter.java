@@ -129,6 +129,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
         return this.items.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setDataItems(NewsDetail response, WebViewListener webViewListener) {
         //Reklama
         this.items.add(new RvItemAdsDetail());
@@ -167,6 +168,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateCommentsList(ArrayList<Comment> comments) {
         for (Comment comment : comments) {
             items.add(new RvItemComment(comment, detailsListener));

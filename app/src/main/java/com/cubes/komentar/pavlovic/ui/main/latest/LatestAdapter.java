@@ -1,5 +1,6 @@
 package com.cubes.komentar.pavlovic.ui.main.latest;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         notifyItemRangeInserted(lastIndex, newsList.size());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(ArrayList<News> list) {
 
         items.add(new RvItemBigLatest(list.get(0), newsListener, list));

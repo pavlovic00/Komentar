@@ -113,6 +113,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
         });
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void reduceDragSensitivity(int sensitivity) {
         try {
             Field ff = ViewPager2.class.getDeclaredField("mRecyclerView");
@@ -122,9 +123,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
             touchSlopField.setAccessible(true);
             int touchSlop = (int) touchSlopField.get(recyclerView);
             touchSlopField.set(recyclerView, touchSlop * sensitivity);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
