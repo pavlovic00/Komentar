@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,6 +74,12 @@ public class HomepageFragment extends Fragment {
         refresh();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //ovde...
+    }
+
     public void setupRecyclerView() {
 
         if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
@@ -101,7 +106,6 @@ public class HomepageFragment extends Fragment {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -148,7 +152,6 @@ public class HomepageFragment extends Fragment {
                 for (CategoryBox categoryBox : response.category) {
                     checkSave(categoryBox.news, saveNewsList);
                 }
-
 
                 adapter.setDataItems(response);
                 newsListId = getAllId(response);

@@ -2,8 +2,8 @@ package com.cubes.komentar.pavlovic.ui.details;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +49,13 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
             }
         }
 
+        new Handler().postDelayed(() -> {
+            binding.left.setVisibility(View.VISIBLE);
+            binding.right.setVisibility(View.VISIBLE);
+            binding.left.animate().alpha(0).setDuration(1500);
+            binding.right.animate().alpha(0).setDuration(1500);
+        }, 500);
+
         reduceDragSensitivity(5);
 
         setClickListeners();
@@ -76,10 +83,12 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
             startActivity(Intent.createChooser(i, null));
         });
 
-        if (news != null && news.isSaved) {
-            binding.unSave.setImageResource(R.drawable.ic_save);
-        } else {
-            binding.unSave.setImageResource(R.drawable.ic_un_save);
+        if (news != null) {
+            if (news.isSaved) {
+                binding.unSave.setImageResource(R.drawable.ic_save);
+            } else {
+                binding.unSave.setImageResource(R.drawable.ic_un_save);
+            }
         }
 
         binding.unSave.setOnClickListener(view -> {
@@ -91,6 +100,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
                     if (unSave.id == saveNewsList.get(i).id) {
                         saveNewsList.remove(saveNewsList.get(i));
                         SharedPrefs.saveNewsInPref(DetailsActivity.this, saveNewsList);
+                        news.isSaved = false;
                     }
                 }
             } else {
@@ -102,13 +112,13 @@ public class DetailsActivity extends AppCompatActivity implements DetailsPagerFr
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (save.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getApplicationContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
                 }
                 saveNewsList.add(saveNews);
                 SharedPrefs.saveNewsInPref(DetailsActivity.this, saveNewsList);
+                news.isSaved = true;
             }
         });
     }

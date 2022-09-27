@@ -161,7 +161,6 @@ public class DetailsPagerFragment extends Fragment {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -264,8 +263,6 @@ public class DetailsPagerFragment extends Fragment {
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.linearLayout.setVisibility(View.GONE);
-        binding.left.setVisibility(View.GONE);
-        binding.right.setVisibility(View.GONE);
 
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
@@ -274,10 +271,6 @@ public class DetailsPagerFragment extends Fragment {
                 adapter.setDataItems(response, () -> {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.linearLayout.setVisibility(View.VISIBLE);
-                    binding.left.setVisibility(View.VISIBLE);
-                    binding.right.setVisibility(View.VISIBLE);
-                    binding.left.animate().alpha(0).setDuration(1500);
-                    binding.right.animate().alpha(0).setDuration(1500);
                 });
 
                 setDataComment(response.topComments);

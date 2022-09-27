@@ -92,7 +92,6 @@ public class TagsActivity extends AppCompatActivity {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getApplicationContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }

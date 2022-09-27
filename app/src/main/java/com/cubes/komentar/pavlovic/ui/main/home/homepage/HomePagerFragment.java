@@ -116,7 +116,6 @@ public class HomePagerFragment extends Fragment {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
