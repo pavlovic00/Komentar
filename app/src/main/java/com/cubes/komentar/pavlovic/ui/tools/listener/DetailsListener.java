@@ -10,8 +10,6 @@ public interface DetailsListener {
 
     void onSaveClicked(int id, String title);
 
-    void onUnSaveClicked(int id, String title);
-
     void onTagClicked(Tags tags);
 
     void onPutCommentClicked(NewsDetail data);
@@ -23,5 +21,17 @@ public interface DetailsListener {
     void like(Comment comment);
 
     void dislike(Comment comment);
+
+    default boolean isSaved(int id) {
+        return false;
+    }
+
+    default void onCommentNewsClicked(int id) {
+
+    }
+
+    default void onShareNewsClicked(String url) {
+
+    }
 
 }

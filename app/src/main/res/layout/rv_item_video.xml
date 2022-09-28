@@ -71,15 +71,25 @@
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/unSave"
+        android:id="@+id/more"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/margin_main_12"
         android:padding="6dp"
-        android:src="@drawable/ic_un_save"
+        android:src="@drawable/ic_more"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white"
         tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0.001dp"
+        android:layout_height="0.001dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="102dp"
+        android:layout_marginBottom="102dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

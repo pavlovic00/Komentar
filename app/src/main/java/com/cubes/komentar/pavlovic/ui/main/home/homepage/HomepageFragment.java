@@ -23,6 +23,7 @@ import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
+import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
 import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
@@ -92,8 +93,23 @@ public class HomepageFragment extends Fragment {
             }
 
             @Override
-            public void onSaveClicked(int id, String title) {
+            public void onCommentNewsClicked(int id) {
+                Intent commentIntent = new Intent(getContext(), AllCommentActivity.class);
+                commentIntent.putExtra("news_id", id);
+                startActivity(commentIntent);
+            }
 
+            @Override
+            public void onShareNewsClicked(String url) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_TEXT, url);
+                i.setType("text/plain");
+                startActivity(Intent.createChooser(i, null));
+            }
+
+            @Override
+            public void onSaveClicked(int id, String title) {
                 SaveNews saveNews = new SaveNews(id, title);
 
                 if (SharedPrefs.showNewsFromPref(requireActivity()) != null) {
@@ -101,26 +117,24 @@ public class HomepageFragment extends Fragment {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
+                            saveNewsList.remove(saveNewsList.get(i));
+                            SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                            Toast.makeText(getContext(), "Uspešno ste izbacili vest iz liste.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
+
                 }
                 saveNewsList.add(saveNews);
-                SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                SharedPrefs.saveNewsInPref(getActivity(), saveNewsList);
+                Toast.makeText(getContext(), "Uspešno ste sačuvali vest.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onUnSaveClicked(int id, String title) {
-                SaveNews saveNews = new SaveNews(id, title);
-
-                for (int i = 0; i < saveNewsList.size(); i++) {
-                    if (saveNews.id == saveNewsList.get(i).id) {
-                        saveNewsList.remove(saveNewsList.get(i));
-                        SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
-                    }
-                }
+            public boolean isSaved(int id) {
+                return MyMethodsClass.isSaved(id, requireActivity());
             }
+
         }, (url, title) -> {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND);
@@ -148,7 +162,6 @@ public class HomepageFragment extends Fragment {
                 for (CategoryBox categoryBox : response.category) {
                     checkSave(categoryBox.news, saveNewsList);
                 }
-
 
                 adapter.setDataItems(response);
                 newsListId = getAllId(response);

@@ -1,6 +1,12 @@
 package com.cubes.komentar.pavlovic.ui.main.video.rvitems;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemVideoBinding;
@@ -44,22 +50,42 @@ public class RvItemVideo implements RecyclerViewItemVideo {
         bindingVideo.textViewCategory.setTextColor(Color.parseColor(video.category.color));
         Picasso.get().load(video.image).into(bindingVideo.imageView);
 
-        if (video.isSaved) {
-            bindingVideo.unSave.setImageResource(R.drawable.ic_save);
-        } else {
-            bindingVideo.unSave.setImageResource(R.drawable.ic_un_save);
-        }
+        bindingVideo.more.setOnClickListener(view -> {
+            FrameLayout viewGroup = holder.itemView.findViewById(R.id.frameLayout);
+            LayoutInflater inflater = (LayoutInflater) holder.itemView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.popup_window, viewGroup);
+            PopupWindow popupWindow = new PopupWindow(layout, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
 
-        bindingVideo.unSave.setOnClickListener(view -> {
-            if (video.isSaved) {
-                bindingVideo.unSave.setImageResource(R.drawable.ic_un_save);
-                newsListener.onUnSaveClicked(video.id, video.title);
-                video.isSaved = false;
+            ImageView comments = layout.findViewById(R.id.allComments);
+            comments.setOnClickListener(view1 -> {
+                newsListener.onCommentNewsClicked(video.id);
+                popupWindow.dismiss();
+            });
+
+            ImageView share = layout.findViewById(R.id.share);
+            share.setOnClickListener(view13 -> {
+                newsListener.onShareNewsClicked(video.url);
+                popupWindow.dismiss();
+            });
+
+            ImageView closeMenu = layout.findViewById(R.id.closeMenu);
+            closeMenu.setOnClickListener(view14 -> popupWindow.dismiss());
+
+            ImageView save = layout.findViewById(R.id.bookmark);
+            if (newsListener.isSaved(video.id)) {
+                save.setImageResource(R.drawable.ic_save);
             } else {
-                bindingVideo.unSave.setImageResource(R.drawable.ic_save);
-                newsListener.onSaveClicked(video.id, video.title);
-                video.isSaved = true;
+                save.setImageResource(R.drawable.ic_un_save);
             }
+
+            save.setOnClickListener(view12 -> {
+                newsListener.onSaveClicked(video.id, video.title);
+                popupWindow.dismiss();
+            });
+
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setFocusable(true);
+            popupWindow.showAsDropDown(bindingVideo.view, 0, 0);
         });
 
         bindingVideo.imageView.setOnClickListener(view -> newsListener.onNewsClickedVP(video.id, newsListId));

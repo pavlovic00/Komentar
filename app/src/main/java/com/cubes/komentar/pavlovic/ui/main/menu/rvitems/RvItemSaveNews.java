@@ -34,7 +34,7 @@ public class RvItemSaveNews implements RecyclerViewItemSaveNews {
 
         binding.title.setText(news.title);
 
-        binding.delete.setOnClickListener(view -> newsListener.onUnSaveClicked(news.id, news.title));
+        binding.delete.setOnClickListener(view -> newsListener.deleteNews(news.id, news.title));
 
         holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsListId));
     }

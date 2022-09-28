@@ -30,6 +30,7 @@ import com.cubes.komentar.pavlovic.di.MyApplication;
 import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.comments.PostCommentActivity;
 import com.cubes.komentar.pavlovic.ui.tag.TagsActivity;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.tools.listener.DetailsListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -153,6 +154,22 @@ public class DetailsPagerFragment extends Fragment {
             }
 
             @Override
+            public void onCommentNewsClicked(int id) {
+                Intent commentIntent = new Intent(getContext(), AllCommentActivity.class);
+                commentIntent.putExtra("news_id", id);
+                startActivity(commentIntent);
+            }
+
+            @Override
+            public void onShareNewsClicked(String url) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_TEXT, url);
+                i.setType("text/plain");
+                startActivity(Intent.createChooser(i, null));
+            }
+
+            @Override
             public void onSaveClicked(int id, String title) {
                 SaveNews saveNews = new SaveNews(id, title);
 
@@ -161,25 +178,22 @@ public class DetailsPagerFragment extends Fragment {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
-                            Toast.makeText(getContext(), "VEST JE SACUVANA!", Toast.LENGTH_SHORT).show();
+                            saveNewsList.remove(saveNewsList.get(i));
+                            SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                            Toast.makeText(getContext(), "Uspešno ste izbacili vest iz liste.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
+
                 }
                 saveNewsList.add(saveNews);
-                SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
+                SharedPrefs.saveNewsInPref(getActivity(), saveNewsList);
+                Toast.makeText(getContext(), "Uspešno ste sačuvali vest.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onUnSaveClicked(int id, String title) {
-                SaveNews saveNews = new SaveNews(id, title);
-
-                for (int i = 0; i < saveNewsList.size(); i++) {
-                    if (saveNews.id == saveNewsList.get(i).id) {
-                        saveNewsList.remove(saveNewsList.get(i));
-                        SharedPrefs.saveNewsInPref(requireActivity(), saveNewsList);
-                    }
-                }
+            public boolean isSaved(int id) {
+                return MyMethodsClass.isSaved(id, requireActivity());
             }
 
             @Override
@@ -264,8 +278,6 @@ public class DetailsPagerFragment extends Fragment {
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.linearLayout.setVisibility(View.GONE);
-        binding.left.setVisibility(View.GONE);
-        binding.right.setVisibility(View.GONE);
 
         dataRepository.loadDetailData(newsId, new DataRepository.DetailResponseListener() {
             @Override
@@ -274,10 +286,6 @@ public class DetailsPagerFragment extends Fragment {
                 adapter.setDataItems(response, () -> {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.linearLayout.setVisibility(View.VISIBLE);
-                    binding.left.setVisibility(View.VISIBLE);
-                    binding.right.setVisibility(View.VISIBLE);
-                    binding.left.animate().alpha(0).setDuration(1500);
-                    binding.right.animate().alpha(0).setDuration(1500);
                 });
 
                 setDataComment(response.topComments);

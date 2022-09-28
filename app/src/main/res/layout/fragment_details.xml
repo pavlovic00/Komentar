@@ -6,24 +6,6 @@
     android:layout_height="wrap_content"
     tools:context=".pavlovic.ui.details.DetailsPagerFragment">
 
-    <ImageView
-        android:id="@+id/left"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center|start"
-        android:src="@drawable/ic_left_icon"
-        android:translationZ="90dp"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/right"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center|end"
-        android:src="@drawable/ic_right_icon"
-        android:translationZ="90dp"
-        tools:ignore="ContentDescription" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
