@@ -62,7 +62,7 @@ public class SaveNewsActivity extends AppCompatActivity {
         binding.recyclerViewSaveNews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new SaveNewsAdapter(new NewsListener() {
             @Override
-            public void onUnSaveClicked(int id, String title) {
+            public void deleteNews(int id, String title) {
                 SaveNews saveNews = new SaveNews(id, title);
 
                 for (int i = 0; i < saveNewsList.size(); i++) {

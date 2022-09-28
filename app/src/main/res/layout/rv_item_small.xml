@@ -11,6 +11,14 @@
     android:background="@color/white"
     app:cardElevation="5dp">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="90dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,11 +79,11 @@
             app:layout_constraintTop_toTopOf="@+id/textViewCategory" />
 
         <ImageView
-            android:id="@+id/unSave"
+            android:id="@+id/more"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:padding="5dp"
-            android:src="@drawable/ic_un_save"
+            android:src="@drawable/ic_more"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/purple_light"

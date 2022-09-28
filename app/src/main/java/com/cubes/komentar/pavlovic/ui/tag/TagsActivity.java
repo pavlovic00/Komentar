@@ -17,7 +17,9 @@ import com.cubes.komentar.pavlovic.data.domain.SaveNews;
 import com.cubes.komentar.pavlovic.data.source.repository.DataRepository;
 import com.cubes.komentar.pavlovic.di.AppContainer;
 import com.cubes.komentar.pavlovic.di.MyApplication;
+import com.cubes.komentar.pavlovic.ui.comments.AllCommentActivity;
 import com.cubes.komentar.pavlovic.ui.details.DetailsActivity;
+import com.cubes.komentar.pavlovic.ui.tools.MyMethodsClass;
 import com.cubes.komentar.pavlovic.ui.tools.SharedPrefs;
 import com.cubes.komentar.pavlovic.ui.tools.listener.NewsListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -83,8 +85,23 @@ public class TagsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSaveClicked(int id, String title) {
+            public void onCommentNewsClicked(int id) {
+                Intent commentIntent = new Intent(getApplicationContext(), AllCommentActivity.class);
+                commentIntent.putExtra("news_id", id);
+                startActivity(commentIntent);
+            }
 
+            @Override
+            public void onShareNewsClicked(String url) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_TEXT, url);
+                i.setType("text/plain");
+                startActivity(Intent.createChooser(i, null));
+            }
+
+            @Override
+            public void onSaveClicked(int id, String title) {
                 SaveNews saveNews = new SaveNews(id, title);
 
                 if (SharedPrefs.showNewsFromPref(TagsActivity.this) != null) {
@@ -92,25 +109,24 @@ public class TagsActivity extends AppCompatActivity {
 
                     for (int i = 0; i < saveNewsList.size(); i++) {
                         if (saveNews.id == saveNewsList.get(i).id) {
+                            saveNewsList.remove(saveNewsList.get(i));
+                            SharedPrefs.saveNewsInPref(TagsActivity.this, saveNewsList);
+                            Toast.makeText(getApplicationContext(), "Uspešno ste izbacili vest iz liste.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
+
                 }
                 saveNewsList.add(saveNews);
                 SharedPrefs.saveNewsInPref(TagsActivity.this, saveNewsList);
+                Toast.makeText(getApplicationContext(), "Uspešno ste sačuvali vest.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onUnSaveClicked(int id, String title) {
-                SaveNews saveNews = new SaveNews(id, title);
-
-                for (int i = 0; i < saveNewsList.size(); i++) {
-                    if (saveNews.id == saveNewsList.get(i).id) {
-                        saveNewsList.remove(saveNewsList.get(i));
-                        SharedPrefs.saveNewsInPref(TagsActivity.this, saveNewsList);
-                    }
-                }
+            public boolean isSaved(int id) {
+                return MyMethodsClass.isSaved(id, TagsActivity.this);
             }
+
         }), () -> dataRepository.loadTagNewsData(id, nextPage, new DataRepository.TagNewsResponseListener() {
             @Override
             public void onResponse(ArrayList<News> response) {

@@ -1,6 +1,12 @@
 package com.cubes.komentar.pavlovic.ui.main.search.rvitems;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import com.cubes.komentar.R;
 import com.cubes.komentar.databinding.RvItemSmallBinding;
@@ -41,25 +47,44 @@ public class RvItemSmallSearch implements RecyclerViewItemSearch {
         binding.date.setText(date);
         binding.textViewCategory.setText(news.category.name);
         binding.textViewCategory.setTextColor(Color.parseColor(news.category.color));
-
         Picasso.get().load(news.image).into(binding.imageView);
 
-        if (news.isSaved) {
-            binding.unSave.setImageResource(R.drawable.ic_save);
-        } else {
-            binding.unSave.setImageResource(R.drawable.ic_un_save);
-        }
+        binding.more.setOnClickListener(view -> {
+            FrameLayout viewGroup = holder.itemView.findViewById(R.id.frameLayout);
+            LayoutInflater inflater = (LayoutInflater) holder.itemView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.popup_window, viewGroup);
+            PopupWindow popupWindow = new PopupWindow(layout, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
 
-        binding.unSave.setOnClickListener(view -> {
-            if (news.isSaved) {
-                binding.unSave.setImageResource(R.drawable.ic_un_save);
-                newsListener.onUnSaveClicked(news.id, news.title);
-                news.isSaved = false;
+            ImageView comments = layout.findViewById(R.id.allComments);
+            comments.setOnClickListener(view1 -> {
+                newsListener.onCommentNewsClicked(news.id);
+                popupWindow.dismiss();
+            });
+
+            ImageView share = layout.findViewById(R.id.share);
+            share.setOnClickListener(view13 -> {
+                newsListener.onShareNewsClicked(news.url);
+                popupWindow.dismiss();
+            });
+
+            ImageView closeMenu = layout.findViewById(R.id.closeMenu);
+            closeMenu.setOnClickListener(view14 -> popupWindow.dismiss());
+
+            ImageView save = layout.findViewById(R.id.bookmark);
+            if (newsListener.isSaved(news.id)) {
+                save.setImageResource(R.drawable.ic_save);
             } else {
-                binding.unSave.setImageResource(R.drawable.ic_save);
-                newsListener.onSaveClicked(news.id, news.title);
-                news.isSaved = true;
+                save.setImageResource(R.drawable.ic_un_save);
             }
+
+            save.setOnClickListener(view12 -> {
+                newsListener.onSaveClicked(news.id, news.title);
+                popupWindow.dismiss();
+            });
+
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setFocusable(true);
+            popupWindow.showAsDropDown(binding.view, 0, 0);
         });
 
         holder.itemView.setOnClickListener(view -> newsListener.onNewsClickedVP(news.id, newsIdList));
